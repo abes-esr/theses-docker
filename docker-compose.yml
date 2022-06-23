@@ -1,0 +1,47 @@
+# Configuration docker pour déployer theses.fr
+# avant de lancer docker-compose up, il est nécessaire
+# de copier le fichier .env-dist dans le fichier .env
+# puis de personnaliser le contenu du fichier .env
+version: "3.5"
+
+services:
+
+  # theses-rp est le reverse proxy application de theses.fr
+  # toutes les requêtes HTTP passent par lui, il est chargé
+  # d'authentifier les utilisateurs avec la fédération d'identités
+  # RENATER lorsque ce derniers accèdent à /74979_GERARDIN_2018_archivage.pdf
+  # (à adapter)
+  theses-rp:
+    image: abesesr/docker-shibboleth-renater-sp:1.0.1
+    ports:
+      - 443:443
+    environment:
+      - RENATER_SP_TEST_OR_PROD
+      - RENATER_SP_ENTITY_ID
+      - RENATER_SP_ADMIN_MAIL
+      - RENATER_SP_HTTPD_SERVER_NAME
+      - RENATER_SP_HTTPD_LOG_LEVEL
+      - RENATER_SP_HTTPD_PROTECTED_PATH="/74979_GERARDIN_2018_archivage.pdf"
+      - RENATER_SP_HTTPD_PUBLIC_PROXY_TO="http://theses-web:8080/"
+      - RENATER_SP_HTTPD_PROTECTED_PROXY_TO="http://theses-web:8080/"
+    restart: unless-stopped
+    depends_on:
+      - theses-web
+      - theses-front
+
+
+  # API en java spring de theses.fr
+  # (travail en cours, pour la preuve de concept il est
+  #  chargé de mettre à disposition un PDF en 
+  #  accès restreint que theses-rp protège)
+  theses-web:
+    image: mendhak/http-https-echo:23
+    restart: unless-stopped
+
+
+  # # front en vuejs de theses.fr
+  # # (travail en cours)
+  # theses-front:
+  #   image: mendhak/http-https-echo:23
+  #   restart: unless-stopped
+
