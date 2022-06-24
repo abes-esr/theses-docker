@@ -12,7 +12,7 @@ services:
   # RENATER lorsque ce derniers accèdent à /74979_GERARDIN_2018_archivage.pdf
   # (à adapter)
   theses-rp:
-    image: abesesr/docker-shibboleth-renater-sp:1.0.1
+    image: abesesr/docker-shibboleth-renater-sp:1.0.3
     ports:
       - 443:443
     environment:
