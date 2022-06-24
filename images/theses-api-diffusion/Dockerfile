@@ -18,11 +18,13 @@ RUN echo "LimitRequestFields 250" >> conf/httpd.conf
 # le PDF d'une these pour les tests
 COPY ./74979_GERARDIN_2018_archivage.pdf /usr/local/apache2/htdocs/
 
-# TODO: logguer les header HTTP retournés par la fédé RENATER
-
-
-# RUN sed -i \
-# 		-e 's/^#\(Include .*httpd-ssl.conf\)/\1/' \
-# 		-e 's/^#\(LoadModule .*mod_ssl.so\)/\1/' \
-# 		-e 's/^#\(LoadModule .*mod_socache_shmcb.so\)/\1/' \
-# 		conf/httpd.conf
+# pour logguer les header HTTP retournés par la fédé RENATER
+# https://stackoverflow.com/questions/9948064/is-it-possible-to-log-all-http-request-headers-with-apache
+# en réaliter les forensic log vont TOUT logguer dans la requête HTTP donc y compris ses header
+# voici un extrait de ce à quoi une ligne de log peut ressembler (juste en prenant un attribut de la fédé en exemple)
+# on remarque que les attributs clés/valeurs sont séparés par des "|"
+# [...]|eppn:etudiant1@test-renater.fr|supannEtablissement:{ILN}1-341725201;{AUTRE}formation.renater.fr|mail:jean.dupont@formation.renater.fr|[...]
+RUN sed -i \
+		-e 's/^#\(LoadModule .*mod_log_forensic.so\)/\1/' \
+		conf/httpd.conf
+RUN echo "ForensicLog /proc/self/fd/1" >> conf/httpd.conf
