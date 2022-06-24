@@ -22,26 +22,21 @@ services:
       - RENATER_SP_HTTPD_SERVER_NAME
       - RENATER_SP_HTTPD_LOG_LEVEL
       - RENATER_SP_HTTPD_PROTECTED_PATH="/74979_GERARDIN_2018_archivage.pdf"
-      - RENATER_SP_HTTPD_PUBLIC_PROXY_TO="http://theses-web:8080/"
-      - RENATER_SP_HTTPD_PROTECTED_PROXY_TO="http://theses-web:8080/"
+      - RENATER_SP_HTTPD_PUBLIC_PROXY_TO="http://theses-api-diffusion/"
+      - RENATER_SP_HTTPD_PROTECTED_PROXY_TO="http://theses-api-diffusion/74979_GERARDIN_2018_archivage.pdf"
     restart: unless-stopped
     depends_on:
-      - theses-web
-      - theses-front
+      - theses-api-diffusion
 
 
-  # API en java spring de theses.fr
+
+  # API de diffusion des thèses en java spring de theses.fr
   # (travail en cours, pour la preuve de concept il est
   #  chargé de mettre à disposition un PDF en 
   #  accès restreint que theses-rp protège)
-  theses-web:
-    image: mendhak/http-https-echo:23
+  theses-api-diffusion:
+    #image: mendhak/http-https-echo:23
+    build: ./images/theses-api-diffusion/
+    image: httpd:2.4.54-theses-api-diffusion
     restart: unless-stopped
-
-
-  # # front en vuejs de theses.fr
-  # # (travail en cours)
-  # theses-front:
-  #   image: mendhak/http-https-echo:23
-  #   restart: unless-stopped
 
