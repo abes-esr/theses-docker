@@ -2,6 +2,11 @@
 
 Configuration docker pour déployer theses.fr (travail en cours de refonte de theses.fr)
 
+Les URL des déploiements temporaires seront les suivantes :
+- en dev : https://apollo-dev.theses.fr (pas encore dispo)
+- en test : https://apollo-test.theses.fr (pas encore dispo)
+- en préprod : https://apollo-prod.theses.fr (pas encore dispo)
+
 A noter que les images docker de theses.fr sont générées à partir des codes open sources disponibles ici :
 - https://github.com/abes-esr/docker-shibboleth-renater-sp (pour l'authentification avec la fédération d'identités)
 - https://github.com/abes-esr/theses-api-diffusion (à créer)
@@ -31,20 +36,6 @@ Spécificité en local pour simuler le vrai nom de domaine (sans cette modificat
 127.0.0.1 apollo-prod.theses.fr
 ```
 
-## Configuration
-
-Pour configurer l'application, il est nécessaire de créer un fichier ``.env`` au même niveau que le fichier ``docker-compose.yml`` de ce dépôt. Le contenu du ``.env`` est une liste de paramètres (clés/valeurs) dont un exemple est présent dans le fichier [``.env-dist``](https://github.com/abes-esr/theses-docker/blob/develop/.env-dist). La liste des paramètres est la suivante :
-
-- ``RENATER_SP_TEST_OR_PROD`` : pour activer la fédération d'identités de test (valeur "TEST") ou de prod (valeur "PROD")
-- ``RENATER_SP_ENTITY_ID`` : l'identifiant de votre fournisseur de service au niveau de la fédération d'identités (vaut ``https://apollo-dev.theses.fr/sp`` en local ou en dev, ``https://apollo-test.theses.fr/sp`` en local ou en test)
-- ``RENATER_SP_ADMIN_MAIL`` : l'adresse mail de contact qui s'affichera en cas d'erreur au niveau du serveur web de ``theses-rp``
-- ``RENATER_SP_HTTPD_SERVER_NAME`` : l'URL racine de l'instance theses.fr (vaut ``https://apollo-dev.theses.fr`` en local ou en dev, et ``https://apollo-test.theses.fr`` en local ou en test)
-
-
-TODO : expliquer comment configurer les certificats SSL nécessaires à la fédé de ``theses-rp`` pour la production (à placer dans un volume monté sur ``theses-rp``)
-
-TODO: compléter pour le déploiement sur dev,test,prod avec la couche du reverse proxy raiponce
-
 
 ## Démarrage et arret
 
@@ -65,6 +56,22 @@ Pour arrêter l'application :
 cd /opt/pod/theses-docker/
 docker-compose stop
 ```
+
+## Configuration
+
+Pour configurer l'application, il est nécessaire de créer un fichier ``.env`` au même niveau que le fichier ``docker-compose.yml`` de ce dépôt. Le contenu du ``.env`` est une liste de paramètres (clés/valeurs) dont un exemple est présent dans le fichier [``.env-dist``](https://github.com/abes-esr/theses-docker/blob/develop/.env-dist). La liste des paramètres est la suivante :
+
+- ``RENATER_SP_TEST_OR_PROD`` : pour activer la fédération d'identités de test (valeur "TEST") ou de prod (valeur "PROD")
+- ``RENATER_SP_ENTITY_ID`` : l'identifiant de votre fournisseur de service au niveau de la fédération d'identités (vaut ``https://apollo-dev.theses.fr/sp`` en local ou en dev, ``https://apollo-test.theses.fr/sp`` en local ou en test)
+- ``RENATER_SP_ADMIN_MAIL`` : l'adresse mail de contact qui s'affichera en cas d'erreur au niveau du serveur web de ``theses-rp``
+- ``RENATER_SP_HTTPD_SERVER_NAME`` : l'URL racine de l'instance theses.fr (vaut ``https://apollo-dev.theses.fr`` en local ou en dev, et ``https://apollo-test.theses.fr`` en local ou en test)
+
+
+TODO : expliquer comment configurer les certificats SSL nécessaires à la fédé de ``theses-rp`` pour la production (à placer dans un volume monté sur ``theses-rp``)
+
+TODO: compléter pour le déploiement sur dev,test,prod avec la couche du reverse proxy raiponce
+
+
 
 ## Supervision
 
