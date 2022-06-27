@@ -16,14 +16,14 @@ services:
     ports:
       - 443:443
     environment:
-      - RENATER_SP_TEST_OR_PROD
-      - RENATER_SP_ENTITY_ID
-      - RENATER_SP_ADMIN_MAIL
-      - RENATER_SP_HTTPD_SERVER_NAME
-      - RENATER_SP_HTTPD_LOG_LEVEL="info ssl:warn"
-      - RENATER_SP_HTTPD_PROTECTED_PATH="/74979_GERARDIN_2018_archivage.pdf"
-      - RENATER_SP_HTTPD_PUBLIC_PROXY_TO="http://theses-api-diffusion/"
-      - RENATER_SP_HTTPD_PROTECTED_PROXY_TO="http://theses-api-diffusion/74979_GERARDIN_2018_archivage.pdf"
+      RENATER_SP_TEST_OR_PROD: 
+      RENATER_SP_ENTITY_ID: 
+      RENATER_SP_ADMIN_MAIL: 
+      RENATER_SP_HTTPD_SERVER_NAME: 
+      RENATER_SP_HTTPD_LOG_LEVEL: "info ssl:warn"
+      RENATER_SP_HTTPD_PROTECTED_PATH: "/74979_GERARDIN_2018_archivage.pdf"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO: "http://theses-api-diffusion/"
+      RENATER_SP_HTTPD_PROTECTED_PROXY_TO: "http://theses-api-diffusion/74979_GERARDIN_2018_archivage.pdf"
     restart: unless-stopped
     depends_on:
       - theses-api-diffusion
