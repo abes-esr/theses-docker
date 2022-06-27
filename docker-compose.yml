@@ -40,7 +40,7 @@ services:
     build: ./images/theses-api-diffusion/
     image: httpd:2.4.54-theses-api-diffusion
     ports:
-      - 10301:8080
+      - 10301:80
     restart: unless-stopped
 
 
