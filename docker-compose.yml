@@ -15,6 +15,7 @@ services:
     image: abesesr/docker-shibboleth-renater-sp:1.0.3
     ports:
       - 443:443
+      - 10300:443
     environment:
       RENATER_SP_TEST_OR_PROD: 
       RENATER_SP_ENTITY_ID: 
@@ -38,5 +39,8 @@ services:
     #image: mendhak/http-https-echo:23
     build: ./images/theses-api-diffusion/
     image: httpd:2.4.54-theses-api-diffusion
+    ports:
+      - 10301:8080
     restart: unless-stopped
+
 
