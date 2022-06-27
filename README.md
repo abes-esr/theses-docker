@@ -63,12 +63,7 @@ docker-compose stop
 
 ## Configuration
 
-Pour configurer l'application, il est nécessaire de créer un fichier ``.env`` au même niveau que le fichier ``docker-compose.yml`` de ce dépôt. Le contenu du ``.env`` est une liste de paramètres (clés/valeurs) dont un exemple est présent dans le fichier [``.env-dist``](https://github.com/abes-esr/theses-docker/blob/develop/.env-dist). La liste des paramètres est la suivante :
-
-- ``RENATER_SP_TEST_OR_PROD`` : pour activer la fédération d'identités de test (valeur "TEST") ou de prod (valeur "PROD")
-- ``RENATER_SP_ENTITY_ID`` : l'identifiant de votre fournisseur de service au niveau de la fédération d'identités (vaut ``https://apollo-dev.theses.fr/sp`` en local ou en dev, ``https://apollo-test.theses.fr/sp`` en local ou en test)
-- ``RENATER_SP_ADMIN_MAIL`` : l'adresse mail de contact qui s'affichera en cas d'erreur au niveau du serveur web de ``theses-rp``
-- ``RENATER_SP_HTTPD_SERVER_NAME`` : l'URL racine de l'instance theses.fr (vaut ``https://apollo-dev.theses.fr`` en local ou en dev, et ``https://apollo-test.theses.fr`` en local ou en test)
+Pour configurer l'application, il est nécessaire de créer un fichier ``.env`` au même niveau que le fichier ``docker-compose.yml`` de ce dépôt. Le contenu du ``.env`` est une liste de paramètres (clés/valeurs) dont la documentation et des exemples de valeurs sont présent dans le fichier [``.env-dist``](https://github.com/abes-esr/theses-docker/blob/develop/.env-dist).
 
 
 TODO : expliquer comment configurer les certificats SSL nécessaires à la fédé de ``theses-rp`` pour la production (à placer dans un volume monté sur ``theses-rp``)
