@@ -33,8 +33,9 @@ cp .env-dist .env
 
 Spécificité en local pour simuler le vrai nom de domaine (sans cette modification theses-rp ne fonctionnera pas avec la fédération d'identités) :
 ```
-# ajouter ces lignes dans votre fichier /etc/hosts (sous linux - besoin de droits admin)
-# et dans C:\Windows\System32\drivers\etc\hosts (sous windows - besoin de droits admin)
+# ajouter ces lignes 
+# dans votre fichier /etc/hosts (sous linux - besoin de droits admin)
+# ou dans C:\Windows\System32\drivers\etc\hosts (sous windows - besoin de droits admin)
 127.0.0.1 apollo-dev.theses.fr
 127.0.0.1 apollo-test.theses.fr
 127.0.0.1 apollo-prod.theses.fr
