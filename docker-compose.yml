@@ -71,7 +71,7 @@ services:
     container_name: theses-elasticsearch-setupcerts
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
     volumes:
-      - theses-elasticsearch-certs:/usr/share/elasticsearch/config/certs
+      - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
     user: "0"
     environment:
       KIBANA_PASSWORD: ${KIBANA_PASSWORD}
@@ -147,8 +147,8 @@ services:
         condition: service_healthy
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
     volumes:
-      - theses-elasticsearch-certs:/usr/share/elasticsearch/config/certs
-      - theses-elasticsearch-esdata01:/usr/share/elasticsearch/data
+      - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
+      - ./volumes/theses-elasticsearch-es01/:/usr/share/elasticsearch/data/
     ports:
       - ${ELK_ELASTIC_PORT}:9200
     environment:
@@ -199,8 +199,8 @@ services:
       - theses-elasticsearch-es01
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
     volumes:
-      - theses-elasticsearch-certs:/usr/share/elasticsearch/config/certs
-      - theses-elasticsearch-esdata02:/usr/share/elasticsearch/data
+      - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
+      - ./volumes/theses-elasticsearch-es02/:/usr/share/elasticsearch/data/
     environment:
       - node.name=theses-elasticsearch-es02
       - cluster.name=${ELK_CLUSTER_NAME}
@@ -248,8 +248,8 @@ services:
       - theses-elasticsearch-es02
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
     volumes:
-      - theses-elasticsearch-certs:/usr/share/elasticsearch/config/certs
-      - theses-elasticsearch-esdata03:/usr/share/elasticsearch/data
+      - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
+      - ./volumes/theses-elasticsearch-es03/:/usr/share/elasticsearch/data/
     environment:
       - node.name=theses-elasticsearch-es03
       - cluster.name=${ELK_CLUSTER_NAME}
@@ -302,8 +302,8 @@ services:
         condition: service_healthy
     image: docker.elastic.co/kibana/kibana:${ELK_STACK_VERSION}
     volumes:
-      - theses-elasticsearch-certs:/usr/share/kibana/config/certs
-      - theses-elasticsearch-kibanadata:/usr/share/kibana/data
+      - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/kibana/config/certs/
+      - ./volumes/theses-kibana/:/usr/share/kibana/data/
     ports:
       - ${ELK_KIBANA_PORT}:5601
     environment:
@@ -329,17 +329,5 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=kibana"
-
-volumes:
-  theses-elasticsearch-certs:
-    driver: local
-  theses-elasticsearch-esdata01:
-    driver: local
-  theses-elasticsearch-esdata02:
-    driver: local
-  theses-elasticsearch-esdata03:
-    driver: local
-  theses-elasticsearch-kibanadata:
-    driver: local
 
 
