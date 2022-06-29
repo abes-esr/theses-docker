@@ -15,13 +15,16 @@ services:
     container_name: theses-rp
     image: abesesr/docker-shibboleth-renater-sp:1.0.3
     ports:
+      # 443:443 est a retirer pour la prod, c'est utile en local pour pouvoir le faire tourner
+      # après modification du /etc/hosts (cf README.md qui explique)
       - 443:443
-      - 10300:443
+      - ${THESES_RP_HTTPS_PORT}:443
+      - ${THESES_RP_HTTP_PORT}:80
     environment:
-      RENATER_SP_TEST_OR_PROD: 
-      RENATER_SP_ENTITY_ID: 
-      RENATER_SP_ADMIN_MAIL: 
-      RENATER_SP_HTTPD_SERVER_NAME: 
+      RENATER_SP_TEST_OR_PROD: ${RENATER_SP_TEST_OR_PROD}
+      RENATER_SP_ENTITY_ID: ${RENATER_SP_ENTITY_ID}
+      RENATER_SP_ADMIN_MAIL: ${RENATER_SP_ADMIN_MAIL}
+      RENATER_SP_HTTPD_SERVER_NAME: ${RENATER_SP_HTTPD_SERVER_NAME}
       RENATER_SP_HTTPD_LOG_LEVEL: "info ssl:warn"
       RENATER_SP_HTTPD_PROTECTED_PATH: "/74979_GERARDIN_2018_archivage.pdf"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO: "http://theses-api-diffusion/"
@@ -46,8 +49,6 @@ services:
     #image: mendhak/http-https-echo:23
     build: ./images/theses-api-diffusion/
     image: httpd:2.4.54-theses-api-diffusion
-    ports:
-      - 10301:80
     restart: unless-stopped
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -55,4 +56,249 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=apache"
+
+
+
+  #######################################
+  # theses-elasticsearch et theses-kibana
+  # toute la configuration pour lancer elasticsearch et kibana de theses.fr
+  # Ref. https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+  # TODO: subtilité pour les 3 noeuds es01 es02 et es03 qui sont lancés sur trois serveurs différens
+  theses-elasticsearch-setup:
+    container_name: theses-elasticsearch-setup
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
+    volumes:
+      - theses-elasticsearch-certs:/usr/share/elasticsearch/config/certs
+    user: "0"
+    environment:
+      KIBANA_PASSWORD: ${KIBANA_PASSWORD}
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+    command: >
+      bash -c '
+        if [ x${ELASTIC_PASSWORD} == x ]; then
+          echo "Set the ELASTIC_PASSWORD environment variable in the .env file";
+          exit 1;
+        elif [ x${KIBANA_PASSWORD} == x ]; then
+          echo "Set the KIBANA_PASSWORD environment variable in the .env file";
+          exit 1;
+        fi;
+        if [ ! -f config/certs/ca.zip ]; then
+          echo "Creating CA";
+          bin/elasticsearch-certutil ca --silent --pem -out config/certs/ca.zip;
+          unzip config/certs/ca.zip -d config/certs;
+        fi;
+        if [ ! -f config/certs/certs.zip ]; then
+          echo "Creating certs";
+          echo -ne \
+          "instances:\n"\
+          "  - name: es01\n"\
+          "    dns:\n"\
+          "      - theses-elasticsearch-es01\n"\
+          "      - localhost\n"\
+          "    ip:\n"\
+          "      - 127.0.0.1\n"\
+          "  - name: es02\n"\
+          "    dns:\n"\
+          "      - theses-elasticsearch-es02\n"\
+          "      - localhost\n"\
+          "    ip:\n"\
+          "      - 127.0.0.1\n"\
+          "  - name: es03\n"\
+          "    dns:\n"\
+          "      - theses-elasticsearch-es03\n"\
+          "      - localhost\n"\
+          "    ip:\n"\
+          "      - 127.0.0.1\n"\
+          > config/certs/instances.yml;
+          bin/elasticsearch-certutil cert --silent --pem -out config/certs/certs.zip --in config/certs/instances.yml --ca-cert config/certs/ca/ca.crt --ca-key config/certs/ca/ca.key;
+          unzip config/certs/certs.zip -d config/certs;
+        fi;
+        echo "Setting file permissions"
+        chown -R root:root config/certs;
+        find . -type d -exec chmod 750 \{\} \;;
+        find . -type f -exec chmod 640 \{\} \;;
+        echo "Waiting for Elasticsearch availability";
+        until curl -s --cacert config/certs/ca/ca.crt https://theses-elasticsearch-es01:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+        echo "Setting kibana_system password";
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-es01:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        echo "All done!";
+      '
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f config/certs/es01/es01.crt ]"]
+      interval: 1s
+      timeout: 5s
+      retries: 120
+
+  theses-elasticsearch-es01:
+    container_name: theses-elasticsearch-es01
+    depends_on:
+      theses-elasticsearch-setup:
+        condition: service_healthy
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
+    volumes:
+      - theses-elasticsearch-certs:/usr/share/elasticsearch/config/certs
+      - theses-elasticsearch-esdata01:/usr/share/elasticsearch/data
+    ports:
+      - ${ELK_ELASTIC_PORT}:9200
+    environment:
+      - node.name=theses-elasticsearch-es01
+      - cluster.name=${ELK_CLUSTER_NAME}
+      - cluster.initial_master_nodes=theses-elasticsearch-es01,theses-elasticsearch-es02,theses-elasticsearch-es03
+      - discovery.seed_hosts=theses-elasticsearch-es02,theses-elasticsearch-es03
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=certs/es01/es01.key
+      - xpack.security.http.ssl.certificate=certs/es01/es01.crt
+      - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.http.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.key=certs/es01/es01.key
+      - xpack.security.transport.ssl.certificate=certs/es01/es01.crt
+      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.license.self_generated.type=${ELK_LICENSE}
+    mem_limit: ${ELK_MEM_LIMIT}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+  theses-elasticsearch-es02:
+    container_name: theses-elasticsearch-es02
+    depends_on:
+      - theses-elasticsearch-es01
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
+    volumes:
+      - theses-elasticsearch-certs:/usr/share/elasticsearch/config/certs
+      - theses-elasticsearch-esdata02:/usr/share/elasticsearch/data
+    environment:
+      - node.name=theses-elasticsearch-es02
+      - cluster.name=${ELK_CLUSTER_NAME}
+      - cluster.initial_master_nodes=theses-elasticsearch-es01,theses-elasticsearch-es02,theses-elasticsearch-es03
+      - discovery.seed_hosts=theses-elasticsearch-es01,theses-elasticsearch-es03
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=certs/es02/es02.key
+      - xpack.security.http.ssl.certificate=certs/es02/es02.crt
+      - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.http.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.key=certs/es02/es02.key
+      - xpack.security.transport.ssl.certificate=certs/es02/es02.crt
+      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.license.self_generated.type=${ELK_LICENSE}
+    mem_limit: ${ELK_MEM_LIMIT}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+  theses-elasticsearch-es03:
+    container_name: theses-elasticsearch-es03
+    depends_on:
+      - theses-elasticsearch-es02
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
+    volumes:
+      - theses-elasticsearch-certs:/usr/share/elasticsearch/config/certs
+      - theses-elasticsearch-esdata03:/usr/share/elasticsearch/data
+    environment:
+      - node.name=theses-elasticsearch-es03
+      - cluster.name=${ELK_CLUSTER_NAME}
+      - cluster.initial_master_nodes=theses-elasticsearch-es01,theses-elasticsearch-es02,theses-elasticsearch-es03
+      - discovery.seed_hosts=theses-elasticsearch-es01,theses-elasticsearch-es02
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=certs/es03/es03.key
+      - xpack.security.http.ssl.certificate=certs/es03/es03.crt
+      - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.http.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.key=certs/es03/es03.key
+      - xpack.security.transport.ssl.certificate=certs/es03/es03.crt
+      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.license.self_generated.type=${ELK_LICENSE}
+    mem_limit: ${ELK_MEM_LIMIT}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+  theses-kibana:
+    container_name: theses-kibana
+    depends_on:
+      theses-elasticsearch-es01:
+        condition: service_healthy
+      theses-elasticsearch-es02:
+        condition: service_healthy
+      theses-elasticsearch-es03:
+        condition: service_healthy
+    image: docker.elastic.co/kibana/kibana:${ELK_STACK_VERSION}
+    volumes:
+      - theses-elasticsearch-certs:/usr/share/kibana/config/certs
+      - theses-elasticsearch-kibanadata:/usr/share/kibana/data
+    ports:
+      - ${ELK_KIBANA_PORT}:5601
+    environment:
+      - SERVERNAME=kibana
+      - ELASTICSEARCH_HOSTS=https://theses-elasticsearch-es01:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
+      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+      - xpack.reporting.roles.enabled=false
+    mem_limit: ${ELK_MEM_LIMIT}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+volumes:
+  theses-elasticsearch-certs:
+    driver: local
+  theses-elasticsearch-esdata01:
+    driver: local
+  theses-elasticsearch-esdata02:
+    driver: local
+  theses-elasticsearch-esdata03:
+    driver: local
+  theses-elasticsearch-kibanadata:
+    driver: local
+
 
