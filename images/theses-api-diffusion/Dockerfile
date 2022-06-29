@@ -17,6 +17,7 @@ RUN echo "LimitRequestFields 250" >> conf/httpd.conf
 
 # le PDF d'une these pour les tests
 COPY ./74979_GERARDIN_2018_archivage.pdf /usr/local/apache2/htdocs/
+RUN chmod a+rw /usr/local/apache2/htdocs/74979_GERARDIN_2018_archivage.pdf
 # et une page d'accueil
 COPY ./index.html /usr/local/apache2/htdocs/
 RUN chmod a+rw /usr/local/apache2/htdocs/index.html
