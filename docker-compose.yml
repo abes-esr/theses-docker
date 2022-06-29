@@ -128,6 +128,12 @@ services:
       interval: 1s
       timeout: 5s
       retries: 120
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=adhoc"
 
   theses-elasticsearch-es01:
     container_name: theses-elasticsearch-es01
@@ -173,6 +179,12 @@ services:
       interval: 10s
       timeout: 10s
       retries: 120
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=elasticsearch"
 
   theses-elasticsearch-es02:
     container_name: theses-elasticsearch-es02
@@ -214,6 +226,12 @@ services:
       interval: 10s
       timeout: 10s
       retries: 120
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=elasticsearch"
 
   theses-elasticsearch-es03:
     container_name: theses-elasticsearch-es03
@@ -255,6 +273,12 @@ services:
       interval: 10s
       timeout: 10s
       retries: 120
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=elasticsearch"
 
   theses-kibana:
     container_name: theses-kibana
@@ -288,6 +312,12 @@ services:
       interval: 10s
       timeout: 10s
       retries: 120
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=kibana"
 
 volumes:
   theses-elasticsearch-certs:
