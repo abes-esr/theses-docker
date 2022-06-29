@@ -125,7 +125,7 @@ Voici la liste et la description des conteneurs déployés par le [docker-compos
 - ``theses-rp`` : conteneur servant de reverse proxy dédié à l'authentification des utilisateurs souhaitant accéder à des thèses en accès restreint. Cette authentification est déléguée à la fédération d'identités Education-Recherche. Ce conteneur est l'instanciation de l'image docker [docker-shibboleth-renater-sp](https://github.com/abes-esr/docker-shibboleth-renater-sp).
 - ``theses-api-diffusion`` : conteneur qui sera chargé de l'API (en Java Spring) de theses.fr (travail en cours). Dans le cadre du PoC fédé, ce conteneur est chargé de mettre à disposition un PDF en passant par la fédé.
 - ``theses-api-recherche`` : conteneur qui sera chargé de mettre à disposition l'API de recherche elle même basée sur le conteneur ``theses-elasticsearch`` (travail en cours)
-- ``theses-api-indexation`` : conteneur qui sera chargé de 
+- ``theses-api-indexation`` : conteneur qui sera chargé de proposer une API pour pouvoir indexer une thèses à l'unité dans ``theses-elasticsearch``
 - ``theses-front`` : conteneur qui sera chargé du front (en VueJS) de theses.fr (travail en cours)
 - ``theses-batch`` : conteneur qui sera chargé des batchs ponctuels ou périodiques de theses.fr et en particulier d'un batch qui permettra d'indexer  en masse les 500 000 thèses dans ``theses-elasticsearch``
 - ``theses-elasticsearch`` : conteneur qui sera chargé d'instancier le moteur de recherche elasticsearch qui contiendra l'indexation des TEF de theses.fr
