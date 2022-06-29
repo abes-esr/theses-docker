@@ -63,9 +63,12 @@ services:
   # theses-elasticsearch et theses-kibana
   # toute la configuration pour lancer elasticsearch et kibana de theses.fr
   # Ref. https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
-  # TODO: subtilité pour les 3 noeuds es01 es02 et es03 qui sont lancés sur trois serveurs différens
-  theses-elasticsearch-setup:
-    container_name: theses-elasticsearch-setup
+  #
+  # theses-elasticsearch-setupcerts
+  # conteneur chargé de configurer les certificats pour que les 
+  # 3 noeuds elasticsearch communiquent entre eux de façon sécurisé
+  theses-elasticsearch-setupcerts:
+    container_name: theses-elasticsearch-setupcerts
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
     volumes:
       - theses-elasticsearch-certs:/usr/share/elasticsearch/config/certs
@@ -135,10 +138,12 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=adhoc"
 
+  # theses-elasticsearch-es01
+  # noeud numéro1 d'elasticsearch (en local c'est l'unique noeud qui est lancé)
   theses-elasticsearch-es01:
     container_name: theses-elasticsearch-es01
     depends_on:
-      theses-elasticsearch-setup:
+      theses-elasticsearch-setupcerts:
         condition: service_healthy
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
     volumes:
@@ -186,6 +191,8 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=elasticsearch"
 
+  # theses-elasticsearch-es02
+  # noeud numéro 2 d'elasticsearch en cluster avec le noeud 1 et 3
   theses-elasticsearch-es02:
     container_name: theses-elasticsearch-es02
     depends_on:
@@ -233,6 +240,8 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=elasticsearch"
 
+  # theses-elasticsearch-es03
+  # noeud numéro 3 d'elasticsearch en cluster avec le noeud 1 et 2
   theses-elasticsearch-es03:
     container_name: theses-elasticsearch-es03
     depends_on:
@@ -280,6 +289,8 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=elasticsearch"
 
+  # theses-kibana
+  # kibana est le backoffice de l'elasticsearch de theses.fr
   theses-kibana:
     container_name: theses-kibana
     depends_on:
