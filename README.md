@@ -4,9 +4,9 @@
 
 Configuration docker 🐳 permettant de déployer le portail national des thèses dont le but est de donner accès à toutes les theses de theses.fr à l'ensemble de l'enseignement supérieur et recherche. Ces configurations visent à permettre un déploiement uniforme en local sur la machine d'un développeur, et sur les serveurs de dev, test, et prod.
 
-<img src="https://docs.google.com/drawings/d/e/2PACX-1vSh7awYvbYr54GU3F7hsmcbvK25QKixZ1I_a8-mg_X2nimit9SbllmdkXA_n-MaQQBR0KsgrX0dQvga/pub?w=100">
+<img src="https://docs.google.com/drawings/d/e/2PACX-1vSh7awYvbYr54GU3F7hsmcbvK25QKixZ1I_a8-mg_X2nimit9SbllmdkXA_n-MaQQBR0KsgrX0dQvga/pub?w=200">
 
-Les URL des déploiements temporaires seront les suivantes :
+Les URLs temporaires du futur theses.fr sont les suivantes :
 - en dev : https://apollo-dev.theses.fr
 - en test : https://apollo-test.theses.fr 
 - en préprod : https://apollo-prod.theses.fr (pas encore dispo)
