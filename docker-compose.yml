@@ -67,6 +67,9 @@ services:
         condition: service_healthy
     build: ./images/theses-batch/
     image: abesesr/theses:develop-batch
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      ELASTICSEARCH_HOST: "https://theses-elasticsearch-es01:9200"
     command: /app/theses-sample-load.sh
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
