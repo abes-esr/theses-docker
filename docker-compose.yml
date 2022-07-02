@@ -154,8 +154,8 @@ services:
     environment:
       - node.name=theses-elasticsearch-es01
       - cluster.name=${ELK_CLUSTER_NAME}
-      - cluster.initial_master_nodes=theses-elasticsearch-es01,theses-elasticsearch-es02,theses-elasticsearch-es03
-      - discovery.seed_hosts=theses-elasticsearch-es02,theses-elasticsearch-es03
+      - cluster.initial_master_nodes=${ELK_CLUSTER_INITIAL_MASTER_NODES}
+      - discovery.seed_hosts=${ELK_DISCOVER_SEED_HOSTS}
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
@@ -191,114 +191,12 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=elasticsearch"
 
-  # theses-elasticsearch-es02
-  # noeud numéro 2 d'elasticsearch en cluster avec le noeud 1 et 3
-  theses-elasticsearch-es02:
-    container_name: theses-elasticsearch-es02
-    depends_on:
-      - theses-elasticsearch-es01
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
-    volumes:
-      - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
-      - ./volumes/theses-elasticsearch-es02/:/usr/share/elasticsearch/data/
-    environment:
-      - node.name=theses-elasticsearch-es02
-      - cluster.name=${ELK_CLUSTER_NAME}
-      - cluster.initial_master_nodes=theses-elasticsearch-es01,theses-elasticsearch-es02,theses-elasticsearch-es03
-      - discovery.seed_hosts=theses-elasticsearch-es01,theses-elasticsearch-es03
-      - bootstrap.memory_lock=true
-      - xpack.security.enabled=true
-      - xpack.security.http.ssl.enabled=true
-      - xpack.security.http.ssl.key=certs/es02/es02.key
-      - xpack.security.http.ssl.certificate=certs/es02/es02.crt
-      - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
-      - xpack.security.http.ssl.verification_mode=certificate
-      - xpack.security.transport.ssl.enabled=true
-      - xpack.security.transport.ssl.key=certs/es02/es02.key
-      - xpack.security.transport.ssl.certificate=certs/es02/es02.crt
-      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
-      - xpack.security.transport.ssl.verification_mode=certificate
-      - xpack.license.self_generated.type=${ELK_LICENSE}
-    mem_limit: ${ELK_MEM_LIMIT}
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
-        ]
-      interval: 10s
-      timeout: 10s
-      retries: 120
-    labels:
-      # pour envoyer les logs dans le puits de log de l'abes
-      - "co.elastic.logs/enabled=true"
-      - "co.elastic.logs/processors.add_fields.target="
-      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
-      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=elasticsearch"
-
-  # theses-elasticsearch-es03
-  # noeud numéro 3 d'elasticsearch en cluster avec le noeud 1 et 2
-  theses-elasticsearch-es03:
-    container_name: theses-elasticsearch-es03
-    depends_on:
-      - theses-elasticsearch-es02
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
-    volumes:
-      - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
-      - ./volumes/theses-elasticsearch-es03/:/usr/share/elasticsearch/data/
-    environment:
-      - node.name=theses-elasticsearch-es03
-      - cluster.name=${ELK_CLUSTER_NAME}
-      - cluster.initial_master_nodes=theses-elasticsearch-es01,theses-elasticsearch-es02,theses-elasticsearch-es03
-      - discovery.seed_hosts=theses-elasticsearch-es01,theses-elasticsearch-es02
-      - bootstrap.memory_lock=true
-      - xpack.security.enabled=true
-      - xpack.security.http.ssl.enabled=true
-      - xpack.security.http.ssl.key=certs/es03/es03.key
-      - xpack.security.http.ssl.certificate=certs/es03/es03.crt
-      - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
-      - xpack.security.http.ssl.verification_mode=certificate
-      - xpack.security.transport.ssl.enabled=true
-      - xpack.security.transport.ssl.key=certs/es03/es03.key
-      - xpack.security.transport.ssl.certificate=certs/es03/es03.crt
-      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
-      - xpack.security.transport.ssl.verification_mode=certificate
-      - xpack.license.self_generated.type=${ELK_LICENSE}
-    mem_limit: ${ELK_MEM_LIMIT}
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
-        ]
-      interval: 10s
-      timeout: 10s
-      retries: 120
-    labels:
-      # pour envoyer les logs dans le puits de log de l'abes
-      - "co.elastic.logs/enabled=true"
-      - "co.elastic.logs/processors.add_fields.target="
-      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
-      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=elasticsearch"
-
   # theses-kibana
   # kibana est le backoffice de l'elasticsearch de theses.fr
   theses-kibana:
     container_name: theses-kibana
     depends_on:
       theses-elasticsearch-es01:
-        condition: service_healthy
-      theses-elasticsearch-es02:
-        condition: service_healthy
-      theses-elasticsearch-es03:
         condition: service_healthy
     image: docker.elastic.co/kibana/kibana:${ELK_STACK_VERSION}
     volumes:

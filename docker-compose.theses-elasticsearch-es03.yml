@@ -1,0 +1,51 @@
+# Configuration docker pour déployer uniquement 
+# le noeud n°3 de l'elasticsearch de theses.fr
+version: "3.5"
+
+services:
+
+  theses-elasticsearch-es03:
+    container_name: theses-elasticsearch-es03
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
+    volumes:
+      - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
+      - ./volumes/theses-elasticsearch-es03/:/usr/share/elasticsearch/data/
+    environment:
+      - node.name=theses-elasticsearch-es03
+      - cluster.name=${ELK_CLUSTER_NAME}
+      - cluster.initial_master_nodes=${ELK_CLUSTER_INITIAL_MASTER_NODES}
+      - discovery.seed_hosts=${ELK_DISCOVER_SEED_HOSTS}
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=certs/es03/es03.key
+      - xpack.security.http.ssl.certificate=certs/es03/es03.crt
+      - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.http.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.key=certs/es03/es03.key
+      - xpack.security.transport.ssl.certificate=certs/es03/es03.crt
+      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.license.self_generated.type=${ELK_LICENSE}
+    mem_limit: ${ELK_MEM_LIMIT}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=elasticsearch"
+

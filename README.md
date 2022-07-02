@@ -29,6 +29,9 @@ cd /opt/pod/theses-docker/
 cp .env-dist .env
 # personnalisez alors le .env en partant des valeurs exemple présentes dans le .env-dist
 # pour un déploiement en local, vous n'avez pas besoin de personnaliser le .env
+
+# puis démarrer l'application
+docker-compose up -d
 ```
 
 Spécificité en local pour simuler le vrai nom de domaine (sans cette modification theses-rp ne fonctionnera pas avec la fédération d'identités) :
@@ -39,6 +42,15 @@ Spécificité en local pour simuler le vrai nom de domaine (sans cette modificat
 127.0.0.1 apollo-dev.theses.fr
 127.0.0.1 apollo-test.theses.fr
 127.0.0.1 apollo-prod.theses.fr
+```
+
+### Installation du cluster elasticsearch
+
+Par défaut un unique noeud elasticsearch est lancé. Pour installer theses.fr avec un cluster elasticsearch à trois noeuds, voici comment procéder :
+
+TODO + pour mémo la commande pour copier les certificats
+```bash
+docker cp theses-elasticsearch-setupcerts:/usr/share/elasticsearch/config/certs/certs.zip .
 ```
 
 
