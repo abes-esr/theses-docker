@@ -15,6 +15,6 @@ cat theses-sample-mapping.json | curl -s -k --request PUT \
 echo "-> Chargement des documents dans l'index theses-sample d'elasticsearch"
 cat theses-sample-data.json | jq -c '.[]' | curl -s -k --request POST \
   -u elastic:${ELASTIC_PASSWORD} \
-  --url "${ELASTICSEARCH_HOST}/_bulk/?pretty=true" \
+  --url "${ELASTICSEARCH_HOST}/theses-sample/_bulk/?pretty=true" \
   --header 'Content-Type: application/x-ndjson' \
   --data-binary @-

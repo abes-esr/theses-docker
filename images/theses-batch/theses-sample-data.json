@@ -1,6 +1,6 @@
 [
 
-{ "index": { "_index":"theses-sample", "_id":"2003MON30025" } },
+{ "index": { "_id":"2003MON30025" } },
 {
   "titre": "Analyse technologique comme approche discriminante au sein des industries riches en racloirs du paléolithique moyen en Languedoc oriental",
   "nnt": "2003MON30025",
@@ -9,7 +9,7 @@
   "abstractEN": ""
 },
 
-{ "index": { "_index":"theses-sample", "_id":"2001MNHN0022" } },
+{ "index": { "_id":"2001MNHN0022" } },
 {
   "titre": "Technologie et typologie de l'industrie lithique des zones M, N et O de la Baume Bonne à Quinson (Alpes de Haute Provence)",
   "nnt": "2001MNHN0022",
@@ -18,7 +18,7 @@
   "abstractEN": ""
 },
 
-{ "index": { "_index":"theses-sample", "_id":"2000PA010697" } },
+{ "index": { "_id":"2000PA010697" } },
 {
   "titre": "Histoire du peuplement humain de l'Asie extrême-orientale depuis le pléitocène supérieur récent",
   "nnt": "2000PA010697",
@@ -27,7 +27,7 @@
   "abstractEN": ""
 },
 
-{ "index": { "_index":"theses-sample", "_id":"2020TOU20084" } },
+{ "index": { "_id":"2020TOU20084" } },
 {
   "titre": "La paléo-métallurgie dans la région du Guéra (centre du Tchad) : inventaire des sites et essai de caractérisation des traditions sidérurgiques.",
   "nnt": "2020TOU20084",
@@ -36,7 +36,7 @@
   "abstractEN": "Located in the south-east of the Lake Chad basin, the Guéra region has so far not benefited from any archaeological research work. However, this region has a rich metallurgical heritage. Combining oral information and archaeological data, this study is a contribution to the history of ancient iron production. To this end, we seek to determine the technical, economic and human impacts of this activity. In order to conduct this study properly, our questions focused on the identity of the metallurgists who worked iron in this region, their migration paths and their settlement in the Guéra. We also tried to describe and characterize the smelting techniques that were used, to quantify the volume of metallurgical waste, and to date the metallurgy of iron in the Guéra."
 },
 
-{ "index": { "_index":"theses-sample", "_id":"2020PA100137" } },
+{ "index": { "_id":"2020PA100137" } },
 {
   "titre": "Tesselles techniques d'une mosaïque culturelle : l'apport de la technologie lithique et céramique à l'histoire précoloniale de la Cidade de Pedra (Brésil)",
   "nnt": "2020PA100137",
@@ -45,7 +45,7 @@
   "abstractEN": "Inserted in an area of great cultural diversity, the rock shelters of Cidade da Pedra offered up varied types of ceramics and a diverse lithic production. This mixture hides different sociocultural situations of interaction between archeological cultures. Our interest is to reconstitute the history of these occupations, since the emergence of ceramic in 1.900 ± 40 BP, until the arrival of the Bororo groups, searching for the cultural distinctions and relationships established among the groups. The method employed here is the technological analysis of lithic and ceramic vestiges from five archeological sites and ethnographical pieces. Two intervals of occupation were identified in the shelters. The oldest is marked by pots shaped by coiling, varied lithic tools on arenite (silicified sandstone) flakes, two types of polished axe blades, and through the acquisition of a red pigment from siltite slabs. Around 1060 ± 40 BP, a group was established who possessed a ceramic shaped over clay mass and by coiling. The production of axe blades and the use of slabs persist, but the knapping of arenite drastically lowers. The shelters are used differently and the rework and reuse of lithic objects was constant. At the same time, a circulation of objects coming from the high Paraguay river and the cerrado is found. The Bororo settled around 230 ± 70 BP and their objects from the 20th century show a ceramic with a shaping that would correspond to a prior technical tradition, but with axe blades quite different from the ones that came before. The recent Holocene of the Cidade da Pedra is thus marked by the gradual succession of different cultural groups and a final stage of interaction more evident among neighbouring groups."
 },
 
-{ "index": { "_index":"theses-sample", "_id":"2003PA100181" } },
+{ "index": { "_id":"2003PA100181" } },
 {
   "titre": "Implications culturelles de la technologie des hachereaux",
   "nnt": "2003PA100181",
@@ -54,7 +54,7 @@
   "abstractEN": "Cleavers are huge Palaeolithic stone tools, made on flakes and bearing an un-retouched cutting edge. They are known in east African Acheulian since at least 1. 6 My ago. During the Middle Pleistocene, they are widespread all over Africa, in the Middle East, in Asia and South-Western Europe, where they last until Mousterian. On the basis of a wide bibliographic review and of the technological study of cleavers series from sub-Saharan Africa, from north Africa, from Spain and from southern France, it is possible to demonstrate that those tools were made according to a single concept, even if several methods implying an increasing predetermination degree were used. Moreover, it appears that making cleavers is not the result of an environmental determinism, but of a choke between many possibilities. Thus, those have a particular cultural meaning."
 },
 
-{ "index": { "_index":"theses-sample", "_id":"2011AIX10218" } },
+{ "index": { "_id":"2011AIX10218" } },
 {
   "titre": "Le phénomène acheuléen en Europe Occidentale : approche chronologique, technologie lithique et implications culturelles",
   "nnt": "2011AIX10218",
@@ -63,7 +63,7 @@
   "abstractEN": "The historic and substantial diversity of the Western European Acheulian can be perceived from a phenomenological standpoint. All of the 36 lithic assemblages studied in France, England, Italy and Spain provide an original production. The bifacial phenomenon can be separated from other expressions of the Acheulian. Indeed, bifacial pieces, in the strict sense, appear in great numbers in northern Europe around the OIS 11 and in the Mediterranean region around the OIS 9. However, the latter are found under different forms, which imply major modifi cations of all the production. The critical analysis of lithostratigraphic contexts and the consideration of technical, technological and chronological diversities, allow reconsidering the paradigm of the « Out of Africa » diffusion. The hypothesis of a local invention and evolution of bifacial pieces can be put forward. The use of this term has limited our perception of the Lower Paleolithic as a whole. One should now focus on analyzing the diversity of human behaviors and societies."
 },
 
-{ "index": { "_index":"theses-sample", "_id":"2012PA010501" } },
+{ "index": { "_id":"2012PA010501" } },
 {
   "titre": "Les premiers peuplements du nord du Pérou : l'apport de la technologie lithique à la définition des ensembles culturels et de leurs relations, à la fin du Pléistocène et à l'Holocène ancien et moyen",
   "nnt": "2012PA010501",
@@ -72,7 +72,7 @@
   "abstractEN": ""
 },
 
-{ "index": { "_index":"theses-sample", "_id":"2014TOU20035" } },
+{ "index": { "_id":"2014TOU20035" } },
 {
   "titre": "Contribution à l'étude de l'art rupestre tassilien : à la recherche d'un sens à Ozan Ehéré (Tasîli-n-Ajjer, sahara central, Algérie)",
   "nnt": "2014TOU20035",
@@ -81,7 +81,7 @@
   "abstractEN": "Considering the face of human representations and evoking particularly firm presuppositions on a world of masks and animism considered as strictly black - African, number of the authors who studied the rupestral images of central Sahara mixed up \"culture\" and \"racial identity\", artistic canons and anthropological kind, establishing a chopped cultural History, which is not argued. In Ozan Ehéré, remarkable cases of relationships illustrated by scenes showing an anthropomorphic touching a zoomorphic invite to suggest a parallel between representations in style of the Round Heads and the bovidians images (styles of Séfar - Ozan Ehéré, of Abañher, Iheren), while these groups are considered generally independent one of the other one and divided up by typological concern. A first structural approach of the rock art of the zone finally allows us to open stimulating ways, for example about the nature of beings represented on walls (who may not be human beings and ordinary animals attending to some commonplace occupation), and drives us to wonder about the function of these images. According to their possible feminine dimension, some Round Heads paintings could be taken out from the file of enigmatic representations. We could also get bovidians images out from the world of ornamental paintings, or of the chronicle - without appeal to literal readings."
 },
 
-{ "index": { "_index":"theses-sample", "_id":"2014TOU20047" } },
+{ "index": { "_id":"2014TOU20047" } },
 {
   "titre": "La diversité culturelle au paléolitique moyen récent : le vasconien et sa signification au sein des faciès moustériens",
   "nnt": "2014TOU20047",
@@ -90,7 +90,7 @@
   "abstractEN": "The presence of cleavers in numerous Pyrenean-Cantabrian Middle Paleolithic sites led to the creation of a regional facies called Vasconian (Bordes, 1953). Later, typological analyses based on shaped tool classes’ cumulative frequency have questioned the very existence of this facies (Cabrera Valdés, 1983). The recurrence of cleavers within Middle Paleolithic assemblages was then interpreted as a long perdurance of the Iberian Acheulean. The present research was aimed to re-evaluate the Pyrenean-Cantabrian Late Middle Paleolithic through the comparison of a large variety of data. It is supported by a detailed and renewed chronological framework for the Mousterian with cleavers of OIS 3 based on newly obtained radiometric data. The analysis included technological, morphometric and functional characterization of over 450 cleavers from nine sites attributed to the Late Middle Paleolithic. Our results were then compared to ca. 200 Acheulean cleavers from the same area. The differences between these two populations and a revised chronological framework allow us to reject the hypothesis of a sporadic persistence of cleavers after the Acheulean. We rather propose that these tools have resulted of a new invention and fully were a cultural marker. Meanwhile, the whole lithic ensembles from seven sites located north of the Basque-Cantabrian area were analyzed with the conventional methods of lithic technology. These sites correspond to various topographic contexts (caves, rock shelters, and open air sites) and to diverse environments (alpine, coastal, and arid). Despite an expected variability between these ensembles, we identified a shared technological tradition and propose that differences could be the result of different site functions. If we consider the different sites as being complementarity, we can propose the hypothesis of a low-mobility territorial structuration and thus a social complexity of the Late Middle Paleolithic societies. A first attempt to build a cultural-stratigraphic sequence for the Pyrenean-Cantabrian region is being made in order to properly assess the Vasconian location and homogeneity as for the constraining techno-complexes. Comparisons with contemporaneous techno-complexes (and more particularly with the MTA) allow us to address their respective autonomy within a newly defined technical are of influence."
 },
 
-{ "index": { "_index":"theses-sample", "_id":"2015TOU20116" } },
+{ "index": { "_id":"2015TOU20116" } },
 {
   "titre": "Le néolithique tellien de la grotte de Gueldaman GLD1 (Babors d'Akbou, Algérie, VIII-V millénaire BP)",
   "nnt": "2015TOU20116",
