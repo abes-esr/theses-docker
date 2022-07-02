@@ -1,0 +1,21 @@
+{
+  "mappings": {
+    "properties": {
+      "nnt": {
+        "type": "keyword"
+      },
+      "titre": {
+        "type": "text"
+      },
+      "dateSoutenance": {
+        "type": "date"
+      },
+      "abstractFR": {
+        "type": "text"
+      },
+      "abstractEN": {
+        "type": "text"
+      }
+    }
+  }
+}

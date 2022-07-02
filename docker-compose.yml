@@ -58,6 +58,24 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=apache"
 
 
+  # batch pour indexer les 11 thèses dans elasticsearch
+  # (travail en cours pour la preuve de concept de l'indexation de 11 thèses)
+  theses-batch-11theses:
+    container_name: theses-batch-11theses
+    depends_on:
+      theses-elasticsearch-es01:
+        condition: service_healthy
+    build: ./images/theses-batch/
+    image: abesesr/theses:develop-batch
+    command: /app/theses-sample-load.sh
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=adhoc"
+
+
 
   #######################################
   # theses-elasticsearch et theses-kibana
