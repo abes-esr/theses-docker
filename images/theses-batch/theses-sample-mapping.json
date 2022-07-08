@@ -15,6 +15,9 @@
       },
       "abstractEN": {
         "type": "text"
+      },
+      "rameau": {
+        "type": "keyword"
       }
     }
   }
