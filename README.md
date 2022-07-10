@@ -19,6 +19,16 @@ A noter que les images docker de theses.fr sont générées à partir des codes 
 - https://github.com/abes-esr/theses-front (à créer)
 - https://github.com/abes-esr/theses-batch (à ajuster)
 
+## Prérequis
+
+- docker
+- docker-compose
+- réglages ``vm.max_map_count`` pour elasticsearch :
+  ```
+  echo "vm.max_map_count = 262144" > /etc/sysctl.d/99-elasticsearch.conf
+  sysctl -w vm.max_map_count=262144
+  ```
+
 ## Installation
 
 ```bash
