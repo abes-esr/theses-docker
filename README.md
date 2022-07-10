@@ -28,6 +28,11 @@ A noter que les images docker de theses.fr sont générées à partir des codes 
   echo "vm.max_map_count = 262144" > /etc/sysctl.d/99-elasticsearch.conf
   sysctl -w vm.max_map_count=262144
   ```
+  sans ce réglage vous obtiendrez l'erreur suivante au démarrage :
+  ```
+  theses-elasticsearch-es01        | bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+  theses-elasticsearch-es01        | ERROR: Elasticsearch did not exit normally - check the logs at /usr/share/elasticsearch/logs/theses-cluster.log
+  ```
 
 ## Installation
 
