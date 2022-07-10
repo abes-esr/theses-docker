@@ -176,7 +176,6 @@ services:
       - node.name=theses-elasticsearch-es01
       - cluster.name=${ELK_CLUSTER_NAME}
       - cluster.initial_master_nodes=${ELK_CLUSTER_INITIAL_MASTER_NODES}
-      - discovery.type=${ELK_DISCOVER_TYPE}
       - discovery.seed_hosts=${ELK_DISCOVER_SEED_HOSTS}
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - bootstrap.memory_lock=true
