@@ -25,8 +25,13 @@ A noter que les images docker de theses.fr sont générées à partir des codes 
 - docker-compose
 - réglages ``vm.max_map_count`` pour elasticsearch :
   ```
+  # sur un serveur linux classique
   echo "vm.max_map_count = 262144" > /etc/sysctl.d/99-elasticsearch.conf
   sysctl -w vm.max_map_count=262144
+  
+  # sur un WSL2 sous windows
+  wsl -d docker-desktop
+  echo 262144 > /proc/sys/vm/max_map_count
   ```
   sans ce réglage vous obtiendrez l'erreur suivante au démarrage :
   ```
