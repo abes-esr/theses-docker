@@ -1,8 +1,17 @@
 # FAQ theses-docker
 
-# Comment faire pour rendre persistant le réglage de vm.max_map_count dans un environnement WSL2 sous Windows 10 ?
+## Comment régler vm.max_map_count pour Elasticsearch ?
 
-Rappel : le réglage de vm.max_map_count est nécessaire pour que [ElasticSearch puisse fonctionner](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html) 
+Le réglage de ``vm.max_map_count`` est nécessaire pour que [ElasticSearch puisse fonctionner](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html) 
+
+### Régler vm.max_map_count sur un serveur linux classique
+
+```
+  echo "vm.max_map_count = 262144" > /etc/sysctl.d/99-elasticsearch.conf
+  sysctl -w vm.max_map_count=262144
+```
+
+### Régler vm.max_map_count dans un environnement WSL2 sous Windows 10
 
 Pré-requis : WSL2 + Docker Desktop doivent être installés sur votre machine.
 
