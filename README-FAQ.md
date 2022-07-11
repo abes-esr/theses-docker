@@ -4,6 +4,13 @@
 
 Le réglage de ``vm.max_map_count`` est nécessaire pour que [ElasticSearch puisse fonctionner](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html) 
 
+Sans ce réglage vous obtiendrez l'erreur suivante au démarrage :
+```
+theses-elasticsearch-es01        | bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+theses-elasticsearch-es01        | ERROR: Elasticsearch did not exit normally - check the logs at /usr/share/elasticsearch/logs/theses-cluster.log
+```
+
+
 ### Régler vm.max_map_count sur un serveur linux classique
 
 ```
