@@ -37,7 +37,16 @@ cp .env-dist .env
 # personnalisez alors le .env en partant des valeurs exemple présentes dans le .env-dist
 # pour un déploiement en local, vous n'avez pas besoin de personnaliser le .env
 
+# forcer les droits max pour les volumes déportés sur le système de fichier local
+cd /opt/pod/theses-docker/
+chmod 777 volumes/theses-elasticsearch-es01/
+chmod 777 volumes/theses-elasticsearch-es02/
+chmod 777 volumes/theses-elasticsearch-es03/
+chmod 777 volumes/theses-elasticsearch-setupcerts/
+chmod 777 volumes/theses-kibana/
+
 # puis démarrer l'application
+cd /opt/pod/theses-docker/
 docker-compose up -d
 ```
 
