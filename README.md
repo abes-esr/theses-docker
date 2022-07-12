@@ -63,7 +63,7 @@ A partir de cet instant l'application écoutera sur l'IP du serveur et par défa
 - https://127.0.0.1:10302 : pour theses-elasticsearch-es01 en https (attention il faut utiliser le user 'elastic' avec le mot de passe correspondant réglé dans ``.env`` et il faudra ignorer l'erreur de certificat HTTPS car lui aussi est auto-signé)
 - http://127.0.0.1:10303 : pour theses-kibana
 
-Spécificité en local pour simuler le vrai nom de domaine (sans cette modification theses-rp ne fonctionnera pas avec la fédération d'identités) :
+Voici une astuce en local pour simuler le vrai nom de domaine (sans cette modification theses-rp ne fonctionnera pas avec la fédération d'identités) :
 ```
 # ajouter ces lignes 
 # dans votre fichier /etc/hosts (sous linux - besoin de droits admin)
@@ -73,7 +73,7 @@ Spécificité en local pour simuler le vrai nom de domaine (sans cette modificat
 127.0.0.1 apollo-prod.theses.fr
 ```
 
-Une fois ces modifications réalisées, vous alors naviguer sur l'URL suivante qui pointera en fait vers https://127.0.0.1 (adapter le -dev en -test ou -prod en fonction de votre paramétrage dans le .env) :
+Une fois ces modifications réalisées, vous pouvez naviguer sur l'URL suivante qui sera en fait équivalent à https://127.0.0.1 (adapter le -dev en -test ou -prod en fonction de votre paramétrage dans le .env) :
 - https://apollo-dev.theses.fr (il faudra accepter l'erreur de sécurité car c'est un certificat autosigné qui est utilisé en standard)
 
 Pour installer theses.fr avec un cluster elasticsearch de plusieurs noeuds, il faut se référer à la [documentation dédiée ici](README-cluster-es.md).
