@@ -36,7 +36,7 @@ cd /opt/pod/ # à adapter en local car vous pouvez cloner le dépôt dans votre 
 git clone https://github.com/abes-esr/theses-docker.git
 ```
 
-Ensuite on configure notre déploiement en prenant exemple sur le fichier [``.env-dist``](https://github.com/abes-esr/theses-docker/blob/develop/.env-dist) qui contient toutes la variables utilisables avec les explications :
+Ensuite on configure notre déploiement en prenant exemple sur le fichier [``.env-dist``](https://github.com/abes-esr/theses-docker/blob/develop/.env-dist) qui contient toutes les variables utilisables avec les explications :
 ```bash
 cd /opt/pod/theses-docker/
 cp .env-dist .env
