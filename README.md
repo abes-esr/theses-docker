@@ -62,7 +62,30 @@ Spécificité en local pour simuler le vrai nom de domaine (sans cette modificat
 
 ### Installation du cluster elasticsearch
 
-Par défaut un unique noeud elasticsearch est lancé. Pour installer theses.fr avec un cluster elasticsearch à trois noeuds, voici comment procéder :
+Par défaut un unique noeud elasticsearch est lancé. Pour installer theses.fr avec un cluster elasticsearch à trois noeuds sur 3 serveurs distincts, voici comment procéder :
+- On suppose un déploiement sur les serveurs diplotaxis-test diplotaxis2-test et diplotaxis3-test
+- Sur le noeud n°2 :
+  ```bash
+  cd /opt/pod/
+  git clone https://github.com/abes-esr/theses-docker.git
+  cd /opt/pod/theses-docker/
+  chmod 777 volumes/theses-elasticsearch-setupcerts/
+  chmod 777 volumes/theses-elasticsearch-es02/
+  cp .env-dist .env # et personnaliser uniquement la partie elasticsearch, cf config commune plus bas
+  docker-compose -f docker-compose.theses-elasticsearch-es02.yml up -d
+  ```
+  
+La configuration .env pour les noeuds elasticsearch est la suivante (adapter le mot de passe ELASTIC_PASSWORD pour être identique sur les 3 noeuds) :
+```
+ELK_ELASTIC_PORT="10302"
+ELK_STACK_VERSION="8.3.0"
+ELASTIC_PASSWORD="xxxxxxxxxxxxx"
+ELK_CLUSTER_NAME="theses-cluster"
+ELK_LICENSE="basic"
+ELK_MEM_LIMIT="1073741824"
+ELK_DISCOVER_SEED_HOSTS="diplotaxis-test:10302,diplotaxis2-test:10302,diplotaxis3-test:10302"
+ELK_CLUSTER_INITIAL_MASTER_NODES="theses-elasticsearch-es01,theses-elasticsearch-es02,theses-elasticsearch-es03"
+```
 
 TODO + pour mémo la commande pour copier les certificats
 ```bash
