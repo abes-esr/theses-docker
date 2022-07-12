@@ -57,7 +57,8 @@ docker-compose up -d
 ```
 
 A partir de cet instant l'application écoutera sur l'IP du serveur et par défaut sur les ports suivants (remplacer 127.0.0.1 par le nom du serveur) :
-- https://127.0.0.1:10300 : pour le theses-rp
+- https://127.0.0.1:10300 : pour le theses-rp en https (il faudra accepter l'erreur de sécurité car c'est un certificat autosigné qui est utilisé en standard)
+- https://127.0.0.1:10301 : pour le theses-rp en http 
 - http://127.0.0.1:10303 : pour theses-kibana
 
 Spécificité en local pour simuler le vrai nom de domaine (sans cette modification theses-rp ne fonctionnera pas avec la fédération d'identités) :
@@ -71,7 +72,7 @@ Spécificité en local pour simuler le vrai nom de domaine (sans cette modificat
 ```
 
 Une fois ces modifications réalisées, vous alors naviguer sur l'URL suivante qui pointera en fait vers https://127.0.0.1 (adapter le -dev en -test ou -prod en fonction de votre paramétrage dans le .env) :
-- https://apollo-dev.theses.fr
+- https://apollo-dev.theses.fr (il faudra accepter l'erreur de sécurité car c'est un certificat autosigné qui est utilisé en standard)
 
 ## Installation avec un cluster elasticsearch
 
