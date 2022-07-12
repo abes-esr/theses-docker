@@ -83,7 +83,7 @@ On suppose dout d'abord un déploiement sur les serveurs suivants (remplacer le 
 - diplotaxis2-test
 - diplotaxis3-test
 
-### Noeud 1 : Toute l'appli theses.fr + le premier noeud elasticsearch
+### Noeud 1 : toute l'appli theses.fr + le premier noeud elasticsearch
 
 Sur le premier noeud on va installer la pile logicielle complète de theses.fr qui contient tous les modules de theses.fr ainsi que le premier noeud du cluster elasticsearch et kibana. Pour cela il faut se reporter à la [section installation](#installation) juste au dessus.
 
