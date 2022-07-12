@@ -57,8 +57,9 @@ docker-compose up -d
 ```
 
 A partir de cet instant l'application écoutera sur l'IP du serveur et par défaut sur les ports suivants (remplacer 127.0.0.1 par le nom du serveur) :
-- https://127.0.0.1:10300 : pour le theses-rp en https (il faudra accepter l'erreur de sécurité car c'est un certificat autosigné qui est utilisé en standard)
-- https://127.0.0.1:10301 : pour le theses-rp en http 
+- https://127.0.0.1:10300 : pour theses-rp en https (il faudra accepter l'erreur de sécurité car c'est un certificat autosigné qui est utilisé en standard)
+- http://127.0.0.1:10301 : pour theses-rp en http 
+- https://127.0.0.1:10302 : pour theses-elasticsearch-es01 en https (attention il faut utiliser le user 'elastic' avec le mot de passe correspondant réglé dans ``.env`` et il faudra ignorer l'erreur de certificat HTTPS car lui aussi est auto-signé)
 - http://127.0.0.1:10303 : pour theses-kibana
 
 Spécificité en local pour simuler le vrai nom de domaine (sans cette modification theses-rp ne fonctionnera pas avec la fédération d'identités) :
