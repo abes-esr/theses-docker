@@ -25,20 +25,26 @@ A noter que les images docker de theses.fr sont générées à partir des codes 
 - docker-compose
 - réglages ``vm.max_map_count`` pour elasticsearch (cf [FAQ pour les détails du réglage](https://github.com/abes-esr/theses-docker/blob/develop/README-FAQ.md#comment-r%C3%A9gler-vmmax_map_count-pour-elasticsearch-))
 
-
 ## Installation
 
-Theses.fr a besoin d'elasticsearch, dans cette procédure, un unique noeud elasticsearch sera lancé lorsque l'on lance ``docker-compose up``. C'est une configuration complètement satisfaisante en local.
+Cette procédure est adaptée pour installer theses.fr en local ou sur un serveur avec un mono noeud elasticsearch. Pour une configuration avec un cluster elasticsearch, voir un peu plus bas.
 
+On commence par récupérer la configuration du déploiement depuis le github :
 ```bash
 cd /opt/pod/ # à adapter en local car vous pouvez cloner le dépôt dans votre homedir
 git clone https://github.com/abes-esr/theses-docker.git
+```
 
+Ensuite on configure notre déploiement en prenant exemple sur le fichier [``.env-dist``](https://github.com/abes-esr/theses-docker/blob/develop/.env-dist) qui contient toutes la variables utilisables avec les explications :
+```
 cd /opt/pod/theses-docker/
 cp .env-dist .env
 # personnalisez alors le .env en partant des valeurs exemple présentes dans le .env-dist
 # pour un déploiement en local, vous n'avez pas besoin de personnaliser le .env
+```
 
+Finalement on règle quelques droits sur les répertoire et on peut démarrer l'application :
+```bash
 # forcer les droits max pour les volumes déportés sur le système de fichier local
 cd /opt/pod/theses-docker/
 chmod 777 volumes/theses-elasticsearch-es01/
@@ -50,6 +56,10 @@ cd /opt/pod/theses-docker/
 docker-compose up -d
 ```
 
+A partir de cet instant l'application écoutera sur l'IP du serveur et par défaut sur les ports suivants (remplacer 127.0.0.1 par le nom du serveur) :
+- https://127.0.0.1:10300 : pour le theses-rp
+- http://127.0.0.1:10303 : pour theses-kibana
+
 Spécificité en local pour simuler le vrai nom de domaine (sans cette modification theses-rp ne fonctionnera pas avec la fédération d'identités) :
 ```
 # ajouter ces lignes 
@@ -59,6 +69,9 @@ Spécificité en local pour simuler le vrai nom de domaine (sans cette modificat
 127.0.0.1 apollo-test.theses.fr
 127.0.0.1 apollo-prod.theses.fr
 ```
+
+Une fois ces modifications réalisées, vous alors naviguer sur l'URL suivante qui pointera en fait vers https://127.0.0.1 (adapter le -dev en -test ou -prod en fonction de votre paramétrage dans le .env) :
+- https://apollo-dev.theses.fr
 
 ## Installation avec un cluster elasticsearch
 
