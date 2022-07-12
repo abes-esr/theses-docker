@@ -27,7 +27,8 @@ A noter que les images docker de theses.fr sont générées à partir des codes 
 
 ## Installation
 
-Cette procédure est adaptée pour installer theses.fr en local ou sur un serveur avec un mono noeud elasticsearch. Pour une configuration avec un cluster elasticsearch, voir un peu plus bas.
+Cette procédure est adaptée pour installer theses.fr en local ou sur un serveur avec un mono noeud elasticsearch.
+Pour une configuration avec un cluster elasticsearch, voir [la documentation dédiée ici](README-cluster-es.md).
 
 On commence par récupérer la configuration du déploiement depuis le github :
 ```bash
