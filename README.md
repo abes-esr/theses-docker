@@ -28,6 +28,8 @@ A noter que les images docker de theses.fr sont générées à partir des codes 
 
 ## Installation
 
+Theses.fr a besoin d'elasticsearch, dans cette procédure, un unique noeud elasticsearch sera lancé lorsque l'on lance ``docker-compose up``. C'est une configuration complètement satisfaisante en local.
+
 ```bash
 cd /opt/pod/ # à adapter en local car vous pouvez cloner le dépôt dans votre homedir
 git clone https://github.com/abes-esr/theses-docker.git
@@ -40,8 +42,6 @@ cp .env-dist .env
 # forcer les droits max pour les volumes déportés sur le système de fichier local
 cd /opt/pod/theses-docker/
 chmod 777 volumes/theses-elasticsearch-es01/
-chmod 777 volumes/theses-elasticsearch-es02/
-chmod 777 volumes/theses-elasticsearch-es03/
 chmod 777 volumes/theses-elasticsearch-setupcerts/
 chmod 777 volumes/theses-kibana/
 
@@ -60,10 +60,25 @@ Spécificité en local pour simuler le vrai nom de domaine (sans cette modificat
 127.0.0.1 apollo-prod.theses.fr
 ```
 
-### Installation du cluster elasticsearch
+## Installation avec un cluster elasticsearch
 
-Par défaut un unique noeud elasticsearch est lancé. Pour installer theses.fr avec un cluster elasticsearch à trois noeuds sur 3 serveurs distincts, voici comment procéder :
-- On suppose un déploiement sur les serveurs diplotaxis-test diplotaxis2-test et diplotaxis3-test
+Pour déployer theses.fr sur les serveurs de dev, test et prod, il est préférable (obligatoire pour la prod) de passer par un cluster elasticsearch à trois noeuds sur 3 serveurs distincts. Voici la marche à suivre :
+
+On suppose dout d'abord un déploiement sur les serveurs suivants (remplacer le nom du serveur pour les autres environnements) :
+- diplotaxis1-test
+- diplotaxis2-test
+- diplotaxis3-test
+
+Sur le premier noeud on va installer la pile logicielle complète de theses.fr qui contient tous les modules de theses.fr et le premier noeud du cluster elasticsearch ainsi que kibana :
+```bash
+cd /opt/pod/
+git clone https://github.com/abes-esr/theses-docker.git
+cd /opt/pod/theses-docker/
+chmod 777 volumes/theses-elasticsearch-setupcerts/
+chmod 777 volumes/theses-elasticsearch-es01/
+chmod 777 volumes/theses-kibana/
+```
+
 - Sur le noeud n°2 :
   ```bash
   cd /opt/pod/
