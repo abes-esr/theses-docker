@@ -96,15 +96,54 @@ cd /opt/pod/theses-docker/
 docker-compose stop
 ```
 
-## Configuration
+## Configuration avancées
 
 Pour configurer l'application, il est nécessaire de créer un fichier ``.env`` au même niveau que le fichier ``docker-compose.yml`` de ce dépôt. Le contenu du ``.env`` est une liste de paramètres (clés/valeurs) dont la documentation et des exemples de valeurs sont présent dans le fichier [``.env-dist``](https://github.com/abes-esr/theses-docker/blob/develop/.env-dist).
 
-
 TODO : expliquer comment configurer les certificats SSL nécessaires à la fédé de ``theses-rp`` pour la production (à placer dans un volume monté sur ``theses-rp``)
 
-TODO: compléter pour le déploiement sur dev,test,prod avec la couche du reverse proxy raiponce
+Pour créer une URL publique de theses.fr il est nécessaire de configurer une entrée DNS et un reverse proxy (à l'Abes nous utilisons Apache). Voici un extrait de cette configuration apache (à adapter en fonction des environnements) :
+```apache
+# redirection automatique http vers https
+<VirtualHost *:80>
+        ServerName apollo-test.theses.fr
+        ServerAdmin admin@theses.fr
+        RewriteEngine On
+        RewriteCond %{HTTPS} !=on
+        RewriteRule ^/(.*|$) https://%{HTTP_HOST}/$1 [L,R]
+</VirtualHost>
 
+<VirtualHost *:443>
+        ServerName apollo-test.theses.fr
+        ServerAdmin admin@theses.fr
+        RewriteEngine on
+        
+        ErrorLog logs/theses-docker-test-error_log
+        CustomLog logs/theses-docker-test-access_log common
+        TransferLog logs/ssl_access_log
+        LogLevel warn rewrite:trace3
+
+        SSLEngine on
+        SSLProxyEngine on
+        SSLCertificateFile /etc/pki/tls/certs/__abes_fr_cert.cer
+        SSLCertificateKeyFile /etc/pki/tls/private/abes.fr.key
+        SSLCertificateChainFile /etc/pki/tls/certs/__abes_fr_interm.cer
+
+        # ne vérifie pas le certificat interne de theses-rp 
+        # car se dernier est auto-signé
+        # https://httpd.apache.org/docs/2.4/fr/mod/mod_ssl.html#sslproxyverify
+        SSLProxyVerify none
+        SSLProxyCheckPeerCN off
+        SSLProxyCheckPeerName off
+        SSLProxyCheckPeerExpire off
+
+        # proxification de theses-rp qui écoute par défaut sur le port 10300
+        # et dans cet exemple qui est hébergé sur le serveur diplotaxis2-test
+        ProxyPreserveHost On
+        ProxyPass "/" "https://diplotaxis2-test.v202.abes.fr:10300/"
+        ProxyPassReverse "/" "https://diplotaxis2-test.v202.abes.fr:10300/"
+</VirtualHost>
+```
 
 
 ## Supervision
