@@ -44,7 +44,7 @@ cp .env-dist .env
 # pour un déploiement en local, vous n'avez pas besoin de personnaliser le .env
 ```
 
-Finalement on règle quelques droits sur les répertoire et on peut démarrer l'application :
+Finalement on règle quelques droits sur les répertoires et on peut démarrer l'application :
 ```bash
 # forcer les droits max pour les volumes déportés sur le système de fichier local
 cd /opt/pod/theses-docker/
