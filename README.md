@@ -130,7 +130,7 @@ Pour créer une URL publique de theses.fr il est nécessaire de configurer une e
         SSLCertificateChainFile /etc/pki/tls/certs/__abes_fr_interm.cer
 
         # ne vérifie pas le certificat interne de theses-rp 
-        # car se dernier est auto-signé
+        # car ce dernier est auto-signé
         # https://httpd.apache.org/docs/2.4/fr/mod/mod_ssl.html#sslproxyverify
         SSLProxyVerify none
         SSLProxyCheckPeerCN off
