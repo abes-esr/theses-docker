@@ -89,8 +89,9 @@ ELK_CLUSTER_INITIAL_MASTER_NODES="theses-elasticsearch-es01,theses-elasticsearch
 
 TODO + pour mémo la commande pour copier les certificats
 ```bash
+docker cp theses-elasticsearch-setupcerts:/usr/share/elasticsearch/config/certs/ca.zip .
 docker cp theses-elasticsearch-setupcerts:/usr/share/elasticsearch/config/certs/certs.zip .
-scp certs.zip diplotaxis-test:/opt/pod/theses-docker/
+scp certs.zip ca.zip diplotaxis-test:/opt/pod/theses-docker/volumes/theses-elasticsearch-setupcerts/
 ```
 
 
