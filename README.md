@@ -89,8 +89,8 @@ Sur le premier noeud on va installer la pile logicielle complète de theses.fr q
 
 Les réglages particuliers à réaliser dans le .env sont les suivants :
 ```env
-ELK_DISCOVER_SEED_HOSTS="diplotaxis1-test:10302,diplotaxis2-test:10302,diplotaxis3-test:10302"
-ELK_CLUSTER_INITIAL_MASTER_NODES="theses-elasticsearch-es01,theses-elasticsearch-es02,theses-elasticsearch-es03"
+ELK_DISCOVER_SEED_HOSTS=diplotaxis1-test:10302,diplotaxis2-test:10302,diplotaxis3-test:10302
+ELK_CLUSTER_INITIAL_MASTER_NODES=theses-elasticsearch-es01,theses-elasticsearch-es02,theses-elasticsearch-es03
 ```
 
 Vous devez ensuite lancer l'application avec ``docker-compose up -d`` (cf section au dessus) puis récupérer les certificats générés par ``theses-elasticsearch-setupcerts`` qui sont générés uniquement sur ce premier noeud. Ce sont les certificats qui permettront aux 3 noeuds de communiquer de façon sécurisée au sein du cluster elasticsearch. Voici comment procéder :
@@ -122,14 +122,14 @@ chmod 777 volumes/theses-elasticsearch-es02/
 
 Ensuite il faut créer un fichier ``/opt/pod/theses-docker/.env`` épuré qui est nécessaire au fonctionnement des noeuds elasticsearch indépendants (adapter le mot de passe ELASTIC_PASSWORD pour être identique sur les 3 noeuds) :
 ```
-ELK_ELASTIC_PORT="10302"
-ELK_STACK_VERSION="8.3.0"
-ELASTIC_PASSWORD="xxxxxxxxxxxxx"
-ELK_CLUSTER_NAME="theses-cluster"
-ELK_LICENSE="basic"
-ELK_MEM_LIMIT="1073741824"
-ELK_DISCOVER_SEED_HOSTS="diplotaxis1-test:10302,diplotaxis2-test:10302,diplotaxis3-test:10302"
-ELK_CLUSTER_INITIAL_MASTER_NODES="theses-elasticsearch-es01,theses-elasticsearch-es02,theses-elasticsearch-es03"
+ELK_ELASTIC_PORT=10302
+ELK_STACK_VERSION=8.3.0
+ELASTIC_PASSWORD=xxxxxxxxxxxxx
+ELK_CLUSTER_NAME=theses-cluster
+ELK_LICENSE=basic
+ELK_MEM_LIMIT=1073741824
+ELK_DISCOVER_SEED_HOSTS=diplotaxis1-test:10302,diplotaxis2-test:10302,diplotaxis3-test:10302
+ELK_CLUSTER_INITIAL_MASTER_NODES=theses-elasticsearch-es01,theses-elasticsearch-es02,theses-elasticsearch-es03
 ```
 
 Et finalement on peut démarrer le noeud elasticsearch :
