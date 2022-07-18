@@ -40,9 +40,9 @@ Finalement on règle quelques droits sur les répertoires et on peut démarrer l
 ```bash
 # forcer les droits max pour les volumes déportés sur le système de fichier local
 cd /opt/pod/theses-docker/
-chmod 777 volumes/theses-elasticsearch-es01/
-chmod 777 volumes/theses-elasticsearch-setupcerts/
-chmod 777 volumes/theses-kibana/
+mkdir -p volumes/theses-elasticsearch-es01/ && chmod 777 volumes/theses-elasticsearch-es01/
+mkdir -p volumes/theses-elasticsearch-setupcerts/ && chmod 777 volumes/theses-elasticsearch-setupcerts/
+mkdir -p volumes/theses-kibana/ && chmod 777 volumes/theses-kibana/
 
 # puis démarrer l'application
 cd /opt/pod/theses-docker/
