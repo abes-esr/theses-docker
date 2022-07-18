@@ -79,15 +79,36 @@ docker-compose up
 # dans le cas contraire, utilisez CTRL+C pour ensuite quitter l'application
 ```
 
-L'application va alors écouter sur les ports 443 (port par défaut du https) et vous pourrez la consultez en suivant ce lien :
-- https://apollo-dev.theses.fr/ (racine publique de l'application => affiche normalement "It Works !")
-- https://apollo-dev.theses.fr/ (PDF sous contrôle d'accès => affiche normalement le PDF une fois la phase d'authentification terminée)
-
 Pour arrêter l'application :
 ```bash
 cd /opt/pod/theses-docker/
 docker-compose stop
 ```
+
+
+## Supervision
+
+Pour vérifier que l'application est démarrée, on peut consulter l'état des conteneurs :
+```bash
+cd /opt/pod/theses-docker/
+docker-compose ps
+# doit retourner quelque chose comme ceci :
+#19:12 $ docker-compose ps
+#                Name                       Command        State                      Ports                    
+#--------------------------------------------------------------------------------------------------------------
+#theses-docker_theses-api-diffusion_1   httpd-foreground   Up      80/tcp                                      
+#theses-docker_theses-rp_1              httpd-foreground   Up      0.0.0.0:443->443/tcp,:::443->443/tcp, 80/tcp
+```
+
+Pour vérifier que l'application est bien lancée, on peut aussi consulter ses logs :
+```bash
+cd /opt/pod/theses-docker/
+docker-compose logs --tail=50 -f
+```
+
+Les logs de tous les conteneurs de theses-docker sont reversés dans le puits de log de l'Abes. Voici un exemple de ces logs :
+![image](https://user-images.githubusercontent.com/328244/179546231-229fa6ba-53bf-4d5a-a5f9-45a4ac17c883.png)
+
 
 ## Configuration avancées
 
@@ -138,36 +159,19 @@ Pour créer une URL publique de theses.fr il est nécessaire de configurer une e
 </VirtualHost>
 ```
 
-
-## Supervision
-
-Pour vérifier que l'application est démarrée, on peut consulter l'état des conteneurs :
-```bash
-cd /opt/pod/theses-docker/
-docker-compose ps
-# doit retourner quelque chose comme ceci :
-#19:12 $ docker-compose ps
-#                Name                       Command        State                      Ports                    
-#--------------------------------------------------------------------------------------------------------------
-#theses-docker_theses-api-diffusion_1   httpd-foreground   Up      80/tcp                                      
-#theses-docker_theses-rp_1              httpd-foreground   Up      0.0.0.0:443->443/tcp,:::443->443/tcp, 80/tcp
-```
-
-Pour vérifier que l'application est bien lancée, on peut aussi consulter ses logs :
-```bash
-cd /opt/pod/theses-docker/
-docker-compose logs --tail=50 -f
-```
-
-TODO : ajouter remarque pour le versement des logs dans le puits de log (quand ce sera fait)
-
-
 ## Mise à jour de l'application
 
+Il est possible de mettre à jour les images docker utilisées par ``theses-docker`` en passant par les variables suivantes dans le ``.env`` :
+- ...
 
-(TODO : compléter et adapter si on déporte les numéro de version dans le ``.env``)
+Une fois les versions modifiées dans le .env, il suffit de relancer l'application theses.fr comme ceci :
+```bash
+cd /opt/pod/theses-docker/
+docker-compose pull # facultatif car le "docker-compose up" va faire le téléchargement si besoin
+docker-compose up -d
+```
 
-En suposant qu'une nouvelle version de https://github.com/abes-esr/docker-shibboleth-renater-sp est diponible, on peut mettre à jour ``theses-rp`` en spécifiant le nouveau numéro de version dans le docker-compose.yml [à la ligne qui pointe vers l'image docker abesesr/docker-shibboleth-renater-sp:x.x.x](https://github.com/abes-esr/theses-docker/blob/develop/docker-compose.yml#L15). Ensuite il suffit de récupérer l'image docker en question et de relancer l'application comme ceci :
+Pour ``theses-rp`` il n'est pas prévu une mise à jour externalisée en passant par le ``.env`` car ce module n'est pas sensé être mis à jour. Si le besoin de mise à jour se présente, cela signifierait qu'une nouvelle version de https://github.com/abes-esr/docker-shibboleth-renater-sp serait diponible. On peut alors mettre à jour ``theses-rp`` en spécifiant le nouveau numéro de version dans le ``docker-compose.yml`` [à la ligne qui pointe vers l'image docker ``abesesr/docker-shibboleth-renater-sp:x.x.x``](https://github.com/abes-esr/theses-docker/blob/develop/docker-compose.yml#L15). Ensuite il faut adapter les éventuels nouveaux paramètres attendus par la nouvelle version de l'image ``abesesr/docker-shibboleth-renater-sp:x.x.x`` et relancer l'application theses.fr comme ceci :
 ```bash
 cd /opt/pod/theses-docker/
 docker-compose pull # facultatif car le "docker-compose up" va faire le téléchargement si besoin
@@ -179,6 +183,9 @@ docker-compose up -d
 Pour sauvegarder l'application, il faut :
 - Sauvegarder la base de données (base Oracle sur les serveurs orpin) : todo préciser de quel schéma et de quelles tables on parle
 - Sauvegarder le fichier ``.env`` qui est le seul fichier non versionné et qui permet de configurer tous les conteneurs docker de l'appli
+- Sauvegarder le dump elasticsearch : todo vraiement nécessaire ? et todo expliquer comment faire ?
+- Sauvegarder le paramétrage kibana : todo vraiement nécessaire ? et todo expliquer comment faire ?
+- Sauvegarder les certificats elasticsearch : todo vraiement nécessaire ? et todo expliquer comment faire ?
 
 Pour restaurer l'application, il faut :
 - restaurer la base de données
