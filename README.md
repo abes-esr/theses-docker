@@ -217,8 +217,8 @@ Voici la liste et la description des conteneurs déployés par le [docker-compos
 
 Les images docker de theses.fr sont générées à partir des codes open sources disponibles ici :
 - https://github.com/abes-esr/docker-shibboleth-renater-sp (pour l'authentification avec la fédération d'identités)
-- https://github.com/abes-esr/theses-api-diffusion (à créer)
-- https://github.com/abes-esr/theses-api-recherche (à créer)
-- https://github.com/abes-esr/theses-api-indexation (à créer)
-- https://github.com/abes-esr/theses-front (à créer)
-- https://github.com/abes-esr/theses-batch (à ajuster)
+- https://github.com/abes-esr/theses-api-diffusion
+- https://github.com/abes-esr/theses-api-recherche
+- https://github.com/abes-esr/theses-api-indexation
+- https://github.com/abes-esr/theses-front
+- https://github.com/abes-esr/theses-batch
