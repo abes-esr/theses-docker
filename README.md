@@ -60,13 +60,11 @@ Voici une astuce en local pour simuler le vrai nom de domaine (sans cette modifi
 # ajouter ces lignes 
 # dans votre fichier /etc/hosts (sous linux - besoin de droits admin)
 # ou dans C:\Windows\System32\drivers\etc\hosts (sous windows - besoin de droits admin)
-127.0.0.1 apollo-dev.theses.fr
-127.0.0.1 apollo-test.theses.fr
-127.0.0.1 apollo-prod.theses.fr
+127.0.0.1 apollo-local.theses.fr
 ```
 
-Une fois ces modifications réalisées, vous pouvez naviguer sur l'URL suivante qui sera en fait équivalent à https://127.0.0.1 (adapter le -dev en -test ou -prod en fonction de votre paramétrage dans le .env) :
-- https://apollo-dev.theses.fr (il faudra accepter l'erreur de sécurité car c'est un certificat autosigné qui est utilisé en standard)
+Une fois ces modifications réalisées, vous pouvez naviguer sur l'URL suivante qui sera en fait équivalent à https://127.0.0.1 :
+- https://apollo-local.theses.fr (il faudra accepter l'erreur de sécurité car c'est un certificat autosigné qui est utilisé en standard)
 
 Pour installer theses.fr avec un cluster elasticsearch de plusieurs noeuds, il faut se référer à la [documentation dédiée ici](README-cluster-es.md).
 
