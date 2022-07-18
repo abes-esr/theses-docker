@@ -40,6 +40,23 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=apache"
 
 
+  # Interface utilisateur de theses.fr (dévelopée en VueJS)
+  theses-front:
+    container_name: theses-front
+    image: abesesr/theses:${THESES_FRONT_VERSION}
+    restart: unless-stopped
+    ports:
+      - ${THESES_FRONT_HTTP_PORT}:80
+    depends_on:
+      - theses-api-diffusion
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=nginx"
+
+
   # API de diffusion des thèses en java spring de theses.fr
   # (travail en cours, pour la preuve de concept il est
   #  chargé de mettre à disposition un PDF en 
