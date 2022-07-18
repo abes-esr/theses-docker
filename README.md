@@ -11,14 +11,6 @@ Les URLs temporaires du futur theses.fr sont les suivantes :
 - en test : https://apollo-test.theses.fr 
 - en préprod : https://apollo-prod.theses.fr (pas encore dispo)
 
-A noter que les images docker de theses.fr sont générées à partir des codes open sources disponibles ici :
-- https://github.com/abes-esr/docker-shibboleth-renater-sp (pour l'authentification avec la fédération d'identités)
-- https://github.com/abes-esr/theses-api-diffusion (à créer)
-- https://github.com/abes-esr/theses-api-recherche (à créer)
-- https://github.com/abes-esr/theses-api-indexation (à créer)
-- https://github.com/abes-esr/theses-front (à créer)
-- https://github.com/abes-esr/theses-batch (à ajuster)
-
 ## Prérequis
 
 - docker
@@ -223,3 +215,10 @@ Voici la liste et la description des conteneurs déployés par le [docker-compos
 - ``theses-kibana`` : conteneur qui sera chargé du backoffice de ``theses-elasticsearch`` en proposant des tableaux visuels
 
 
+Les images docker de theses.fr sont générées à partir des codes open sources disponibles ici :
+- https://github.com/abes-esr/docker-shibboleth-renater-sp (pour l'authentification avec la fédération d'identités)
+- https://github.com/abes-esr/theses-api-diffusion (à créer)
+- https://github.com/abes-esr/theses-api-recherche (à créer)
+- https://github.com/abes-esr/theses-api-indexation (à créer)
+- https://github.com/abes-esr/theses-front (à créer)
+- https://github.com/abes-esr/theses-batch (à ajuster)
