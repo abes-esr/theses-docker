@@ -20,7 +20,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       WATCHTOWER_CLEANUP: "true"
-      WATCHTOWER_POLL_INTERVAL: 10
+      WATCHTOWER_POLL_INTERVAL: 60
       WATCHTOWER_DEBUG: "false"
       WATCHTOWER_NO_STARTUP_MESSAGE: "true"
       WATCHTOWER_NOTIFICATIONS: "slack"
