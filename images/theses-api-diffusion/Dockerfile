@@ -16,11 +16,12 @@ RUN echo "LimitRequestFieldSize 200000" >> conf/httpd.conf
 RUN echo "LimitRequestFields 250" >> conf/httpd.conf
 
 # le PDF d'une these pour les tests
-COPY ./74979_GERARDIN_2018_archivage.pdf /usr/local/apache2/htdocs/
-RUN chmod a+rw /usr/local/apache2/htdocs/74979_GERARDIN_2018_archivage.pdf
+RUN mkdir /usr/local/apache2/htdocs/poc-fede/
+COPY ./74979_GERARDIN_2018_archivage.pdf /usr/local/apache2/htdocs/poc-fede/
+RUN chmod a+rw /usr/local/apache2/htdocs/poc-fede/74979_GERARDIN_2018_archivage.pdf
 # et une page d'accueil
-COPY ./index.html /usr/local/apache2/htdocs/
-RUN chmod a+rw /usr/local/apache2/htdocs/index.html
+COPY ./index.html /usr/local/apache2/htdocs/poc-fede/
+RUN chmod a+rw /usr/local/apache2/htdocs/poc-fede/index.html
 
 # pour logguer les header HTTP retournés par la fédé RENATER
 # https://stackoverflow.com/questions/9948064/is-it-possible-to-log-all-http-request-headers-with-apache

@@ -13,7 +13,7 @@ services:
   # (à adapter)
   theses-rp:
     container_name: theses-rp
-    image: abesesr/docker-shibboleth-renater-sp:1.0.3
+    image: abesesr/docker-shibboleth-renater-sp:1.1.1
     ports:
       # 443:443 est a retirer pour la prod, c'est utile en local pour pouvoir le faire tourner
       # après modification du /etc/hosts (cf README.md qui explique)
@@ -26,9 +26,12 @@ services:
       RENATER_SP_ADMIN_MAIL: ${RENATER_SP_ADMIN_MAIL}
       RENATER_SP_HTTPD_SERVER_NAME: ${RENATER_SP_HTTPD_SERVER_NAME}
       RENATER_SP_HTTPD_LOG_LEVEL: "info ssl:warn"
-      RENATER_SP_HTTPD_PROTECTED_PATH: "/74979_GERARDIN_2018_archivage.pdf"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO: "http://theses-api-diffusion/"
-      RENATER_SP_HTTPD_PROTECTED_PROXY_TO: "http://theses-api-diffusion/74979_GERARDIN_2018_archivage.pdf"
+      RENATER_SP_HTTPD_PUBLIC_PATH_0: "/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_0: "http://theses-front:80/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_1: "/poc-fede/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:80/poc-fede/"
+      RENATER_SP_HTTPD_PROTECTED_PATH_0: "/poc-fede/74979_GERARDIN_2018_archivage.pdf"
+      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-api-diffusion/poc-fede/74979_GERARDIN_2018_archivage.pdf"
     restart: unless-stopped
     depends_on:
       - theses-api-diffusion
