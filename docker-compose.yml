@@ -13,7 +13,7 @@ services:
   # (à adapter)
   theses-rp:
     container_name: theses-rp
-    image: abesesr/docker-shibboleth-renater-sp:1.1.1
+    image: abesesr/docker-shibboleth-renater-sp:1.1.2
     ports:
       # 443:443 est a retirer pour la prod, c'est utile en local pour pouvoir le faire tourner
       # après modification du /etc/hosts (cf README.md qui explique)
