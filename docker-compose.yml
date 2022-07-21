@@ -33,7 +33,7 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PATH_1: "/poc-fede/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:80/poc-fede/"
       RENATER_SP_HTTPD_PUBLIC_PATH_2: "/api/v1/recherche/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "https://theses-elasticsearch-es01:9200/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "http://theses-api-recherche:80/api/v1/recherche/"
       RENATER_SP_HTTPD_PROTECTED_PATH_0: "/poc-fede/74979_GERARDIN_2018_archivage.pdf"
       RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-api-diffusion/poc-fede/74979_GERARDIN_2018_archivage.pdf"
     restart: unless-stopped
@@ -56,6 +56,7 @@ services:
       - ${THESES_FRONT_HTTP_PORT}:80
     depends_on:
       - theses-api-diffusion
+      - theses-api-recherche
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -80,6 +81,30 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=apache"
+
+
+  # API de recherche des thèses qui fait l'intermédiaire avec elasticsearch
+  theses-api-recherche:
+    container_name: theses-api-recherche
+    # TODO : à remplacer par sa version en java spring
+    build: ./images/theses-api-recherche/
+    image: abesesr/theses:develop-api-recherche
+    restart: unless-stopped
+    environment:
+      ELASTIC_USERNAME: "elastic"
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      ELASTICSEARCH_HOST_PROXY_TO: "https://theses-elasticsearch-es01:9200/"
+    depends_on:
+      theses-elasticsearch-es01:
+        condition: service_healthy
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=apache"
+
+
 
 
   # batch pour indexer les 11 thèses dans elasticsearch
