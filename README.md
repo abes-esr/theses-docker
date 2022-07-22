@@ -10,7 +10,7 @@ Les URLs temporaires du futur theses.fr sont les suivantes :
 - en local : https://apollo-local.theses.fr (fonctionne uniquement si vous avez une intallation de theses.fr déployée en local)
 - en dev : https://apollo-dev.theses.fr
 - en test : https://apollo-test.theses.fr 
-- en préprod : https://apollo-prod.theses.fr (pas encore dispo)
+- en préprod : https://apollo-prod.theses.fr
 
 ## Prérequis
 
@@ -67,7 +67,11 @@ Voici une astuce en local pour simuler le vrai nom de domaine (sans cette modifi
 Une fois ces modifications réalisées, vous pouvez naviguer sur l'URL suivante qui sera en fait équivalent à https://127.0.0.1 :
 - https://apollo-local.theses.fr (il faudra accepter l'erreur de sécurité car c'est un certificat autosigné qui est utilisé en standard)
 
-Pour installer theses.fr avec un cluster elasticsearch de plusieurs noeuds, il faut se référer à la [documentation dédiée ici](README-cluster-es.md).
+
+## Installation pour la production
+
+A noter pour la prod: il est nécessaire de [générer des certificats auto-signés](./README-faq.md) pour enregistrer theses.fr comme fournisseur de service dans la fédération d'identités Education-Recherche.
+
 
 ## Démarrage et arret
 
@@ -200,7 +204,8 @@ docker-compose up -d
 
 Pour sauvegarder l'application, il faut :
 - Sauvegarder la base de données (base Oracle sur les serveurs orpin) : todo préciser de quel schéma et de quelles tables on parle
-- Sauvegarder le fichier ``.env`` qui est le seul fichier non versionné et qui permet de configurer tous les conteneurs docker de l'appli
+- Sauvegarder le fichier ``/opt/pod/theses-docker/.env`` qui est un fichier non versionné et qui permet de configurer tous les conteneurs docker de l'appli
+- Sauvegarder les certificats auto-signés présents dans le répertoire ``/opt/pod/theses-docker/volumes/theses-rp/shibboleth/ssl/`` (ces certificats permettent à theses.fr d'être reconnu par la fédération d'identités Education-Recherche)
 - Sauvegarder le dump elasticsearch : todo vraiement nécessaire ? et todo expliquer comment faire ?
 - Sauvegarder le paramétrage kibana : todo vraiement nécessaire ? et todo expliquer comment faire ?
 - Sauvegarder les certificats elasticsearch : todo vraiement nécessaire ? et todo expliquer comment faire ?
