@@ -65,7 +65,7 @@ En résumé pour ``theses-rp``, il faut faire ceci :
 
 Si vous désirez tester la fédération d'identités en local, vous devez configurer votre environnement local comme expliqué dans la FAQ.
 
-Tout d'abord, positionnez au niveau de votre fichier ``.env`` le port HTTPS par défaut comme port d'écoute de ``theses-rp`` (c'est le point d'entrée de tout votre déploiement local theses.fr) :
+Tout d'abord, positionnez au niveau de votre fichier ``.env`` le port HTTPS par défaut (443) comme port d'écoute de ``theses-rp`` (c'est le point d'entrée de tout votre déploiement local theses.fr) :
 ```env
 THESES_RP_HTTPS_PORT=443
 ```
