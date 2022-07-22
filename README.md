@@ -11,18 +11,22 @@ Les URLs temporaires du futur theses.fr sont les suivantes :
   - https://apollo-dev.theses.fr : la homepage de theses.fr
   - https://apollo-dev.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
   - https://apollo-dev.theses.fr/poc-fede/ : le PoC de fédération d'identités
+  - https://apollo-dev.theses.fr/kibana/ : le kibana backoffice de theses.fr
 - en test :
   - https://apollo-test.theses.fr : la homepage de theses.fr
   - https://apollo-test.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
   - https://apollo-test.theses.fr/poc-fede/ : le PoC de fédération d'identités
+  - https://apollo-test.theses.fr/kibana/ : le kibana backoffice de theses.fr
 - en préprod :
   - https://apollo-prod.theses.fr : la homepage de theses.fr
   - https://apollo-prod.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
   - https://apollo-prod.theses.fr/poc-fede/ : le PoC de fédération d'identités
+  - https://apollo-prod.theses.fr/kibana/ : le kibana backoffice de theses.fr
 - en local : (fonctionne uniquement si vous avez une intallation de theses.fr avec [cette configuration](./README-faq.md))
   - https://apollo-local.theses.fr : la homepage de theses.fr
   - https://apollo-local.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
   - https://apollo-local.theses.fr/poc-fede/ : le PoC de fédération d'identités
+  - https://apollo-local.theses.fr/kibana/ : le kibana backoffice de theses.fr
 
 ## Prérequis
 
@@ -62,7 +66,7 @@ A partir de cet instant l'application écoutera sur l'IP du serveur et sera acce
 - http://127.0.0.1:10301/ : pour la homepage de theses.fr (``theses-front``)
 - http://127.0.0.1:10301/api/v1/recherche/_search : pour l'api de recherche de theses.fr (``theses-api-recherche``)
 - http://127.0.0.1:10301/poc-fede/ : pour le PoC de fédération d'identités (attention, suivre [cette doc]](./README.faq.md) pour un fonctionnement en local)
-- http://127.0.0.1:10303 : pour l'accès au kibana
+- http://127.0.0.1:10301/kibana/ : le kibana backoffice de theses.fr
 
 Voir aussi :
 - la [doc pour configurer la fédération d'identités de theses.fr sur votre environement local](./README.faq.md)
