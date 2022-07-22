@@ -34,10 +34,13 @@ services:
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
     restart: unless-stopped
-    depends_on:
-      - theses-api-diffusion
-      - theses-api-recherche
-      - theses-front
+    # Ces commentaires sont conservés pour expliquer pourquoi theses-rp ne dépend pas des autres conteneurs
+    # la raison est que theses-rp est relativement long à démarrer (plusieurs minutes) et qu'il ne sera que
+    # très rarrement mis à jour, donc autant ne pas le redémarrer si jamais une de ses dépendance redémarre.
+    #depends_on:
+    #  - theses-api-diffusion
+    #  - theses-api-recherche
+    #  - theses-front
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
