@@ -60,3 +60,22 @@ En résumé pour ``theses-rp``, il faut faire ceci :
    openssl x509 -req -days 7300 -in server.csr -signkey server.key -out server.crt
    ```
 3) enregistrer theses-rp de prod comme service provider dans la [fédération d'identités Education-Recherche de prod](https://registry.federation.renater.fr/?action=get_all)
+
+## Comment configurer la fédération d'identités de theses.fr en local ?
+
+Si vous désirez tester la fédération d'identités en local, vous devez configurer votre environnement local comme expliqué dans la FAQ.
+
+Tout d'abord, positionnez au niveau de votre fichier ``.env`` le port HTTPS par défaut comme port d'écoute de ``theses-rp`` (c'est le point d'entrée de tout votre déploiement local theses.fr) :
+```env
+THESES_RP_HTTPS_PORT=443
+```
+
+Ensuite vous devez faire pointer le nom de domaine ``apollo-local.theses.fr`` sur votre IP local, pour cela voici une astuce en modifiant votre fichier ``hosts`` :
+```
+# ajouter ces lignes 
+# dans votre fichier /etc/hosts (sous linux - besoin de droits admin)
+# ou dans C:\Windows\System32\drivers\etc\hosts (sous windows - besoin de droits admin)
+127.0.0.1 apollo-local.theses.fr
+```
+
+Une fois ces modifications réalisées, vous pourrez accéder à votre theses.fr local sur l'URL suivante (en acceptant au passage l'erreur de sécurité liée au certificat auto-signé) : https://apollo-local.theses.fr
