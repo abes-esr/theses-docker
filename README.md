@@ -7,10 +7,22 @@ Configuration docker 🐳 pour déployer le portail national des thèses dont le
 <img src="https://docs.google.com/drawings/d/e/2PACX-1vSh7awYvbYr54GU3F7hsmcbvK25QKixZ1I_a8-mg_X2nimit9SbllmdkXA_n-MaQQBR0KsgrX0dQvga/pub?w=200">
 
 Les URLs temporaires du futur theses.fr sont les suivantes :
-- en local : https://apollo-local.theses.fr (fonctionne uniquement si vous avez une intallation de theses.fr déployée en local)
-- en dev : https://apollo-dev.theses.fr
-- en test : https://apollo-test.theses.fr 
-- en préprod : https://apollo-prod.theses.fr
+- en dev :
+  - https://apollo-dev.theses.fr : la homepage de theses.fr
+  - https://apollo-dev.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
+  - https://apollo-dev.theses.fr/poc-fede/ : le PoC de fédération d'identités
+- en test :
+  - https://apollo-test.theses.fr : la homepage de theses.fr
+  - https://apollo-test.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
+  - https://apollo-test.theses.fr/poc-fede/ : le PoC de fédération d'identités
+- en préprod :
+  - https://apollo-prod.theses.fr : la homepage de theses.fr
+  - https://apollo-prod.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
+  - https://apollo-prod.theses.fr/poc-fede/ : le PoC de fédération d'identités
+- en local : (fonctionne uniquement si vous avez une intallation de theses.fr avec [cette configuration](./README-faq.md))
+  - https://apollo-local.theses.fr : la homepage de theses.fr
+  - https://apollo-local.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
+  - https://apollo-local.theses.fr/poc-fede/ : le PoC de fédération d'identités
 
 ## Prérequis
 
@@ -19,9 +31,6 @@ Les URLs temporaires du futur theses.fr sont les suivantes :
 - réglages ``vm.max_map_count`` pour elasticsearch (cf [FAQ pour les détails du réglage](README-faq.md#comment-r%C3%A9gler-vmmax_map_count-pour-elasticsearch-))
 
 ## Installation
-
-Cette procédure est adaptée pour installer theses.fr en local ou sur un serveur avec un mono noeud elasticsearch.
-Pour une configuration avec un cluster elasticsearch, voir [la documentation dédiée ici](README-cluster-es.md).
 
 On commence par récupérer la configuration du déploiement depuis le github :
 ```bash
@@ -49,24 +58,15 @@ mkdir -p volumes/theses-kibana/                   && chmod 777 volumes/theses-ki
 cd /opt/pod/theses-docker/
 docker-compose up -d
 ```
+A partir de cet instant l'application écoutera sur l'IP du serveur et sera accessible sur les URL suivantes (remplacer 127.0.0.1 par le nom du serveur) :
+- http://127.0.0.1:10301/ : pour la homepage de theses.fr (``theses-front``)
+- http://127.0.0.1:10301/api/v1/recherche/_search : pour l'api de recherche de theses.fr (``theses-api-recherche``)
+- http://127.0.0.1:10301/poc-fede/ : pour le PoC de fédération d'identités (attention, suivre [cette doc]](./README.faq.md) pour un fonctionnement en local)
+- http://127.0.0.1:10303 : pour l'accès au kibana
 
-A partir de cet instant l'application écoutera sur l'IP du serveur et par défaut sur les ports suivants (remplacer 127.0.0.1 par le nom du serveur) :
-- https://127.0.0.1:10300 : pour theses-rp en https (il faudra accepter l'erreur de sécurité car c'est un certificat autosigné qui est utilisé en standard)
-- http://127.0.0.1:10301 : pour theses-rp en http 
-- https://127.0.0.1:10302 : pour theses-elasticsearch-es01 en https (attention il faut utiliser le user 'elastic' avec le mot de passe correspondant réglé dans ``.env`` et il faudra ignorer l'erreur de certificat HTTPS car lui aussi est auto-signé)
-- http://127.0.0.1:10303 : pour theses-kibana
-
-Voici une astuce en local pour simuler le vrai nom de domaine (sans cette modification theses-rp ne fonctionnera pas avec la fédération d'identités) :
-```
-# ajouter ces lignes 
-# dans votre fichier /etc/hosts (sous linux - besoin de droits admin)
-# ou dans C:\Windows\System32\drivers\etc\hosts (sous windows - besoin de droits admin)
-127.0.0.1 apollo-local.theses.fr
-```
-
-Une fois ces modifications réalisées, vous pouvez naviguer sur l'URL suivante qui sera en fait équivalent à https://127.0.0.1 :
-- https://apollo-local.theses.fr (il faudra accepter l'erreur de sécurité car c'est un certificat autosigné qui est utilisé en standard)
-
+Voir aussi :
+- la [doc pour configurer la fédération d'identités de theses.fr sur votre environement local](./README.faq.md)
+- la [doc pour configurer theses.fr avec un cluster elasticsearch à plusieurs noeuds](./README-cluster-es.md)
 
 ## Installation pour la production
 
