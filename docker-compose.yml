@@ -29,6 +29,8 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:80/poc-fede/"
       RENATER_SP_HTTPD_PUBLIC_PATH_2: "/api/v1/recherche/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "http://theses-api-recherche:80/api/v1/recherche/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_3: "/kibana/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_3: "http://theses-kibana:5601/"
       RENATER_SP_HTTPD_PROTECTED_PATH_0: "/poc-fede/74979_GERARDIN_2018_archivage.pdf"
       RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-api-diffusion/poc-fede/74979_GERARDIN_2018_archivage.pdf"
     volumes:
@@ -282,6 +284,7 @@ services:
       - ${ELK_KIBANA_PORT}:5601
     environment:
       - SERVERNAME=kibana
+      - SERVER_BASEPATH=/kibana
       - ELASTICSEARCH_HOSTS=https://theses-elasticsearch-es01:9200
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
