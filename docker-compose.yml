@@ -100,9 +100,9 @@ services:
     environment:
       THESES_API_RECHERCHE_ELASTIC_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME}
       THESES_API_RECHERCHE_ELASTIC_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
-      ELASTICSEARCH_HOST_PROXY_TO: "https://theses-elasticsearch-es01:9200/"
+      ELASTICSEARCH_HOST_PROXY_TO: "https://theses-elasticsearch-01:9200/"
     depends_on:
-      theses-elasticsearch-es01:
+      theses-elasticsearch:
         condition: service_healthy
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -119,13 +119,13 @@ services:
   theses-batch-11theses:
     container_name: theses-batch-11theses
     depends_on:
-      theses-elasticsearch-es01:
+      theses-elasticsearch:
         condition: service_healthy
     build: ./images/theses-batch/
     image: abesesr/theses:develop-batch
     environment:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
-      ELASTICSEARCH_HOST: "https://theses-elasticsearch-es01:9200"
+      ELASTICSEARCH_HOST: "https://theses-elasticsearch-01:9200"
     command: /app/theses-sample-load.sh
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -175,19 +175,19 @@ services:
           "instances:\n"\
           "  - name: es01\n"\
           "    dns:\n"\
-          "      - theses-elasticsearch-es01\n"\
+          "      - theses-elasticsearch-01\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
           "  - name: es02\n"\
           "    dns:\n"\
-          "      - theses-elasticsearch-es02\n"\
+          "      - theses-elasticsearch-02\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
           "  - name: es03\n"\
           "    dns:\n"\
-          "      - theses-elasticsearch-es03\n"\
+          "      - theses-elasticsearch-03\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
@@ -200,11 +200,11 @@ services:
         find . -type d -exec chmod 750 \{\} \;;
         find . -type f -exec chmod 640 \{\} \;;
         echo "Waiting for Elasticsearch availability";
-        until curl -s --cacert config/certs/ca/ca.crt https://theses-elasticsearch-es01:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+        until curl -s --cacert config/certs/ca/ca.crt https://theses-elasticsearch-01:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
         echo "Setting kibana_system password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-es01:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
         echo "Setting theses-api-recherche password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-es01:9200/_security/user/${THESES_API_RECHERCHE_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_RECHERCHE_ELASTIC_PASSWORD}\", \"enabled\": true, \"roles\":[\"viewer\"], \"full_name\":\"\", \"email\":\"\"}" | grep -q "^{\"created\":"; do sleep 10; done;
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:9200/_security/user/${THESES_API_RECHERCHE_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_RECHERCHE_ELASTIC_PASSWORD}\", \"enabled\": true, \"roles\":[\"viewer\"], \"full_name\":\"\", \"email\":\"\"}" | grep -q "^{\"created\":"; do sleep 10; done;
         echo "All done!";
       '
     healthcheck:
@@ -282,7 +282,7 @@ services:
   theses-kibana:
     container_name: theses-kibana
     depends_on:
-      theses-elasticsearch-es01:
+      theses-elasticsearch:
         condition: service_healthy
     image: docker.elastic.co/kibana/kibana:${ELK_STACK_VERSION}
     volumes:
@@ -293,7 +293,7 @@ services:
     environment:
       - SERVERNAME=kibana
       - SERVER_BASEPATH=/kibana
-      - ELASTICSEARCH_HOSTS=https://theses-elasticsearch-es01:9200
+      - ELASTICSEARCH_HOSTS=https://theses-elasticsearch-01:9200
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
@@ -315,4 +315,20 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=kibana"
 
+
+
+# Cette configuration peut être décommentée pour pouvoir monter un cluster local elasticsearch
+# elle permet de lancer plusieurs noeuds indépendants au niveau docker mais reliés par ce réseau commun
+# pour lancer deux noeuds sur la même machine, il suffit alors de :
+# 1) créer ce réseau via "docker network create theses-docker-es-cluster-network"
+# 2) pour le noeud 2 utiliser la config suivante : https://github.com/abes-esr/theses-es-cluster-docker/
+# 3) paramétrer le .env de chaque noeud avec ELK_CLUSTER_NODE_NUMBER qui vaut "01" ou "02" (fonction du noeud) :
+#    ELK_CLUSTER_NODE_NUMBER=01
+#    ELK_CLUSTER_DISCOVER_SEED_HOSTS=theses-elasticsearch-01:9300,theses-elasticsearch-02:9300
+#    ELK_CLUSTER_INITIAL_MASTER_NODES=theses-es01,theses-es02
+# 4) lancer les deux noeuds dans leurs deux répertoires dédié avec "docker-compose up"
+#networks:
+#  default:
+#    name: theses-docker-es-cluster-network
+#    external: true
 
