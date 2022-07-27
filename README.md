@@ -56,7 +56,7 @@ Finalement on règle quelques droits sur les répertoires et on peut démarrer l
 ```bash
 # forcer les droits max pour les volumes déportés sur le système de fichier local
 cd /opt/pod/theses-docker/
-mkdir -p volumes/theses-elasticsearch-es01/       && chmod 777 volumes/theses-elasticsearch-es01/
+mkdir -p volumes/theses-elasticsearch/            && chmod 777 volumes/theses-elasticsearch/
 mkdir -p volumes/theses-elasticsearch-setupcerts/ && chmod 777 volumes/theses-elasticsearch-setupcerts/
 mkdir -p volumes/theses-kibana/                   && chmod 777 volumes/theses-kibana/
 
@@ -71,13 +71,15 @@ A partir de cet instant l'application écoutera sur l'IP du serveur et sera acce
 - http://127.0.0.1:10301/kibana/ : le kibana backoffice de theses.fr
 
 Voir aussi :
-- la [doc pour configurer la fédération d'identités de theses.fr sur votre environement local](./README.faq.md)
-- la [doc pour configurer theses.fr avec un cluster elasticsearch à plusieurs noeuds](./README-cluster-es.md)
+- la [doc pour configurer la fédération d'identités de theses.fr sur votre environement local](./README.faq.md#comment-configurer-la-f%C3%A9d%C3%A9ration-didentit%C3%A9s-de-thesesfr-en-local-)
 
 ## Installation pour la production
 
-A noter pour la prod: il est nécessaire de [générer des certificats auto-signés](./README-faq.md) pour enregistrer theses.fr comme fournisseur de service dans la fédération d'identités Education-Recherche.
+Pour la prod il est nécessaire de dérouler une [installation classique (cf section au dessus)](./README.md#installation) puis de réaliser quelques opérations listées ci-dessous.
 
+Il est nécessaire de [générer des certificats auto-signés](./README-faq.md#comment-générer-mes-propres-certificats-pour-la-fédération-didentités-en-prod-) pour enregistrer theses.fr comme fournisseur de service dans la fédération d'identités Education-Recherche.
+
+Et il est nécessaire de configurer elasticsearch de theses.fr avec 3 noeuds minimum, cf la [doc pour configurer theses.fr avec un cluster elasticsearch à plusieurs noeuds](./https://github.com/abes-esr/theses-es-cluster-docker/#readme)
 
 ## Démarrage et arret
 
