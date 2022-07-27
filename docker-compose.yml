@@ -239,7 +239,7 @@ services:
       - node.name=theses-es${ELK_CLUSTER_NODE_NUMBER}
       - cluster.name=${ELK_CLUSTER_NAME}
       - cluster.initial_master_nodes=${ELK_CLUSTER_INITIAL_MASTER_NODES}
-      - discovery.seed_hosts=${ELK_DISCOVER_SEED_HOSTS}
+      - discovery.seed_hosts=${ELK_CLUSTER_DISCOVER_SEED_HOSTS}
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
