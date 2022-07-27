@@ -51,6 +51,7 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=apache"
 
 
+
   # Interface utilisateur de theses.fr (dévelopée en VueJS)
   theses-front:
     container_name: theses-front
@@ -69,6 +70,7 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=nginx"
 
 
+
   # API de diffusion des thèses en java spring de theses.fr
   # (travail en cours, pour la preuve de concept il est
   #  chargé de mettre à disposition un PDF en 
@@ -85,6 +87,7 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=apache"
+
 
 
   # API de recherche des thèses qui fait l'intermédiaire avec elasticsearch
@@ -216,6 +219,8 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=adhoc"
 
+
+
   # theses-elasticsearch-01
   # noeud numéro1 d'elasticsearch (en local c'est l'unique noeud qui est lancé)
   theses-elasticsearch:
@@ -269,6 +274,8 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=elasticsearch"
+
+
 
   # theses-kibana
   # kibana est le backoffice de l'elasticsearch de theses.fr
