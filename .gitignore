@@ -1,5 +1,7 @@
 .env
 volumes/theses-rp/shibboleth/ssl/
-volumes/theses-elasticsearch/
+volumes/theses-elasticsearch-es01/
+volumes/theses-elasticsearch-es02/
+volumes/theses-elasticsearch-es03/
 volumes/theses-elasticsearch-setupcerts/
 volumes/theses-kibana/
