@@ -216,21 +216,22 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=adhoc"
 
-  # theses-elasticsearch-es01
+  # theses-elasticsearch-01
   # noeud numéro1 d'elasticsearch (en local c'est l'unique noeud qui est lancé)
-  theses-elasticsearch-es01:
-    container_name: theses-elasticsearch-es01
+  theses-elasticsearch:
+    container_name: theses-elasticsearch-${ELK_CLUSTER_NODE_NUMBER}
     depends_on:
       theses-elasticsearch-setupcerts:
         condition: service_healthy
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
-      - ./volumes/theses-elasticsearch-es01/:/usr/share/elasticsearch/data/
+      - ./volumes/theses-elasticsearch/:/usr/share/elasticsearch/data/
     ports:
-      - ${ELK_ELASTIC_PORT}:9200
+      - ${ELK_ELASTIC_HTTP_PORT}:9200
+      - ${ELK_ELASTIC_TRANSPORT_PORT}:9300
     environment:
-      - node.name=theses-elasticsearch-es01
+      - node.name=theses-es${ELK_CLUSTER_NODE_NUMBER}
       - cluster.name=${ELK_CLUSTER_NAME}
       - cluster.initial_master_nodes=${ELK_CLUSTER_INITIAL_MASTER_NODES}
       - discovery.seed_hosts=${ELK_DISCOVER_SEED_HOSTS}
@@ -238,13 +239,13 @@ services:
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
-      - xpack.security.http.ssl.key=certs/es01/es01.key
-      - xpack.security.http.ssl.certificate=certs/es01/es01.crt
+      - xpack.security.http.ssl.key=certs/es${ELK_CLUSTER_NODE_NUMBER}/es${ELK_CLUSTER_NODE_NUMBER}.key
+      - xpack.security.http.ssl.certificate=certs/es${ELK_CLUSTER_NODE_NUMBER}/es${ELK_CLUSTER_NODE_NUMBER}.crt
       - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.http.ssl.verification_mode=certificate
       - xpack.security.transport.ssl.enabled=true
-      - xpack.security.transport.ssl.key=certs/es01/es01.key
-      - xpack.security.transport.ssl.certificate=certs/es01/es01.crt
+      - xpack.security.transport.ssl.key=certs/es${ELK_CLUSTER_NODE_NUMBER}/es${ELK_CLUSTER_NODE_NUMBER}.key
+      - xpack.security.transport.ssl.certificate=certs/es${ELK_CLUSTER_NODE_NUMBER}/es${ELK_CLUSTER_NODE_NUMBER}.crt
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${ELK_LICENSE}
