@@ -75,11 +75,9 @@ Voir aussi :
 
 ## Installation pour la production
 
-Pour la prod il est nécessaire de dérouler une [installation classique (cf section au dessus)](./README.md#installation) puis de réaliser quelques opérations listées ci-dessous.
-
-Il est nécessaire de [générer des certificats auto-signés](./README-faq.md#comment-générer-mes-propres-certificats-pour-la-fédération-didentités-en-prod-) pour enregistrer theses.fr comme fournisseur de service dans la fédération d'identités Education-Recherche.
-
-Et il est nécessaire de configurer elasticsearch de theses.fr avec 3 noeuds minimum, cf la [doc pour configurer theses.fr avec un cluster elasticsearch à plusieurs noeuds](https://github.com/abes-esr/theses-es-cluster-docker/#readme)
+Pour la prod il est nécessaire de dérouler une [installation classique (cf section au dessus)](./README.md#installation) puis de réaliser quelques opérations listées ci-dessous :
+- Il est nécessaire de [générer des certificats auto-signés](./README-faq.md#comment-générer-mes-propres-certificats-pour-la-fédération-didentités-en-prod-) pour enregistrer theses.fr comme fournisseur de service dans la fédération d'identités Education-Recherche.
+- Et il est nécessaire de configurer elasticsearch de theses.fr avec 3 noeuds minimum, cf la [doc pour configurer theses.fr avec un cluster elasticsearch à plusieurs noeuds](https://github.com/abes-esr/theses-es-cluster-docker/#readme)
 
 ## Démarrage et arret
 
@@ -140,13 +138,13 @@ docker-compose -f docker-compose.watchtower.yml up -d
 Le fonctionnement de watchtower est de surveiller régulièrement l'éventuelle présence d'une nouvelle image docker de ``theses-front`` et ``theses-...``, si oui, de récupérer l'image en question, de stopper le ou les les vieux conteneurs et de créer le ou les conteneurs correspondants en réutilisant les mêmes paramètres que ceux des vieux conteneurs. Pour le développeur, il lui suffit de faire un git commit+push par exemple sur la branche ``develop`` d'attendre que la github action build et publie l'image, puis que watchtower prenne la main pour que la modification soit disponible sur l'environnement cible, par exemple sur la machine ``diplotaxis2-dev``.
 
 
-## Configuration avancées
+## Configuration dans un réverse proxy d'entreprise
 
-Pour configurer l'application, il est nécessaire de créer un fichier ``.env`` au même niveau que le fichier ``docker-compose.yml`` de ce dépôt. Le contenu du ``.env`` est une liste de paramètres (clés/valeurs) dont la documentation et des exemples de valeurs sont présents dans le fichier [``.env-dist``](https://github.com/abes-esr/theses-docker/blob/develop/.env-dist).
+Cette section explique comment préparer la belle URL publique https://theses.fr finale ou aussi les URL temporaires de type https://apollo-test.theses.fr/ au niveau de l'infra Abes.
 
-TODO : expliquer comment configurer les certificats SSL nécessaires à la fédé de ``theses-rp`` pour la production (à placer dans un volume monté sur ``theses-rp``)
+Il est nécessaire de configurer une entrée DNS pointant associant ``theses.fr`` ou ``apollo-test.theses.fr`` (pour ne prendre que ces exemples) à l'IP (ou au CNAME) du reverse proxy de l'Abes.
 
-Pour créer une URL publique de theses.fr il est nécessaire de configurer une entrée DNS et un reverse proxy (à l'Abes nous utilisons Apache). Voici un extrait de cette configuration apache (à adapter en fonction des environnements) :
+Ensuite il faut ajouter un VirtualHost au niveau du reverse proxy (à adapter en fonction des noms de domaines à gérer) :
 ```apache
 # redirection automatique http vers https
 <VirtualHost *:80>
@@ -187,25 +185,6 @@ Pour créer une URL publique de theses.fr il est nécessaire de configurer une e
         ProxyPass "/" "https://diplotaxis2-test.v202.abes.fr:10300/"
         ProxyPassReverse "/" "https://diplotaxis2-test.v202.abes.fr:10300/"
 </VirtualHost>
-```
-
-## Mise à jour de l'application
-
-Il est possible de mettre à jour les images docker utilisées par ``theses-docker`` en passant par les variables suivantes dans le ``.env`` :
-- ...
-
-Une fois les versions modifiées dans le .env, il suffit de relancer l'application theses.fr comme ceci :
-```bash
-cd /opt/pod/theses-docker/
-docker-compose pull # facultatif car le "docker-compose up" va faire le téléchargement si besoin
-docker-compose up -d
-```
-
-Pour ``theses-rp`` il n'est pas prévu une mise à jour externalisée en passant par le ``.env`` car ce module n'est pas sensé être mis à jour. Si le besoin de mise à jour se présente, cela signifierait qu'une nouvelle version de https://github.com/abes-esr/docker-shibboleth-renater-sp serait diponible. On peut alors mettre à jour ``theses-rp`` en spécifiant le nouveau numéro de version dans le ``docker-compose.yml`` [à la ligne qui pointe vers l'image docker ``abesesr/docker-shibboleth-renater-sp:x.x.x``](https://github.com/abes-esr/theses-docker/blob/develop/docker-compose.yml#L15). Ensuite il faut adapter les éventuels nouveaux paramètres attendus par la nouvelle version de l'image ``abesesr/docker-shibboleth-renater-sp:x.x.x`` et relancer l'application theses.fr comme ceci :
-```bash
-cd /opt/pod/theses-docker/
-docker-compose pull # facultatif car le "docker-compose up" va faire le téléchargement si besoin
-docker-compose up -d
 ```
 
 ## Sauvegardes et restauration
