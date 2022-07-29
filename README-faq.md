@@ -61,6 +61,8 @@ En résumé pour ``theses-rp``, il faut faire ceci :
    ```
 3) enregistrer theses-rp de prod comme service provider dans la [fédération d'identités Education-Recherche de prod](https://registry.federation.renater.fr/?action=get_all)
 
+Attention : ne jamais commiter ces certificats (surtout le fichier ``server.key`` qui est un secret) sur le git !
+
 ## Comment configurer la fédération d'identités de theses.fr en local ?
 
 Si vous désirez tester la fédération d'identités en local, vous devez configurer votre environnement local comme expliqué dans la FAQ.
