@@ -79,7 +79,7 @@ Pour la prod il est nécessaire de dérouler une [installation classique (cf sec
 
 Il est nécessaire de [générer des certificats auto-signés](./README-faq.md#comment-générer-mes-propres-certificats-pour-la-fédération-didentités-en-prod-) pour enregistrer theses.fr comme fournisseur de service dans la fédération d'identités Education-Recherche.
 
-Et il est nécessaire de configurer elasticsearch de theses.fr avec 3 noeuds minimum, cf la [doc pour configurer theses.fr avec un cluster elasticsearch à plusieurs noeuds](./https://github.com/abes-esr/theses-es-cluster-docker/#readme)
+Et il est nécessaire de configurer elasticsearch de theses.fr avec 3 noeuds minimum, cf la [doc pour configurer theses.fr avec un cluster elasticsearch à plusieurs noeuds](https://github.com/abes-esr/theses-es-cluster-docker/#readme)
 
 ## Démarrage et arret
 
