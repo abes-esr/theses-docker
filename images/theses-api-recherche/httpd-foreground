@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # forward env var from docker host
-export HTTP_HEADER_ELASTIC_BASIC_AUTH=$(echo -n "$THESES_API_RECHERCHE_ELASTIC_USERNAME:$THESES_API_RECHERCHE_ELASTIC_PASSWORD" | base64)
 export ELASTICSEARCH_HOST_PROXY_TO=${ELASTICSEARCH_HOST_PROXY_TO:='https://theses-elasticsearch-es01:9200/'}
 
 # Run apache daemon foreground (monitored by docker)
