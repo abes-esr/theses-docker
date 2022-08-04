@@ -13,7 +13,7 @@ services:
   # (à adapter)
   theses-rp:
     container_name: theses-rp
-    image: abesesr/docker-shibboleth-renater-sp:1.4.0
+    image: abesesr/docker-shibboleth-renater-sp:1.5.1
     ports:
       - ${THESES_RP_HTTPS_PORT}:443
       - ${THESES_RP_HTTP_PORT}:80
@@ -30,10 +30,15 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:80/poc-fede/"
       RENATER_SP_HTTPD_PUBLIC_PATH_2: "/api/v1/recherche/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "http://theses-api-recherche:80/api/v1/recherche/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_3: "/kibana/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_3: "http://theses-kibana:5601/"
       RENATER_SP_HTTPD_PROTECTED_PATH_0: "/poc-fede/74979_GERARDIN_2018_archivage.pdf"
       RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-api-diffusion/poc-fede/74979_GERARDIN_2018_archivage.pdf"
+      # pour -prod ELK_KIBANA_PROTECTED_PATH est renseigné mais ELK_KIBANA_PUBLIC_PATH est vide
+      RENATER_SP_HTTPD_PROTECTED_PATH_1: ${ELK_KIBANA_PROTECTED_PATH}
+      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_1: "http://theses-kibana:5601/"
+      RENATER_SP_HTTPD_PROTECTED_REQUIRE_1_0: "Require shib-attr Shib-Identity-Provider https://ciboulette.abes.fr/idp/shibboleth"
+      # pour -local -dev -test mais pour -prod ELK_KIBANA_PUBLIC_PATH est vide et c'est ELK_KIBANA_PROTECTED_PATH qui est renseigné
+      RENATER_SP_HTTPD_PUBLIC_PATH_3: ${ELK_KIBANA_PUBLIC_PATH}
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_3: "http://theses-kibana:5601/"
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
     restart: unless-stopped
@@ -227,12 +232,9 @@ services:
     image: docker.elastic.co/kibana/kibana:${ELK_STACK_VERSION}
     volumes:
       - ./volumes/theses-kibana/:/usr/share/kibana/data/
-    ports:
-      - ${ELK_KIBANA_PORT}:5601
     environment:
-      - SERVERNAME=kibana
-      - SERVER_BASEPATH=/kibana
-      - ELASTICSEARCH_HOSTS=http://theses-elasticsearch-01:9200
+      SERVER_BASEPATH: "/kibana"
+      ELASTICSEARCH_HOSTS: "http://theses-elasticsearch-01:9200"
     mem_limit: ${ELK_MEM_LIMIT}
     healthcheck:
       test:
