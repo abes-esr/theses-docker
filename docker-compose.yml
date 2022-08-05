@@ -6,7 +6,10 @@ version: "3.5"
 
 services:
 
-  # theses-rp est le reverse proxy application de theses.fr
+
+  #######################################
+  # theses-rp
+  # le reverse proxy application de theses.fr
   # toutes les requêtes HTTP passent par lui, il est chargé
   # d'authentifier les utilisateurs avec la fédération d'identités
   # RENATER lorsque ce derniers accèdent à /74979_GERARDIN_2018_archivage.pdf
@@ -58,6 +61,8 @@ services:
 
 
 
+  #######################################
+  # theses-front
   # Interface utilisateur de theses.fr (dévelopée en VueJS)
   theses-front:
     container_name: theses-front
@@ -77,6 +82,8 @@ services:
 
 
 
+  #######################################
+  # theses-api-diffusion
   # API de diffusion des thèses en java spring de theses.fr
   # (travail en cours, pour la preuve de concept il est
   #  chargé de mettre à disposition un PDF en 
@@ -96,7 +103,10 @@ services:
 
 
 
-  # API de recherche des thèses qui fait l'intermédiaire avec elasticsearch
+  #######################################
+  # theses-api-recherche
+  # API de recherche de theses.fr qui fait entre autre l'intermédiaire avec elasticsearch
+  # (travail en cours car sera remplacé par du Java Sprint ensuite)
   theses-api-recherche:
     container_name: theses-api-recherche
     # TODO : à remplacer par sa version en java spring
@@ -117,7 +127,8 @@ services:
 
 
 
-
+  #######################################
+  # theses-batch-11theses
   # batch pour indexer les 11 thèses dans elasticsearch
   # (travail en cours pour la preuve de concept de l'indexation de 11 thèses)
   theses-batch-11theses:
@@ -139,8 +150,11 @@ services:
 
 
 
-  # theses-elasticsearch-01
-  # noeud numéro1 d'elasticsearch (en local c'est l'unique noeud qui est lancé)
+  #######################################
+  # theses-elasticsearch
+  # noeud n°1 de l'elasticsearch de theses.fr
+  # Ref. https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+  # cf https://github.com/abes-esr/theses-es-cluster-docker#readme pour le mode cluster
   theses-elasticsearch:
     container_name: theses-elasticsearch-${ELK_CLUSTER_NODE_NUMBER}
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
@@ -180,6 +194,7 @@ services:
 
 
 
+  #######################################
   # theses-kibana
   # kibana est le backoffice de l'elasticsearch de theses.fr
   theses-kibana:
