@@ -175,7 +175,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -s http://localhost:${ELK_ELASTIC_HTTP_PORT} | grep -q 'cluster_name'",
+          "curl -s 'http://localhost:${ELK_ELASTIC_HTTP_PORT}/_cluster/health?timeout=5s' | grep -q '\"status\":\"green\"'",
         ]
       interval: 10s
       timeout: 10s
@@ -202,6 +202,8 @@ services:
     environment:
       SERVER_BASEPATH: "/kibana"
       ELASTICSEARCH_HOSTS: "http://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}"
+      XPACK_SECURITY_ENCRYPTIONKEY: ${ELK_KIBANA_SECURITY_ENCRYPTIONKEY}
+      LOGGING_ROOT_LEVEL: "info" # ex: "info", "error", "warn", "fatal", "debug"
     mem_limit: ${ELK_MEM_LIMIT}
     healthcheck:
       test:
