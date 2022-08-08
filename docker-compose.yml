@@ -101,7 +101,7 @@ services:
     environment:
       THESES_API_RECHERCHE_ELASTIC_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME}
       THESES_API_RECHERCHE_ELASTIC_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
-      ELASTICSEARCH_HOST_PROXY_TO: "https://theses-elasticsearch-01:9200/"
+      ELASTICSEARCH_HOST_PROXY_TO: "https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}/"
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
@@ -126,7 +126,7 @@ services:
     image: abesesr/theses:develop-batch
     environment:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
-      ELASTICSEARCH_HOST: "https://theses-elasticsearch-01:9200"
+      ELASTICSEARCH_HOST: "https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}"
     command: /app/theses-sample-load.sh
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -201,11 +201,11 @@ services:
         find . -type d -exec chmod 750 \{\} \;;
         find . -type f -exec chmod 640 \{\} \;;
         echo "Waiting for Elasticsearch availability";
-        until curl -s --cacert config/certs/ca/ca.crt https://theses-elasticsearch-01:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+        until curl -s --cacert config/certs/ca/ca.crt https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT} | grep -q "missing authentication credentials"; do sleep 30; done;
         echo "Setting kibana_system password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
         echo "Setting theses-api-recherche password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:9200/_security/user/${THESES_API_RECHERCHE_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_RECHERCHE_ELASTIC_PASSWORD}\", \"enabled\": true, \"roles\":[\"viewer\"], \"full_name\":\"\", \"email\":\"\"}" | grep -q "^{\"created\":"; do sleep 10; done;
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}/_security/user/${THESES_API_RECHERCHE_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_RECHERCHE_ELASTIC_PASSWORD}\", \"enabled\": true, \"roles\":[\"viewer\"], \"full_name\":\"\", \"email\":\"\"}" | grep -q "^{\"created\":"; do sleep 10; done;
         echo "All done!";
       '
     healthcheck:
@@ -274,7 +274,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+          "curl -s --cacert config/certs/ca/ca.crt https://localhost:${ELK_ELASTIC_HTTP_PORT} | grep -q 'missing authentication credentials'",
         ]
       interval: 10s
       timeout: 10s
@@ -304,7 +304,7 @@ services:
     environment:
       - SERVERNAME=kibana
       - SERVER_BASEPATH=/kibana
-      - ELASTICSEARCH_HOSTS=https://theses-elasticsearch-01:9200
+      - ELASTICSEARCH_HOSTS=https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
