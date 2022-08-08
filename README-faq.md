@@ -81,3 +81,28 @@ Ensuite vous devez faire pointer le nom de domaine ``apollo-local.theses.fr`` su
 ```
 
 Une fois ces modifications réalisées, vous pourrez accéder à votre theses.fr local sur l'URL suivante (en acceptant au passage l'erreur de sécurité liée au certificat auto-signé) : https://apollo-local.theses.fr
+
+## Comment activer le monitoring du cluster elasticsearch ?
+
+Pour pouvoir suivre l'état du cluster ElasticSearch depuis le Kibana sans installer les outils préconisés du type MetricBeats (qui nécessite une architecture plus complexe), voici comme procéder :
+
+Se rendre dans le kibana et dans l'onglet dev-tools, exemple https://apollo-dev.theses.fr/kibana/, puis taper ceci :
+```json
+PUT _cluster/settings
+{
+  "persistent": {
+    "xpack.monitoring.collection.enabled": true
+  }
+}
+```
+
+Pour consulter l'état de cette variable :
+```json
+GET _cluster/settings
+```
+
+Ensuite rendez vous dans l'onglet "Stack monitoring de kibana", par exemple :  
+https://apollo-dev.theses.fr/kibana/app/monitoring#/elasticsearch
+
+On obtiendra alors ce type d'écran :  
+TODO placer une copie d'écran
