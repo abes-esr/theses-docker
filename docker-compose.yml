@@ -234,15 +234,25 @@ services:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
       - ./volumes/theses-elasticsearch/:/usr/share/elasticsearch/data/
     ports:
-      - ${ELK_ELASTIC_HTTP_PORT}:9200
-      - ${ELK_ELASTIC_TRANSPORT_PORT}:9300
+      # réglage explicites des ports internes et externes pour pouvoir fonctionner en cluster
+      # cf https://blog.cri.epita.fr/post/2019-06-10-elasticsearch-cluster-formation-issue/
+      - ${ELK_ELASTIC_HTTP_PORT}:${ELK_ELASTIC_HTTP_PORT}
+      - ${ELK_ELASTIC_TRANSPORT_PORT}:${ELK_ELASTIC_TRANSPORT_PORT}
     environment:
+      # mot de passe superadmin correspondant au login "elastic"
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      # réglage explicites des ports internes et externes pour pouvoir fonctionner en cluster
+      # cf https://blog.cri.epita.fr/post/2019-06-10-elasticsearch-cluster-formation-issue/
+      - http.port=${ELK_ELASTIC_HTTP_PORT}
+      - transport.port=${ELK_ELASTIC_TRANSPORT_PORT}
+      - network.publish_host=${ELK_CLUSTER_PUBLISH_HOST}
+      # paramétrage du cluster elasticsearch
       - node.name=theses-es${ELK_CLUSTER_NODE_NUMBER}
       - cluster.name=${ELK_CLUSTER_NAME}
       - cluster.initial_master_nodes=${ELK_CLUSTER_INITIAL_MASTER_NODES}
       - discovery.seed_hosts=${ELK_CLUSTER_DISCOVER_SEED_HOSTS}
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - bootstrap.memory_lock=true
+      # paramètres de sécurité d'elasticsearch
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
       - xpack.security.http.ssl.key=certs/es${ELK_CLUSTER_NODE_NUMBER}/es${ELK_CLUSTER_NODE_NUMBER}.key
