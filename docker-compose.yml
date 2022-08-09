@@ -213,7 +213,7 @@ services:
         find . -type d -exec chmod 750 \{\} \;;
         find . -type f -exec chmod 640 \{\} \;;
         echo "Waiting for Elasticsearch availability (status=green)";
-        until curl -s --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}/_cluster/health?timeout=5s | grep -q '\"status\":\"green\"'; do sleep 10; done;
+        until curl -s --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}/_cluster/health?timeout=5s | grep -v -q '\"status\":\"green\"'; do sleep 10; done;
         echo "Setting kibana_system password";
         until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
         echo "Setting theses-api-recherche password";
