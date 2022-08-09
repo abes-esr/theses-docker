@@ -289,7 +289,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -s --cacert config/certs/ca/ca.crt https://localhost:${ELK_ELASTIC_HTTP_PORT} | grep -q 'missing authentication credentials'",
+          "curl -s --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} 'https://localhost:${ELK_ELASTIC_HTTP_PORT}/_cluster/health?timeout=5s' | grep -q '\"status\":\"green\"'",
         ]
       interval: 10s
       timeout: 10s
