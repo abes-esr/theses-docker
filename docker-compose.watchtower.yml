@@ -28,6 +28,6 @@ services:
       WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL: ${WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL}
       WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER: ${WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER}
       WATCHTOWER_NOTIFICATION_SLACK_CHANNEL: "#notif-theses"
-    command: theses-front
-#    command: theses-front theses-api-diffusion
-   
+      WATCHTOWER_SCOPE: "theses-watchtower-scope"
+    labels:
+      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"   
