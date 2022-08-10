@@ -114,14 +114,14 @@ services:
     # TODO : à remplacer par sa version en java spring
     build: ./images/theses-api-recherche/
     image: abesesr/theses:develop-api-recherche
+    depends_on:
+      theses-elasticsearch:
+        condition: service_healthy
     restart: unless-stopped
     environment:
       THESES_API_RECHERCHE_ELASTIC_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME}
       THESES_API_RECHERCHE_ELASTIC_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
       ELASTICSEARCH_HOST_PROXY_TO: "https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/"
-    depends_on:
-      theses-elasticsearch:
-        condition: service_healthy
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -137,11 +137,11 @@ services:
   # (travail en cours pour la preuve de concept de l'indexation de 11 thèses)
   theses-batch-11theses:
     container_name: theses-batch-11theses
+    build: ./images/theses-batch/
+    image: abesesr/theses:develop-batch
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
-    build: ./images/theses-batch/
-    image: abesesr/theses:develop-batch
     environment:
       ELASTICSEARCH_PASSWORD: ${THESES_ELASTICSEARCH_PASSWORD}
       ELASTICSEARCH_HOST: "https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}"
