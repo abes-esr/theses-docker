@@ -161,7 +161,7 @@ services:
   # - créer les différents comptes applicatifs pour accès à elasticsearch
   theses-elasticsearch-setupcerts:
     container_name: theses-elasticsearch-setupcerts
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
     user: "0"
@@ -235,7 +235,7 @@ services:
     depends_on:
       theses-elasticsearch-setupcerts:
         condition: service_healthy
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
     restart: unless-stopped
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
@@ -272,7 +272,8 @@ services:
       - xpack.security.transport.ssl.certificate=certs/es${ELK_CLUSTER_NODE_NUMBER}/es${ELK_CLUSTER_NODE_NUMBER}.crt
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
-      - xpack.license.self_generated.type=${ELK_LICENSE}
+      # licence à utiliser (basic ou trial pour un essai de 30 jours)
+      - xpack.license.self_generated.type=basic
     mem_limit: ${ELK_MEM_LIMIT}
     ulimits:
       memlock:
@@ -304,7 +305,7 @@ services:
   # - kibana_system
   theses-elasticsearch-setupusers:
     container_name: theses-elasticsearch-setupusers
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
@@ -360,7 +361,7 @@ services:
         condition: service_healthy
       theses-elasticsearch:
         condition: service_healthy
-    image: docker.elastic.co/kibana/kibana:${ELK_STACK_VERSION}
+    image: docker.elastic.co/kibana/kibana:8.3.0
     restart: unless-stopped
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/kibana/config/certs/
