@@ -18,3 +18,8 @@ cat theses-sample-data.json | jq -c '.[]' | curl -s -k --request POST \
   --url "${ELASTICSEARCH_HOST}/theses-sample/_bulk/?pretty=true" \
   --header 'Content-Type: application/x-ndjson' \
   --data-binary @-
+
+# on ne quitte pas le batch
+# pour laisser le conteneur en vie et éviter qu'il soit relancé 
+# inutilement quand on appelle "docker-compose up"
+sleep infinity
