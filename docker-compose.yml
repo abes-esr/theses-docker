@@ -248,6 +248,7 @@ services:
       theses-elasticsearch-setupcerts:
         condition: service_healthy
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
+    restart: unless-stopped
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
       - ./volumes/theses-elasticsearch/:/usr/share/elasticsearch/data/
@@ -315,6 +316,7 @@ services:
       theses-elasticsearch:
         condition: service_healthy
     image: docker.elastic.co/kibana/kibana:${ELK_STACK_VERSION}
+    restart: unless-stopped
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/kibana/config/certs/
       - ./volumes/theses-kibana/:/usr/share/kibana/data/
