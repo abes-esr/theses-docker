@@ -1,7 +1,11 @@
-# Configuration docker pour déployer theses.fr
-# avant de lancer docker-compose up, il est nécessaire
-# de copier le fichier .env-dist dans le fichier .env
-# puis de personnaliser le contenu du fichier .env
+#
+# Ci-dessous la config qui permet de lancer theses-docker
+#
+# Remarque: avant de lancer docker-compose up, il faut régler le fichier .env
+# en partant du fichier .env-dist qui donne les variables d'environnements
+# à personnaliser et des exemples de valeurs.
+#
+
 version: "3.5"
 
 services:
@@ -403,7 +407,7 @@ services:
   # cela permet de faire du déploiement continue en attendant les déploiement Ansible 
   # ce conteneur devra donc être supprimé une fois que le déploiement Ansible sera en place
   # plus d'info : https://containrrr.dev/watchtower
-  # cf README.md pour explications: https://github.com/abes-esr/theses-docker#d%C3%A9ploiement-continu
+  # cf README.md pour explications : https://github.com/abes-esr/theses-docker#d%C3%A9ploiement-continu
   theses-watchtower:
     image: containrrr/watchtower:1.4.0
     container_name: theses-watchtower
