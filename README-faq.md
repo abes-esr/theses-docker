@@ -106,3 +106,35 @@ https://apollo-dev.theses.fr/kibana/app/monitoring#/elasticsearch
 
 On obtiendra alors ce type d'écran :  
 TODO placer une copie d'écran
+
+
+## Comment ajouter un noeud au cluster elasticsearch de theses.fr ?
+
+Si vous devez ajouter un Nieme noeud au cluster elasticsearch de theses.fr et que ce Nieme noeud n'est pas encore géré dans la phase de setupcerts, alors vous devez procéder comme ceci :
+
+1) Stopper tous les noeuds :
+   ```bash
+   # noeud 1
+   cd /opt/pod/theses-docker/
+   docker-compose stop theses-elasticsearch
+
+   # noeud 2, 3, 4 ...
+   cd /opt/theses-es-cluster-docker/
+   docker-compose stop theses-elasticsearch
+   ```
+2) Modifiez la configuration du conteneur ``theses-elastisearch-setupcerts`` pour lui ajouter la prise en compte d'un nouveau noeud, exemple sur le noeud 4 : https://github.com/abes-esr/theses-docker/blob/d770ecb4b029d56e23f6f0968327d25489d9bdc2/docker-compose.yml#L210-L215
+3) Ensuite placez vous sur le noeud numéro 1 et supprimez les certificats d'elasticsearch de manière à pouvoir les régénérer à l'aide du conteneur ``theses-elastisearch-setupcerts`` (cf étape suivante) car le fait d'ajouter un noeud signifie qu'il faut lui dédier un certificat :
+   ```bash
+   cd /opt/pod/theses-docker
+   docker run --rm -it -v $(pwd)/volumes/theses-elasticsearch-setupcerts/:/tmp/ debian:bullseye bash -c 'rm -rf /tmp/*.zip'
+   ```
+4) Détruire et recréer le conteneur ``theses-elastisearch-setupcerts`` de manière à regénérer les certificats (fichiers ``ca.zip`` et ``certs.zip``) :
+   ```bash
+   cd /opt/pod/theses-docker
+   docker-compose rm -f theses-elasticsearch-setupcerts
+   docker-composeup -d theses-elasticsearch-setupcerts
+   # on regarde les logs pour vérifier que le certificat du nouveau noeud est bien généré
+   docker-compose logs --tail=100 theses-elasticsearch-setupcerts
+   ```
+5) Redéployez finalement les fichiers ``ca.zip`` et ``certs.zip`` sur les N noeuds en suivant la procédure d'installation d'un nouveau noeud: https://github.com/abes-esr/theses-es-cluster-docker/#installation--serveurs-2--3--noeuds-2--3 
+   
