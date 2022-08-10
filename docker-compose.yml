@@ -83,6 +83,7 @@ services:
       - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"   
 
 
+
   #######################################
   # theses-api-diffusion
   # API de diffusion des thèses en java spring de theses.fr
@@ -156,8 +157,7 @@ services:
 
   #######################################
   # theses-elasticsearch-setupcerts
-  # conteneur chargé de
-  # - configurer les certificats pour que les X noeuds elasticsearch communiquent entre eux de façon sécurisé
+  # conteneur chargé de configurer les certificats pour que les X noeuds elasticsearch communiquent entre eux de façon sécurisé
   # - créer les différents comptes applicatifs pour accès à elasticsearch
   theses-elasticsearch-setupcerts:
     container_name: theses-elasticsearch-setupcerts
@@ -165,21 +165,8 @@ services:
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
     user: "0"
-    environment:
-      KIBANA_PASSWORD: ${KIBANA_PASSWORD}
-      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
-      ELK_ELASTIC_HTTP_PORT: ${ELK_ELASTIC_HTTP_PORT}
-      THESES_API_RECHERCHE_ELASTIC_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME} 
-      THESES_API_RECHERCHE_ELASTIC_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD} 
     command: >
       bash -c '
-        if [ x${ELASTIC_PASSWORD} == x ]; then
-          echo "Set the ELASTIC_PASSWORD environment variable in the .env file";
-          exit 1;
-        elif [ x${KIBANA_PASSWORD} == x ]; then
-          echo "Set the KIBANA_PASSWORD environment variable in the .env file";
-          exit 1;
-        fi;
         if [ ! -f config/certs/ca.zip ]; then
           echo "Creating CA";
           bin/elasticsearch-certutil ca --silent --pem -out config/certs/ca.zip;
@@ -221,17 +208,12 @@ services:
         chown -R root:root config/certs;
         find . -type d -exec chmod 750 \{\} \;;
         find . -type f -exec chmod 640 \{\} \;;
-        echo "Waiting for Elasticsearch availability (status=green)";
-        until curl -s --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}/_cluster/health?timeout=5s | grep -v -q '\"status\":\"green\"'; do sleep 10; done;
-        echo "Setting kibana_system password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
-        echo "Setting theses-api-recherche password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}/_security/user/${THESES_API_RECHERCHE_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_RECHERCHE_ELASTIC_PASSWORD}\", \"enabled\": true, \"roles\":[\"viewer\"], \"full_name\":\"\", \"email\":\"\"}" | grep -q "^{\"created\":"; do sleep 10; done;
         echo "All done!";
+        sleep infinity; # never stop the container because elasticsearch depends on it
       '
     healthcheck:
       test: ["CMD-SHELL", "[ -f config/certs/es01/es01.crt ]"]
-      interval: 1s
+      interval: 10s
       timeout: 5s
       retries: 120
     labels:
@@ -266,6 +248,7 @@ services:
     environment:
       # mot de passe superadmin correspondant au login "elastic"
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELK_ELASTIC_HTTP_PORT=${ELK_ELASTIC_HTTP_PORT}
       # réglage explicites des ports internes et externes pour pouvoir fonctionner en cluster
       # cf https://blog.cri.epita.fr/post/2019-06-10-elasticsearch-cluster-formation-issue/
       - http.port=${ELK_ELASTIC_HTTP_PORT}
@@ -299,7 +282,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -s --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} 'https://localhost:${ELK_ELASTIC_HTTP_PORT}/_cluster/health?timeout=5s' | grep -q '\"status\":\"green\"'",
+          "curl -s --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} https://localhost:${ELK_ELASTIC_HTTP_PORT}/_cluster/health?timeout=5s | grep -q '\"status\":\"green\"'",
         ]
       interval: 10s
       timeout: 10s
@@ -314,11 +297,67 @@ services:
 
 
   #######################################
+  # theses-elasticsearch-setupusers
+  # conteneur chargé de créer les différents comptes applicatifs pour accès à elasticsearch et aussi le compte pour kibana
+  # Création/mises à jour des login/mot de passe pour :
+  # - theses-api-recherche
+  # - kibana_system
+  theses-elasticsearch-setupusers:
+    container_name: theses-elasticsearch-setupusers
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_STACK_VERSION}
+    depends_on:
+      theses-elasticsearch:
+        condition: service_healthy
+    volumes:
+      - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
+    environment:
+      KIBANA_PASSWORD: ${KIBANA_PASSWORD}
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      ELK_ELASTIC_HTTP_PORT: ${ELK_ELASTIC_HTTP_PORT}
+      THESES_API_RECHERCHE_ELASTIC_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME} 
+      THESES_API_RECHERCHE_ELASTIC_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD} 
+    command: >
+      bash -c '
+        if [ x${ELASTIC_PASSWORD} == x ]; then
+          echo "Set the ELASTIC_PASSWORD environment variable in the .env file";
+          exit 1;
+        elif [ x${KIBANA_PASSWORD} == x ]; then
+          echo "Set the KIBANA_PASSWORD environment variable in the .env file";
+          exit 1;
+        fi;
+        echo "Setting kibana_system password";
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        echo "Setting ${THESES_API_RECHERCHE_ELASTIC_USERNAME} password";
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}/_security/user/${THESES_API_RECHERCHE_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_RECHERCHE_ELASTIC_PASSWORD}\", \"enabled\": true, \"roles\":[\"viewer\"], \"full_name\":\"\", \"email\":\"\"}" | grep -q "^{\"created\":"; do sleep 10; done;        
+        echo "All done!";
+        sleep infinity; # never stop the container because kibana depends on it
+      '
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s --cacert config/certs/ca/ca.crt -u ${THESES_API_RECHERCHE_ELASTIC_USERNAME}:${THESES_API_RECHERCHE_ELASTIC_PASSWORD} 'https://theses-elasticsearch-01:${ELK_ELASTIC_HTTP_PORT}/_search?timeout=5s' | grep -q '\"hits\"'",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 120
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=adhoc"
+
+
+
+  #######################################
   # theses-kibana
   # kibana est le backoffice de l'elasticsearch de theses.fr
   theses-kibana:
     container_name: theses-kibana
     depends_on:
+      theses-elasticsearch-setupusers:
+        condition: service_healthy
       theses-elasticsearch:
         condition: service_healthy
     image: docker.elastic.co/kibana/kibana:${ELK_STACK_VERSION}
