@@ -140,15 +140,15 @@ Le fonctionnement de watchtower est de surveiller régulièrement l'éventuelle 
 
 ## Configuration dans un réverse proxy d'entreprise
 
-Cette section explique comment préparer la belle URL publique https://theses.fr finale ou aussi les URL temporaires de type https://apollo-test.theses.fr/ au niveau de l'infra Abes.
+Cette section explique comment préparer la belle URL publique https://theses.fr finale ou aussi les URL temporaires de type https://apollo-dev.theses.fr/ au niveau de l'infra Abes.
 
-Il est nécessaire de configurer une entrée DNS pointant associant ``theses.fr`` ou ``apollo-test.theses.fr`` (pour ne prendre que ces exemples) à l'IP (ou au CNAME) du reverse proxy de l'Abes.
+Il est nécessaire de configurer une entrée DNS pointant associant ``theses.fr`` ou ``apollo-dev.theses.fr`` (pour ne prendre que cet exemple) à l'IP (ou au CNAME) du reverse proxy de l'Abes.
 
 Ensuite il faut ajouter un VirtualHost au niveau du reverse proxy (à adapter en fonction des noms de domaines à gérer) :
 ```apache
 # redirection automatique http vers https
 <VirtualHost *:80>
-        ServerName apollo-test.theses.fr
+        ServerName apollo-dev.theses.fr
         ServerAdmin admin@theses.fr
         RewriteEngine On
         RewriteCond %{HTTPS} !=on
@@ -156,7 +156,7 @@ Ensuite il faut ajouter un VirtualHost au niveau du reverse proxy (à adapter en
 </VirtualHost>
 
 <VirtualHost *:443>
-        ServerName apollo-test.theses.fr
+        ServerName apollo-dev.theses.fr
         ServerAdmin admin@theses.fr
         RewriteEngine on
         
@@ -180,10 +180,10 @@ Ensuite il faut ajouter un VirtualHost au niveau du reverse proxy (à adapter en
         SSLProxyCheckPeerExpire off
 
         # proxification de theses-rp qui écoute par défaut sur le port 10300
-        # et dans cet exemple qui est hébergé sur le serveur diplotaxis2-test
+        # et dans cet exemple qui est hébergé sur le serveur diplotaxis2-dev
         ProxyPreserveHost On
-        ProxyPass "/" "https://diplotaxis2-test.v202.abes.fr:10300/"
-        ProxyPassReverse "/" "https://diplotaxis2-test.v202.abes.fr:10300/"
+        ProxyPass "/" "https://diplotaxis2-dev.v212.abes.fr:10300/"
+        ProxyPassReverse "/" "https://diplotaxis2-dev.v212.abes.fr:10300/"
 </VirtualHost>
 ```
 
