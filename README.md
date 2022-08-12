@@ -9,21 +9,21 @@ Configuration docker 🐳 pour déployer le portail national des thèses dont le
 ## URLs de theses.fr
 
 Les URLs temporaires du futur theses.fr sont les suivantes :
-- en dev :
-  - https://apollo-dev.theses.fr : la homepage de theses.fr
-  - https://apollo-dev.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
-  - https://apollo-dev.theses.fr/poc-fede/ : le PoC de fédération d'identités
-  - https://apollo-dev.theses.fr/kibana/ : le kibana backoffice de theses.fr
-- en test :
-  - https://apollo-test.theses.fr : la homepage de theses.fr
-  - https://apollo-test.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
-  - https://apollo-test.theses.fr/poc-fede/ : le PoC de fédération d'identités
-  - https://apollo-test.theses.fr/kibana/ : le kibana backoffice de theses.fr
 - en préprod :
   - https://apollo-prod.theses.fr : la homepage de theses.fr
   - https://apollo-prod.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
   - https://apollo-prod.theses.fr/poc-fede/ : le PoC de fédération d'identités
   - https://apollo-prod.theses.fr/kibana/ : le kibana backoffice de theses.fr
+- en test :
+  - https://apollo-test.theses.fr : la homepage de theses.fr
+  - https://apollo-test.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
+  - https://apollo-test.theses.fr/poc-fede/ : le PoC de fédération d'identités
+  - https://apollo-test.theses.fr/kibana/ : le kibana backoffice de theses.fr
+- en dev :
+  - https://apollo-dev.theses.fr : la homepage de theses.fr
+  - https://apollo-dev.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
+  - https://apollo-dev.theses.fr/poc-fede/ : le PoC de fédération d'identités
+  - https://apollo-dev.theses.fr/kibana/ : le kibana backoffice de theses.fr
 - en local : (fonctionne uniquement si vous avez une intallation de theses.fr avec [cette configuration](./README-faq.md))
   - https://apollo-local.theses.fr : la homepage de theses.fr
   - https://apollo-local.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
