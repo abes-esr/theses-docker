@@ -138,7 +138,7 @@ Le fonctionnement de watchtower est de surveiller régulièrement l'éventuelle 
 
 Le fait de passer ``THESES_WATCHTOWER_RUN_ONCE`` à false va faire en sorte d'exécuter périodiquement watchtower. Par défaut cette variable est à ``true`` car ce n'est pas utile voir cela peut générer du bruit dans le cas d'un déploiement sur un PC en local.
 
-## Configuration dans un réverse proxy d'entreprise
+## Configuration dans un reverse proxy d'entreprise
 
 Cette section explique comment préparer la belle URL publique https://theses.fr finale ou aussi les URL temporaires de type https://apollo-dev.theses.fr/ au niveau de l'infra Abes.
 
