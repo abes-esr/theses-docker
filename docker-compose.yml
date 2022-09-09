@@ -35,7 +35,7 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PATH_1: "/poc-fede/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:80/poc-fede/"
       RENATER_SP_HTTPD_PUBLIC_PATH_2: "/api/v1/recherche/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "http://theses-api-recherche:80/api/v1/recherche/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "http://theses-api-recherche-passe-plat:80/api/v1/recherche/"
       RENATER_SP_HTTPD_PROTECTED_PATH_0: "/poc-fede/74979_GERARDIN_2018_archivage.pdf"
       RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-api-diffusion/poc-fede/74979_GERARDIN_2018_archivage.pdf"
       # pour -prod THESES_RP_KIBANA_PROTECTED_PATH est renseigné mais THESES_KIBANA_PUBLIC_PATH est vide
@@ -45,6 +45,8 @@ services:
       # pour -local -dev -test mais pour -prod THESES_RP_KIBANA_PUBLIC_PATH est vide et c'est THESES_RP_KIBANA_PROTECTED_PATH qui est renseigné
       RENATER_SP_HTTPD_PUBLIC_PATH_3: ${THESES_RP_KIBANA_PUBLIC_PATH}
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_3: "http://theses-kibana:5601/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_4: "/api/v1/recherche-java/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_4: "http://theses-api-recherche:8990/theses/v1/"
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
     restart: unless-stopped
@@ -75,6 +77,7 @@ services:
       - ${THESES_FRONT_HTTP_PORT}:80
     depends_on:
       - theses-api-diffusion
+      - theses-api-recherche-passe-plat
       - theses-api-recherche
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -113,11 +116,18 @@ services:
   # theses-api-recherche
   # API de recherche de theses.fr qui fait entre autre l'intermédiaire avec elasticsearch
   # (travail en cours car sera remplacé par du Java Sprint ensuite)
-  theses-api-recherche:
-    container_name: theses-api-recherche
+  # - theses-api-recherche-passe-plat :
+  #     permet d'accéder à elasticsearch sans aucun filtrage ce qui permet de travailler
+  #     sur le front en attendant le développement de la partie java qui elle aura du filtrage 
+  #     et une API dédiée a theses.fr
+  # - theses-api-recherche :
+  #     permet d'accéder à elasticsearch via l'API java développée sur https://github.com/abes-esr/theses-api-recherche
+  #     c'est ce conteneur qui restera à terme et theses-api-recherche-passe-plat disparaitra
+  theses-api-recherche-passe-plat:
+    container_name: theses-api-recherche-passe-plat
     # TODO : à remplacer par sa version en java spring
     build: ./images/theses-api-recherche/
-    image: abesesr/theses:develop-api-recherche
+    image: abesesr/theses:develop-api-recherche-passe-plat
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
@@ -132,7 +142,26 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=apache"
-
+  theses-api-recherche:
+    container_name: theses-api-recherche
+    image: abesesr/theses:${THESES_API_RECHERCHE_VERSION}
+    depends_on:
+      theses-elasticsearch:
+        condition: service_healthy
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: 8990
+      ES_HOSTNAME: 'theses-elasticsearch-01'
+      ES_PORT: ${THESES_ELASTICSEARCH_HTTP_PORT}
+      ES_SCHEME: 'https'
+      ES_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME}
+      ES_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
 
 
   #######################################
@@ -288,7 +317,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -s --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} https://localhost:${THESES_ELASTICSEARCH_HTTP_PORT}/_cluster/health?timeout=5s | grep -q '\"status\":\"green\"'",
+          "curl -s --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} https://localhost:${THESES_ELASTICSEARCH_HTTP_PORT}/_cluster/health?timeout=5s | grep -q '\"status\":\"${THESES_ELASTICSEARCH_HEALTHY_STATUS}\"'",
         ]
       interval: 10s
       timeout: 10s
