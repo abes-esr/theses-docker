@@ -441,7 +441,6 @@ services:
   theses-watchtower:
     image: containrrr/watchtower:1.4.0
     container_name: theses-watchtower
-    restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
