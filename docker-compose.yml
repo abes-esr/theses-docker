@@ -258,6 +258,61 @@ services:
 
 
 
+
+  #######################################
+  # theses-elasticsearch-setupusers
+  # conteneur chargé de créer les différents comptes applicatifs pour accès à elasticsearch et aussi le compte pour kibana
+  # Création/mises à jour des login/mot de passe pour :
+  # - theses-api-recherche
+  # - kibana_system
+  theses-elasticsearch-setupusers:
+    container_name: theses-elasticsearch-setupusers
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
+    depends_on:
+      theses-elasticsearch:
+        condition: service_healthy
+    volumes:
+      - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
+    environment:
+      THESES_KIBANA_PASSWORD: ${THESES_KIBANA_PASSWORD}
+      THESES_ELASTICSEARCH_PASSWORD: ${THESES_ELASTICSEARCH_PASSWORD}
+      THESES_ELASTICSEARCH_HTTP_PORT: ${THESES_ELASTICSEARCH_HTTP_PORT}
+      THESES_API_RECHERCHE_ELASTIC_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME} 
+      THESES_API_RECHERCHE_ELASTIC_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD} 
+    command: >
+      bash -c '
+        if [ x${THESES_ELASTICSEARCH_PASSWORD} == x ]; then
+          echo "Set the THESES_ELASTICSEARCH_PASSWORD environment variable in the .env file";
+          exit 1;
+        elif [ x${THESES_KIBANA_PASSWORD} == x ]; then
+          echo "Set the THESES_KIBANA_PASSWORD environment variable in the .env file";
+          exit 1;
+        fi;
+        echo "Setting kibana_system password";
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/kibana_system/_password -d "{\"password\":\"${THESES_KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        echo "Setting ${THESES_API_RECHERCHE_ELASTIC_USERNAME} password";
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/${THESES_API_RECHERCHE_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_RECHERCHE_ELASTIC_PASSWORD}\", \"enabled\": true, \"roles\":[\"viewer\"], \"full_name\":\"\", \"email\":\"\"}" | grep -q "^{\"created\":"; do sleep 10; done;        
+        echo "All done!";
+        sleep infinity; # never stop the container because kibana depends on it
+      '
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s --cacert config/certs/ca/ca.crt -u ${THESES_API_RECHERCHE_ELASTIC_USERNAME}:${THESES_API_RECHERCHE_ELASTIC_PASSWORD} 'https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_search?timeout=5s' | grep -q '\"hits\"'",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 120
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=adhoc"
+
+
+
   #######################################
   # theses-elasticsearch
   # noeud n°1 de l'elasticsearch de theses.fr
@@ -328,60 +383,6 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=elasticsearch"
-
-
-
-  #######################################
-  # theses-elasticsearch-setupusers
-  # conteneur chargé de créer les différents comptes applicatifs pour accès à elasticsearch et aussi le compte pour kibana
-  # Création/mises à jour des login/mot de passe pour :
-  # - theses-api-recherche
-  # - kibana_system
-  theses-elasticsearch-setupusers:
-    container_name: theses-elasticsearch-setupusers
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
-    depends_on:
-      theses-elasticsearch:
-        condition: service_healthy
-    volumes:
-      - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
-    environment:
-      THESES_KIBANA_PASSWORD: ${THESES_KIBANA_PASSWORD}
-      THESES_ELASTICSEARCH_PASSWORD: ${THESES_ELASTICSEARCH_PASSWORD}
-      THESES_ELASTICSEARCH_HTTP_PORT: ${THESES_ELASTICSEARCH_HTTP_PORT}
-      THESES_API_RECHERCHE_ELASTIC_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME} 
-      THESES_API_RECHERCHE_ELASTIC_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD} 
-    command: >
-      bash -c '
-        if [ x${THESES_ELASTICSEARCH_PASSWORD} == x ]; then
-          echo "Set the THESES_ELASTICSEARCH_PASSWORD environment variable in the .env file";
-          exit 1;
-        elif [ x${THESES_KIBANA_PASSWORD} == x ]; then
-          echo "Set the THESES_KIBANA_PASSWORD environment variable in the .env file";
-          exit 1;
-        fi;
-        echo "Setting kibana_system password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/kibana_system/_password -d "{\"password\":\"${THESES_KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
-        echo "Setting ${THESES_API_RECHERCHE_ELASTIC_USERNAME} password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/${THESES_API_RECHERCHE_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_RECHERCHE_ELASTIC_PASSWORD}\", \"enabled\": true, \"roles\":[\"viewer\"], \"full_name\":\"\", \"email\":\"\"}" | grep -q "^{\"created\":"; do sleep 10; done;        
-        echo "All done!";
-        sleep infinity; # never stop the container because kibana depends on it
-      '
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "curl -s --cacert config/certs/ca/ca.crt -u ${THESES_API_RECHERCHE_ELASTIC_USERNAME}:${THESES_API_RECHERCHE_ELASTIC_PASSWORD} 'https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_search?timeout=5s' | grep -q '\"hits\"'",
-        ]
-      interval: 10s
-      timeout: 5s
-      retries: 120
-    labels:
-      # pour envoyer les logs dans le puits de log de l'abes
-      - "co.elastic.logs/enabled=true"
-      - "co.elastic.logs/processors.add_fields.target="
-      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
-      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=adhoc"
 
 
 
