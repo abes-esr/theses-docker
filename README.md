@@ -58,6 +58,7 @@ Finalement on règle quelques droits sur les répertoires et on peut démarrer l
 cd /opt/pod/theses-docker/
 mkdir -p volumes/theses-elasticsearch/            && chmod 777 volumes/theses-elasticsearch/
 mkdir -p volumes/theses-elasticsearch-setupcerts/ && chmod 777 volumes/theses-elasticsearch-setupcerts/
+mkdir -p volumes/theses-elasticsearch-snapshots/  && chmod 777 volumes/theses-elasticsearch-snapshots/
 mkdir -p volumes/theses-kibana/                   && chmod 777 volumes/theses-kibana/
 
 # puis démarrer l'application
@@ -193,13 +194,13 @@ Pour sauvegarder l'application, il faut :
 - Sauvegarder la base de données (base Oracle sur les serveurs orpin) : todo préciser de quel schéma et de quelles tables on parle
 - Sauvegarder le fichier ``/opt/pod/theses-docker/.env`` qui est un fichier non versionné et qui permet de configurer tous les conteneurs docker de l'appli
 - Sauvegarder les certificats auto-signés présents dans le répertoire ``/opt/pod/theses-docker/volumes/theses-rp/shibboleth/ssl/`` (ces certificats permettent à theses.fr d'être reconnu par la fédération d'identités Education-Recherche)
-- Sauvegarder le dump elasticsearch : todo vraiement nécessaire ? et todo expliquer comment faire ?
-- Sauvegarder le paramétrage kibana : todo vraiement nécessaire ? et todo expliquer comment faire ?
-- Sauvegarder les certificats elasticsearch : todo vraiement nécessaire ? et todo expliquer comment faire ?
+- Sauvegarder le snapshot quotidien des indexes elasticsearch (qui contiennent les indexes de toutes les theses ainsi que la configuration kibana) : ``/opt/pod/theses-docker/volumes/theses-elasticsearch-snapshots/``
+- Sauvegarder les certificats elasticsearch (qui permettent aux noeuds elasticsearch de communiquer entre eux) : ``/opt/pod/theses-docker/volumes/theses-elasticsearch-setupcerts/``
 
 Pour restaurer l'application, il faut :
 - restaurer la base de données
 - réinstaller l'application (cf plus haut la section installation) en réutilisant le ``.env`` précédement sauvegardé.
+- restaurer le dernier snapshot des indexes elasticsearch et kibana : TODO expliquer comment faire ici
 
 ## Développements
 
