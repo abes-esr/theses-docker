@@ -1,11 +1,44 @@
 {
+  "settings": {
+    "analysis": {
+        "filter": {
+          "french_stop": {
+            "type": "stop",
+            "stopwords": "_french_"
+          },
+          "french_stemmer": {
+            "type": "stemmer",
+            "language": "light_french"
+          }
+        },
+        "analyzer": {
+          "francais": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": [
+              "lowercase",
+              "french_stop",
+              "french_stemmer"
+            ]
+          }
+        }
+      }
+    },
   "mappings": {
     "properties": {
       "nnt": {
         "type": "keyword"
       },
       "titre": {
-        "type": "text"
+        "type": "text",
+        "analyzer": "francais"
+        ,
+        "fields": {
+          "exact": {
+            "type": "text",
+            "analyzer": "standard"
+          }
+        }
       },
       "dateSoutenance": {
         "type": "date"
