@@ -347,6 +347,10 @@ services:
       - cluster.initial_master_nodes=${THESES_ELASTICSEARCH_CLUSTER_INITIAL_MASTER_NODES}
       - discovery.seed_hosts=${THESES_ELASTICSEARCH_CLUSTER_DISCOVER_SEED_HOSTS}
       - bootstrap.memory_lock=true
+      # pour éviter que les dump geoip soient téléchargées régulièrement dans /tmp/
+      # cf https://abes-esr.atlassian.net/browse/THE-188
+      # cf https://www.elastic.co/guide/en/elasticsearch/reference/current/geoip-processor.html#geoip-cluster-settings
+      - ingest.geoip.downloader.enabled=false
       # paramètres de sécurité d'elasticsearch
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
