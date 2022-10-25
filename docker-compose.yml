@@ -85,9 +85,8 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=nginx"
-      # pour que les mises à jour de cette image soient auto-déployées
-      # par watchtower cf docker-compose.watchtower.yml
-      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"   
+      # pour que les mises à jour de cette image soient auto-déployées par watchtower 
+      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"
 
 
 
@@ -162,8 +161,7 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
-      # pour que les mises à jour de cette image soient auto-déployées
-      # par watchtower cf docker-compose.watchtower.yml
+      # pour que les mises à jour de cette image soient auto-déployées par watchtower
       - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
 
 
@@ -173,8 +171,7 @@ services:
   # (travail en cours pour la preuve de concept de l'indexation de 11 thèses)
   theses-batch-11theses:
     container_name: theses-batch-11theses
-    build: ./images/theses-batch/
-    image: abesesr/theses:develop-batch
+    image: abesesr/theses:develop-batch-indexation
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
@@ -188,6 +185,8 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=adhoc"
+      # pour que les mises à jour de cette image soient auto-déployées par watchtower
+      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
 
 
 
