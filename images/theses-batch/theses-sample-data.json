@@ -7,7 +7,7 @@
   "dateSoutenance": "2003-01-01",
   "abstractFR": "",
   "abstractEN": "",
-  "rameau": ["Industrie lithique", "Industries préhistoriques", "Moustérien", "Typologie (archéologie)"]
+  "sujetsRameau": ["Industrie lithique", "Industries préhistoriques", "Moustérien", "Typologie (archéologie)"]
 },
 
 { "index": { "_id":"2001MNHN0022" } },
@@ -17,7 +17,39 @@
   "dateSoutenance": "2001-01-01",
   "abstractFR": "Cette étude porte sur l'industrie lithique des zones M, N et O (24 m2) dans l'abri de la Baume Bonne (Quinson, Alpes de Haute Provence) fouillé sous la direction de Henry de Lumley entre 1957 et 1968. La partie du remplissage concernée fait 1,5 m à 2 m d'épaisseur et correspond aux périodes d'occupation du site s'échelonnant du stade isotopique 9 ou 10 au stade 6. A la Baume Bonne, l'origine des matières premières est locale et consiste essentiellement en silex et chaille ; et les matériaux exotiques sont rares ; ils sont pour la plupart sous forme de galets avec un néocortex alluvial aussi apte à servir de plan de frappe qu'une surface fraîchement taillée. D'une manière générale, l'industrie de la Baume Bonne est pauvre en bifaces et les galets aménagés sont trop altérés (grès local) pour qu'on puisse estimer leur importance quantitative. Mais cela suffit pour dire qu'il existe une chaîne de façonnage et une chaîne de production de petit outillage. L'essentiel du débitage se fait dans la grotte. Les nucléus sont pour la plupart irréguliers à débitage plutôt unifacial que bifacial, mais les nucléus discoi͏̈des sont relativement nombreux. Ils sont pour la plupart exploités sur une face, l'autre face étant préparée pour servir de plan de frappe. En général, les nucléus sont exploités au maximum avec souvent une petite fracture pour dernier plan de frappe et bon nombre d'entre eux sont transformés en outil (racloir). Cette tendance à l'économie des matières premières est de plus en plus marquée au cours du temps ; elle est associée à un débitage souvent unipolaire orienté vers une recherche de produits plus minces. Les racloirs sont de loin les outils les mieux représentés, les outils à encoche étant relativement importants, surtout dans les niveaux inférieurs. Au cours du temps, les racloirs augmentent légèrement. L'évolution technologique et typologique est très progressive dans les niveaux étudiés et est surtout marquée par une certaine standardisation du débitage plus souvent unipolaire. Le débitage Levallois ou laminaire restent discrets mais signalent cependant un changement entre les ensembles inférieurs et les ensembles supérieurs des produits de débitage. Cette industrie de transition entre le Paléolithique inférieur et le Paléolithique moyen prépare, dans le contexte environnemental et culturel, la Baume Bonne, l'avénement d'un Moustérien à débitage Levallois, mis au jour dans les niveaux sus-jacents.",
   "abstractEN": "",
-  "rameau": ["Industrie lithique", "Typologie (archéologie)"]
+  "sujetsRameau": ["Industrie lithique", "Typologie (archéologie)"],
+  "membresJury": [
+    {
+      "ppn": "061174068",
+      "nom": "Sémah",
+      "prenom": "François"
+    },
+    {
+      "ppn": "030768934",
+      "nom": "Debénath",
+      "prenom": "André"
+    },
+    {
+      "ppn": "029189985",
+      "nom": "Tuffreau",
+      "prenom": "Alain"
+    },
+    {
+      "ppn": "127433317",
+      "nom": "Gaillard",
+      "prenom": "Claire"
+    },
+    {
+      "ppn": "190626836",
+      "nom": "Lu",
+      "prenom": "Zun'e"
+    },
+    {
+      "ppn": "190626887",
+      "nom": "Huang",
+      "prenom": "Yunping"
+    }
+  ]
 },
 
 { "index": { "_id":"2000PA010697" } },
@@ -37,7 +69,44 @@
   "dateSoutenance": "2020-12-18",
   "abstractFR": "Située au sud-est du bassin du lac Tchad, le Guéra n’a jusqu’à présent bénéficié d’aucun travail de recherche archéologique. Pourtant, cette région possède un riche patrimoine métallurgique. Croisant informations orales et données archéologiques, la présente étude est une contribution à l'histoire de la production ancienne du fer. À cette fin, nous cherchons à déterminer les impacts techniques, économiques et humains de cette activité. Pour bien conduire cette étude, nos interrogations se sont portées sur l’identité des métallurgistes qui ont travaillé le fer dans cette région, leurs parcours migrations et leur mise en place dans le Guéra. Nous avons également essayé de décrire et de caractériser les techniques de réduction mise en place, de quantifier le volume de production des déchets métallurgiques et de dater la sidérurgie dans le Guéra.",
   "abstractEN": "Located in the south-east of the Lake Chad basin, the Guéra region has so far not benefited from any archaeological research work. However, this region has a rich metallurgical heritage. Combining oral information and archaeological data, this study is a contribution to the history of ancient iron production. To this end, we seek to determine the technical, economic and human impacts of this activity. In order to conduct this study properly, our questions focused on the identity of the metallurgists who worked iron in this region, their migration paths and their settlement in the Guéra. We also tried to describe and characterize the smelting techniques that were used, to quantify the volume of metallurgical waste, and to date the metallurgy of iron in the Guéra.",
-  "rameau" : ["Métallurgie préhistorique"]
+  "sujetsRameau" : ["Métallurgie préhistorique"],
+  "membresJury": [
+    {
+      "ppn": "034704310",
+      "nom": "Fauvelle-Aymar",
+      "prenom": "François-Xavier"
+    },
+    {
+      "ppn": "167294903",
+      "nom": "Robion-Brunner",
+      "prenom": "Caroline"
+    },
+    {
+      "ppn": "050241516",
+      "nom": "Dieudonné-Glad",
+      "prenom": "Nadine"
+    },
+    {
+      "ppn": "249414864",
+      "nom": "N'dah",
+      "prenom": "Didier"
+    },
+    {
+      "ppn": "142625396",
+      "nom": "Berranger",
+      "prenom": "Marion"
+    },
+    {
+      "ppn": "108535452",
+      "nom": "Mourre",
+      "prenom": "Vincent"
+    },
+    {
+      "ppn": "086164880",
+      "nom": "Kienon-Kabore",
+      "prenom": "Hélène Timpoko"
+    }
+  ]
 },
 
 { "index": { "_id":"2020PA100137" } },
@@ -47,7 +116,49 @@
   "dateSoutenance": "2020-12-17",
   "abstractFR": "Insérés dans une région de grande diversité culturelle, les abris de la Cidade de Pedra ont livré des types céramiques variés et une production lithique diverse. Ce mélange sous-entend différentes situations socio-culturelles d’interaction entre les cultures archéologiques. Notre intérêt est de reconstruire leur histoire, depuis l’apparition de la céramique à 1900 ± 40 BP jusqu’à l’arrivée des Bororo, cherchant les distinctions culturelles et les rapports entretenus entre groupes. La méthode employée est l’analyse technologique des vestiges lithiques et céramiques de cinq sites archéologiques, ainsi que de pièces ethnographiques. Deux intervalles d’occupation ont été identifiés. Le plus ancien est marqué par une céramique façonnée au colombin, la production d’outils divers sur éclats d’arénite, deux types de lames de hache polies et l’obtention de pigment rouge à partir de plaquettes de siltite. Vers 1060 ± 40 BP, un groupe portant une céramique façonnée sur masse d’argile s’est établi dans la région. La production de lames de hache et l’utilisation de plaquettes se poursuivent, mais la taille de l’arénite diminue drastiquement. L’espace des abris est utilisé autrement et la reprise d’objets lithiques est une constante. Au même temps, la circulation d’objets venant du haut Paraguay et du cerrado devient plus claire. Les groupes Bororo sont arrivés vers 230 ± 70 BP et leurs objets du XIXème siècle montrent une céramique dont le façonnage pourrait correspondre à la tradition technique précédente, mais avec des lames de hache très différentes de celles produites auparavant. L’Holocène récent de la Cidade de Pedra reste ainsi marqué par la succession graduelle de différents groupes culturels et une étape finale plus évidente d’interaction entre groupes voisins.",
   "abstractEN": "Inserted in an area of great cultural diversity, the rock shelters of Cidade da Pedra offered up varied types of ceramics and a diverse lithic production. This mixture hides different sociocultural situations of interaction between archeological cultures. Our interest is to reconstitute the history of these occupations, since the emergence of ceramic in 1.900 ± 40 BP, until the arrival of the Bororo groups, searching for the cultural distinctions and relationships established among the groups. The method employed here is the technological analysis of lithic and ceramic vestiges from five archeological sites and ethnographical pieces. Two intervals of occupation were identified in the shelters. The oldest is marked by pots shaped by coiling, varied lithic tools on arenite (silicified sandstone) flakes, two types of polished axe blades, and through the acquisition of a red pigment from siltite slabs. Around 1060 ± 40 BP, a group was established who possessed a ceramic shaped over clay mass and by coiling. The production of axe blades and the use of slabs persist, but the knapping of arenite drastically lowers. The shelters are used differently and the rework and reuse of lithic objects was constant. At the same time, a circulation of objects coming from the high Paraguay river and the cerrado is found. The Bororo settled around 230 ± 70 BP and their objects from the 20th century show a ceramic with a shaping that would correspond to a prior technical tradition, but with axe blades quite different from the ones that came before. The recent Holocene of the Cidade da Pedra is thus marked by the gradual succession of different cultural groups and a final stage of interaction more evident among neighbouring groups.",
-  "rameau" : ["Industrie lithique", "Colonialisme et archéologie", "Céramique coloniale"]
+  "sujetsRameau" : ["Industrie lithique", "Colonialisme et archéologie", "Céramique coloniale"],
+  "membresJury": [
+    {
+      "ppn": "034765360",
+      "nom": "Pelegrin",
+      "prenom": "Jacques"
+    },
+    {
+      "ppn": "028738497",
+      "nom": "Roux",
+      "prenom": "Valentine"
+    },
+    {
+      "ppn": "132928949",
+      "nom": "Góes Neves",
+      "prenom": "Eduardo"
+    },
+    {
+      "ppn": "029189837",
+      "nom": "Rostain",
+      "prenom": "Stéphen"
+    },
+    {
+      "ppn": "181888882",
+      "nom": "Barreto",
+      "prenom": "Cristiana"
+    },
+    {
+      "ppn": "031887295",
+      "nom": "Hilbert",
+      "prenom": "Klaus"
+    },
+    {
+      "ppn": "15686519X",
+      "nom": "Lourdeau",
+      "prenom": "Antoine"
+    },
+    {
+      "ppn": "109397258",
+      "nom": "Vialou",
+      "prenom": "Águeda Vilhena"
+    }
+  ]
 },
 
 { "index": { "_id":"2003PA100181" } },
@@ -57,7 +168,7 @@
   "dateSoutenance": "2003-01-01",
   "abstractFR": "Les hachereaux sont de grands outils paléolithiques de pierre taillée, réalisés sur éclat et présentant un tranchant non retouché. Ils sont attestés dans l'Acheuléen d'Afrique orientale depuis au moins 1,6 Ma, sont connus au Pléistocène moyen dans toute l'Afrique, au Proche-Orient, en Asie et en Europe sud-occidentale où ils perdurent jusqu'au Moustérien. En se basant sur une revue documentaire aussi complète que possible et sur l'étude technologique de séries de hachereaux d'Afrique sub-saharienne, d'Afrique du Nord, d'Espagne et du Sud de la France, il est possible de démontrer que ces outils ont été réalisés à partir d'un concept unique, même si des méthodes diversifiées impliquant un degré croissant de prédétermination ont pu être mises en oeuvre. En outre, il ressort que la fabrication de hachereaux ne résulte pas d'un déterminisme environnemental, mais d'un choix au sein d'une large gamme de possibilités. Ces outils ont donc une signification culturelle spécifique.",
   "abstractEN": "Cleavers are huge Palaeolithic stone tools, made on flakes and bearing an un-retouched cutting edge. They are known in east African Acheulian since at least 1. 6 My ago. During the Middle Pleistocene, they are widespread all over Africa, in the Middle East, in Asia and South-Western Europe, where they last until Mousterian. On the basis of a wide bibliographic review and of the technological study of cleavers series from sub-Saharan Africa, from north Africa, from Spain and from southern France, it is possible to demonstrate that those tools were made according to a single concept, even if several methods implying an increasing predetermination degree were used. Moreover, it appears that making cleavers is not the result of an environmental determinism, but of a choke between many possibilities. Thus, those have a particular cultural meaning.",
-  "rameau": ["Hachereaux préhistoriques","Industrie lithique"]
+  "sujetsRameau": ["Hachereaux préhistoriques","Industrie lithique"]
 },
 
 { "index": { "_id":"2011AIX10218" } },
@@ -67,7 +178,44 @@
   "dateSoutenance": "2011-05-10",
   "abstractFR": "La diversité historique et substantielle de l’Acheuléen d’Europe occidentale est perceptible d’un point de vue phénoménologique. Chacune des 36 séries lithiques de France, d’Angleterre, d’Italie et d’Espagne étudiées dans ce travail présente une production originale. Le phénomène bifacial peut être dissocié des autres manifestations de l’Acheuléen : les pièces bifaciales sensu stricto apparaissent massivement dans le nord de l’Europe autour de l’OIS 11 puis sur le pourtourméditerranéen vers l’OIS 9 mais sous une forme différente, engendrant des modifi cations majeures de toute la production. L’analyse critique des contextes lithostratigraphiques et la prise en compte des diversités technique, technologique ou chronologique des industries permettent de reconsidérer le paradigme de la diffusion « Out of Africa ». Tout conduit à proposer l’hypothèse d’une invention locale de la pièce bifaciale et de son évolution sur place. Le terme a trop longtemps masqué la véritable diversité du Paléolithique inférieur tout entier. C’est vers l’analyse de la pluralité des comportements humains et des sociétés qu’il faut se diriger maintenant.",
   "abstractEN": "The historic and substantial diversity of the Western European Acheulian can be perceived from a phenomenological standpoint. All of the 36 lithic assemblages studied in France, England, Italy and Spain provide an original production. The bifacial phenomenon can be separated from other expressions of the Acheulian. Indeed, bifacial pieces, in the strict sense, appear in great numbers in northern Europe around the OIS 11 and in the Mediterranean region around the OIS 9. However, the latter are found under different forms, which imply major modifi cations of all the production. The critical analysis of lithostratigraphic contexts and the consideration of technical, technological and chronological diversities, allow reconsidering the paradigm of the « Out of Africa » diffusion. The hypothesis of a local invention and evolution of bifacial pieces can be put forward. The use of this term has limited our perception of the Lower Paleolithic as a whole. One should now focus on analyzing the diversity of human behaviors and societies.",
-  "rameau" : ["Acheuléen", "Paléolithique inférieur", "Industrie lithique"]
+  "sujetsRameau" : ["Acheuléen", "Paléolithique inférieur", "Industrie lithique"],
+  "membresJury": [
+    {
+      "ppn": "140698833",
+      "nom": "Texier",
+      "prenom": "Pierre Jean"
+    },
+    {
+      "ppn": "033755701",
+      "nom": "Piperno",
+      "prenom": "Marcello"
+    },
+    {
+      "ppn": "067332226",
+      "nom": "Conard",
+      "prenom": "Nicholas John"
+    },
+    {
+      "ppn": "057084823",
+      "nom": "Meignen",
+      "prenom": "Liliane"
+    },
+    {
+      "ppn": "077825152",
+      "nom": "Peresani",
+      "prenom": "Marco"
+    },
+    {
+      "ppn": "16208580X",
+      "nom": "Ronchitelli",
+      "prenom": "Annamaria"
+    },
+    {
+      "ppn": "07699774X",
+      "nom": "Truffeau",
+      "prenom": "Alain"
+    }
+  ]
 },
 
 { "index": { "_id":"2012PA010501" } },
@@ -77,7 +225,7 @@
   "dateSoutenance": "2012-01-01",
   "abstractFR": "D'après nos connaissances actuelles, les premiers groupes humains à avoir peuplé le nord du Pérou sont arrivés vers 13 5OO cal BP : ils ont laissé des traces nombreuses au cours des millénaires suivants (période appelée « Précéramique ancien »), traces dont les interprétations divergent encore. Dans ce travail, nous nous sommes attachée à étudier les industries lithiques de ces peuples, afin de mieux les caractériser. Il s'agit d'une étude transversale, parallèle et contrastée, prenant en compte la bande côtière et la cordillère des Andes, tandis que l'Amazonie apparaît encore à ce jour comme un territoire désert. La côte est relativement bien connue, mais dans les Andes les sites sont rares et les études ont été peu nombreuses. Dans ces espaces, les vestiges témoignent d'ensembles culturels divers, comprenant pointes en queue de poisson, Paijanien, industries unifaciales et assemblages montagnards encore mal définis. C'est au travers d'études typo-technologiques des industries lithiques exhumées (de l'ensemble des chaînes opératoires en présence) et d'une étude raisonnée de leurs contextes que nous avons tenté d'éclaircir les chronologies, les étendues géographiques et les relations potentielles existant entre ces complexes et traditions. Ces aspects ont été abordés tout en prenant en compte les dernières données disponibles sur l'évolution climatique et environnementale régionale depuis la fin du Pléistocène. La mise en parallèle de ces données avec d'autres informations extérieures à notre région d'étude, dans les Andes et au-delà, nous a finalement permis d'aborder la question du peuplement des Andes septentrionales et d'en proposer une modélisation.",
   "abstractEN": "",
-  "rameau" : ["Limite Pléistocène-Holocène", "Industrie lithique", "Préhistoire", "Établissements humains préhistoriques", "Antiquités -- Pérou"]
+  "sujetsRameau" : ["Limite Pléistocène-Holocène", "Industrie lithique", "Préhistoire", "Établissements humains préhistoriques", "Antiquités -- Pérou"]
 },
 
 { "index": { "_id":"2014TOU20035" } },
@@ -87,7 +235,34 @@
   "dateSoutenance": "2014-09-22",
   "abstractFR": "En se basant sur le profil des figurations humaines et sur quelques présupposés particulièrement tenaces sur un monde des masques et un animisme considérés comme proprement noir-africains, nombre des auteurs ayant traité des images rupestres du Sahara central ont confondu «culture» et «identité raciale», canons artistiques et types anthropologiques, s'appliquant à écrire une Histoire culturelle hachée que rien ne justifie a priori. Ainsi, à Ozan Ehéré, de remarquables cas de rapports explicites illustrés par des scènes montrant un anthropomorphe touchant un zoomorphe invitent à suggérer un parallèle entre des figurations en style des Têtes Rondes et des images bovidiennes (styles de Séfar - Ozan Ehéré, d’Abañher, d’Iheren), alors que ces groupes sont généralement tenus pour indépendants l’un de l’autre et cloisonnés par souci typologique. Une première approche structurale de l’art rupestre de la zone permet aussi d’ouvrir quelques pistes stimulantes quant à la nature des êtres représentés sur les parois (qui ne sont peut-être pas des humains et des animaux ordinaires vaquant à quelque occupation banale), et conduit à s’interroger sur la fonction de ces images. À la lumière de leur possible dimension féminine, quelques peintures en style des Têtes Rondes pourraient sortir du dossier des représentations énigmatiques et l’on pourrait également — sans recours à des lectures littérales — faire quelque peu quitter aux images bovidiennes le monde de la peinture décorative et celui de la chronique historiée.",
   "abstractEN": "Considering the face of human representations and evoking particularly firm presuppositions on a world of masks and animism considered as strictly black - African, number of the authors who studied the rupestral images of central Sahara mixed up \"culture\" and \"racial identity\", artistic canons and anthropological kind, establishing a chopped cultural History, which is not argued. In Ozan Ehéré, remarkable cases of relationships illustrated by scenes showing an anthropomorphic touching a zoomorphic invite to suggest a parallel between representations in style of the Round Heads and the bovidians images (styles of Séfar - Ozan Ehéré, of Abañher, Iheren), while these groups are considered generally independent one of the other one and divided up by typological concern. A first structural approach of the rock art of the zone finally allows us to open stimulating ways, for example about the nature of beings represented on walls (who may not be human beings and ordinary animals attending to some commonplace occupation), and drives us to wonder about the function of these images. According to their possible feminine dimension, some Round Heads paintings could be taken out from the file of enigmatic representations. We could also get bovidians images out from the world of ornamental paintings, or of the chronicle - without appeal to literal readings.",
-  "rameau" : ["Art pariétal"]
+  "sujetsRameau" : ["Art pariétal"],
+  "membresJury": [
+    {
+      "ppn": "069393362",
+      "nom": "Bon",
+      "prenom": "François"
+    },
+    {
+      "ppn": "029824990",
+      "nom": "Le Quellec",
+      "prenom": "Jean-Loïc"
+    },
+    {
+      "ppn": "028461088",
+      "nom": "Benseddik",
+      "prenom": "Nacéra"
+    },
+    {
+      "ppn": "055768342",
+      "nom": "Barbaza",
+      "prenom": "Michel"
+    },
+    {
+      "ppn": "029307201",
+      "nom": "Vernet",
+      "prenom": "Robert"
+    }
+  ]
 },
 
 { "index": { "_id":"2014TOU20047" } },
@@ -97,7 +272,34 @@
   "dateSoutenance": "2014-09-26",
   "abstractFR": "La présence de hachereaux au sein de nombreux sites du Paléolithique moyen pyrénéo-cantabrique a conduit F. Bordes à définir en 1953 un faciès régional, le Vasconien. Par la suite, des analyses typologiques centrées sur la représentativité des outils retouchés ont remis en question la validité de ce faciès tandis que la présence récurrente mais sporadique de hachereaux dans des ensembles du Paléolithique moyen a entraîné l’idée d’une perduration depuis l’Acheuléen ibérique. Dans ce travail de ré-évaluation du Paléolithique moyen récent pyrénéo-cantabrique, une large gamme de données issues de plusieurs champs disciplinaires a été mobilisée. Ce renouveau du cadre contextuel se voit consolidé par l’obtention récente de datations absolues  permettant de proposer un cadre chronologique précis pour le Moustérien à hachereaux de l’OIS 3. L’analyse de près 450 hachereaux provenant de neuf sites est fondée sur une caractérisation technologique, morphométrique et fonctionnelle de ces outils du Paléolithique moyen récent. Cette première étape de caractérisation est ensuite complétée par la comparaison avec un corpus de près de 200 hachereaux acheuléens provenant de sites localisés au sein de la même aire géographique. Les différences perçues entre ces deux populations, corrélées à un cadre chronologique redéfini, permet d’écarter l’idée d’une perduration ponctuelle de ces outils depuis l’Acheuléen et de les identifier comme l’expression d’une réinvention, leur octroyant de la sorte une nouvelle signification culturelle. Parallèlement, les séries lithiques provenant de 7 sites localisés au nord de la zone vasco-cantabrique ont été analysées selon les principes classiques de la technologie lithique. Ces ensembles sont issus de contextes topographiques variés (grotte, abri, plein air) et de milieux diversifiés (montagnard, littoral, aride). Bien qu’une variabilité attendue soit perceptible entre ces ensembles, le même fond technologique est présent et les différences perçues sont évaluées à l’aune de la fonction présumée des occupations. Interprétées en termes de complémentarité, ces différences autorisent à proposer l’hypothèse d’un modèle d’organisation territorial à faible mobilité impliquant cependant une structuration sociale complexe de ces sociétés de la fin du Paléolithique moyen. Un premier essai de construction d’une archéoséquence pour la région pyrénéo-cantabrique permet de mieux cerner l’homogénéité et la place du Vasconien au niveau régional ainsi que vis-à-vis des technocomplexes qui l’encadrent. Des comparaisons avec les différentes traditions techniques évoluant en synchronie (principalement le Moustérien de Tradition Acheuléenne) permettent également d’aborder la question de leur autonomie respective et de proposer de nouvelles aires d’influences techniques auxquelles elles sont soumises.",
   "abstractEN": "The presence of cleavers in numerous Pyrenean-Cantabrian Middle Paleolithic sites led to the creation of a regional facies called Vasconian (Bordes, 1953). Later, typological analyses based on shaped tool classes’ cumulative frequency have questioned the very existence of this facies (Cabrera Valdés, 1983). The recurrence of cleavers within Middle Paleolithic assemblages was then interpreted as a long perdurance of the Iberian Acheulean. The present research was aimed to re-evaluate the Pyrenean-Cantabrian Late Middle Paleolithic through the comparison of a large variety of data. It is supported by a detailed and renewed chronological framework for the Mousterian with cleavers of OIS 3 based on newly obtained radiometric data. The analysis included technological, morphometric and functional characterization of over 450 cleavers from nine sites attributed to the Late Middle Paleolithic. Our results were then compared to ca. 200 Acheulean cleavers from the same area. The differences between these two populations and a revised chronological framework allow us to reject the hypothesis of a sporadic persistence of cleavers after the Acheulean. We rather propose that these tools have resulted of a new invention and fully were a cultural marker. Meanwhile, the whole lithic ensembles from seven sites located north of the Basque-Cantabrian area were analyzed with the conventional methods of lithic technology. These sites correspond to various topographic contexts (caves, rock shelters, and open air sites) and to diverse environments (alpine, coastal, and arid). Despite an expected variability between these ensembles, we identified a shared technological tradition and propose that differences could be the result of different site functions. If we consider the different sites as being complementarity, we can propose the hypothesis of a low-mobility territorial structuration and thus a social complexity of the Late Middle Paleolithic societies. A first attempt to build a cultural-stratigraphic sequence for the Pyrenean-Cantabrian region is being made in order to properly assess the Vasconian location and homogeneity as for the constraining techno-complexes. Comparisons with contemporaneous techno-complexes (and more particularly with the MTA) allow us to address their respective autonomy within a newly defined technical are of influence.",
-  "rameau" : ["Industrie lithique", "Néandertaliens", "Moustérien"]
+  "sujetsRameau" : ["Industrie lithique", "Néandertaliens", "Moustérien"],
+  "membresJury": [
+    {
+      "ppn": "069393362",
+      "nom": "Bon",
+      "prenom": "François"
+    },
+    {
+      "ppn": "108535452",
+      "nom": "Mourre",
+      "prenom": "Vincent"
+    },
+    {
+      "ppn": "033469652",
+      "nom": "Jaubert",
+      "prenom": "Jacques"
+    },
+    {
+      "ppn": "033179093",
+      "nom": "Van Peer",
+      "prenom": "Philip"
+    },
+    {
+      "ppn": "098323679",
+      "nom": "Porraz",
+      "prenom": "Guillaume"
+    }
+  ]
 },
 
 { "index": { "_id":"2015TOU20116" } },
@@ -107,7 +309,29 @@
   "dateSoutenance": "2015-12-09",
   "abstractFR": "La grotte GLD1 dans l’Adrar Gueldaman (Babors d’Akbou/Algérie) a bénéficié d’un programme de recherche pluridisciplinaire du CNRPAH depuis 2010. Une séquence néolithique couvrant la période VIII-Ve millénaires BP a été mise au jour et fouillée (Secteurs 2 et 3). La reconstitution du cadre chronostratigraphique climatique, économique et culturel des occupations a permis d’individualiser 4 unités archéologiques chronologiquement calées par 28 dates 14C (cal BP) : UA1 [7200-6500], UA2 [6500-530], UA3 [5000-4600], UA4 [4500-4200]. Une reconstitution paléoclimatique est proposée à travers des analyses isotopiques (d13C et d18O) réalisées sur deux stalagmites STM2 et STM4 de GLD1 dont la croissance (dates U/Th), couvre les trois dernières unités archéologiques. Une corrélation entre changements climatiques et occupations du site est mise en évidence. L’abandon de la grotte coïncide avec la crise d’aridité de 4200 BP enregistrée sur le pourtour méditerranéen. La faune domestique est représentée par des chèvres, des moutons (UA1) et des bovins (UA2). Les systèmes d'élevage des chèvres et moutons correspondent aux modèles de gestion des troupeaux des ovicaprinés de sites néolithiques méditerranéens du Sud de la France et de l’Italie ainsi que du Proche-Orient. Les résultats préliminaires paléobotaniques (étude sur 10% du corpus) indique l’a présence de blé et de l'orge en UA4. La céramique à fond conique est décorée par incision (UA1) et impression sans recours au cardium. Les résidus organiques identifiés concernent les matières grasses carnées et laitières ainsi que la cire d’abeille (miel). Le mobilier lithique est typique constitué d’outils du fonds commun épipaléolithique et de nouveaux apports (armatures de flèches, racloirs et scies). L’industrie osseuse est exceptionnellement riche, diversifiée et bien conservée. Les documents symboliques sont en ivoire d’éléphant, derme ossifié de tortue, test d’œuf d’autruche, coquillage marin et ocre.",
   "abstractEN": "A multidisciplinary project at GLD1 cave in the Adrar Gueldaman ridge (Babors near Akbou/North Algeria) was initiated by CNRPAH in 2010. A Neolithic sequence covering the VIII-V millennia BP has been revealed (Sectors S2 and S3). The chronostratigraphic, climatic, economic and cultural contexts have been studied, leading to the definition of four archaeological units chronologically delimited using 28 14C dates on charcoal (cal BP): UA1 [7200-6500], UA2 [6500-530], UA3 [5000-4600], UA4 [4500-4200]. The paleoclimate for periods UA2 to UA4 was reconstructed using isotopic analysis (d13C and d18O) of two stalagmites (STM2 and STM4), demonstrating a correlation between climatic changes and the occupation of the cave. A prolonged drought at ca. 4400–3800 cal BP is supposed to be the responsible of cave abandonment shortly after ca. 4403 cal BP. The domestic fauna is composed of sheep and goat (UA1) and cattle (UA2). The slaughter profiles for the ovis/capra assemblages suggest a mixed meat/milk economy. Molecular and isotopic analysis of absorbed food residues from 140 pottery vessels confirms the exploitation of domesticated animals, for their carcass fats and their secondary products, e.g. dairy fats. Preliminary palaeobotanical results (10% of the remains studied) show that both wheat and barley were cultivated during the last unit (UA4). Vessels with conical bottoms were decorated by incision (UA1) or impression techniques without using cardium shell. Lithic tools have epipalaeolithic characteristics, but typical Neolithic ones such as arrowheads, scrapers, and saws are also present. The worked bone industry is exceptionally rich, diversified and well preserved. A large variety of well-preserved ornaments were crafted from elephant ivory, marine gastropod shells, bird bones, tortoise shells, and ostrich eggshell.",
-  "rameau" : ["Grottes", "Néolithique", "Fouilles archéologiques"]
+  "sujetsRameau" : ["Grottes", "Néolithique", "Fouilles archéologiques"],
+  "membresJury": [
+    {
+      "ppn": "055768342",
+      "nom": "Barbaza",
+      "prenom": "Michel"
+    },
+    {
+      "ppn": "077813405",
+      "nom": "Gutherz",
+      "prenom": "Xavier"
+    },
+    {
+      "ppn": "026908069",
+      "nom": "Guilaine",
+      "prenom": "Jean"
+    },
+    {
+      "ppn": "073337196",
+      "nom": "Roubet",
+      "prenom": "Colette"
+    }
+  ]
 }
 
 ]
