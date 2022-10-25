@@ -178,7 +178,6 @@ services:
     environment:
       ELASTICSEARCH_PASSWORD: ${THESES_ELASTICSEARCH_PASSWORD}
       ELASTICSEARCH_HOST: "https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}"
-    command: /app/theses-sample-load.sh
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
