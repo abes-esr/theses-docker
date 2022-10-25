@@ -49,14 +49,17 @@
       "abstractEN": {
         "type": "text"
       },
-      "rameau": {
-        "type": "keyword",
+      "sujetsRameau": {
+        "type": "text",
         "fields": {
           "suggestion": {
             "type": "completion",
             "analyzer": "standard"
           }
         }
+      },
+      "membresJury": {
+        "type": "nested"
       }
     }
   }
