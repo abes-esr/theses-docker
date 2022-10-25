@@ -204,16 +204,8 @@ Pour restaurer l'application, il faut :
 
 ### Pour charger un échantillon de données
 
-Pour indexer 11 thèses exemple dans elasticsearch, voici comment procéder :
-```bash
-cd /opt/pod/theses-docker/
-docker-compose up --build theses-batch-11theses
-```
+Se référer au code de https://github.com/abes-esr/theses-batch-indexation
 
-Cette commande aura pour effet de lancer le batch ``images/theses-batch/theses-sample-load.sh`` qui va faire 3 choses :
-- supprimer l'index ``theses-sample``
-- créer l'index ``theses-sample`` avec son mapping elasticsearch
-- charger 11 thèses exemple dans l'index ``theses-sample`` 
 
 
 ## Architecture
