@@ -171,7 +171,7 @@ services:
   # (travail en cours pour la preuve de concept de l'indexation de 11 thèses)
   theses-batch-11theses:
     container_name: theses-batch-11theses
-    image: abesesr/theses:develop-batch-indexation
+    image: abesesr/theses:${THESES_BATCH_INDEXATION_VERSION}
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
