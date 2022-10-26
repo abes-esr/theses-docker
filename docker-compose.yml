@@ -76,7 +76,7 @@ services:
     ports:
       - ${THESES_FRONT_HTTP_PORT}:80
     environment:
-      VITE_APP_API: ${THESES_FRONT_VITE_APP_API}
+      THESES_FRONT_VITE_APP_API: ${THESES_FRONT_VITE_APP_API}
     depends_on:
       - theses-api-diffusion
       - theses-api-recherche-passe-plat
