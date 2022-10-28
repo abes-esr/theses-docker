@@ -57,6 +57,7 @@ Finalement on règle quelques droits sur les répertoires et on peut démarrer l
 # forcer les droits max pour les volumes déportés sur le système de fichier local
 cd /opt/pod/theses-docker/
 mkdir -p volumes/theses-elasticsearch/            && chmod 777 volumes/theses-elasticsearch/
+mkdir -p volumes/theses-elasticsearch-tmp/        && chmod 777 volumes/theses-elasticsearch-tmp/
 mkdir -p volumes/theses-elasticsearch-setupcerts/ && chmod 777 volumes/theses-elasticsearch-setupcerts/
 mkdir -p volumes/theses-kibana/                   && chmod 777 volumes/theses-kibana/
 

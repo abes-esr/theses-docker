@@ -331,6 +331,7 @@ services:
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
       - ./volumes/theses-elasticsearch/:/usr/share/elasticsearch/data/
+      - ./volumes/theses-elasticsearch-tmp/:/usr/share/elasticsearch/tmp/
     ports:
       # réglage explicites des ports internes et externes pour pouvoir fonctionner en cluster
       # cf https://blog.cri.epita.fr/post/2019-06-10-elasticsearch-cluster-formation-issue/
@@ -353,7 +354,9 @@ services:
       # pour éviter que les dump geoip soient téléchargées régulièrement dans /tmp/
       # cf https://abes-esr.atlassian.net/browse/THE-188
       # cf https://www.elastic.co/guide/en/elasticsearch/reference/current/geoip-processor.html#geoip-cluster-settings
+      # cf https://www.elastic.co/guide/en/elasticsearch/reference/current/executable-jna-tmpdir.html
       - ingest.geoip.downloader.enabled=false
+      - ES_TMPDIR=/usr/share/elasticsearch/tmp
       # paramètres de sécurité d'elasticsearch
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
