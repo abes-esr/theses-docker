@@ -49,19 +49,24 @@ Pré-requis : WSL2 + Docker Desktop doivent être installés sur votre machine.
 Tout est expliqué ici : https://github.com/abes-esr/docker-shibboleth-renater-sp#configuration-en-prod
 
 En résumé pour ``theses-rp``, il faut faire ceci :
-1) se rendre sur la machine de prod et rentrer dans le répertoire des certiticats :
+1) se rendre sur la machine de prod et rentrer dans le répertoire des certificats :
    ```bash
    cd /opt/pod/theses-docker/volumes/theses-rp/shibboleth/ssl/
    ```
-2) générer par dessus les certificats existants (ce sont des certificats de démo) des nouveaux certificats auto-signées :
+2) générer des certificats auto-signées dédiés pour la prod :
    ```bash
-   openssl genrsa -out server.key 2048
-   openssl req -new -key server.key -out server.csr
-   openssl x509 -req -days 7300 -in server.csr -signkey server.key -out server.crt
+   openssl genrsa -out server-prod.key 2048
+   openssl req -new -key server-prod.key -out server-prod.csr
+   openssl x509 -req -days 7300 -in server-prod.csr -signkey server-prod.key -out server-prod.crt
    ```
-3) enregistrer theses-rp de prod comme service provider dans la [fédération d'identités Education-Recherche de prod](https://registry.federation.renater.fr/?action=get_all)
+3) positionner les variables suivante dans le fichier ``.env`` :
+   ```env
+   RENATER_SP_CERTIFICATE_CRT=ssl/server-prod.crt
+   RENATER_SP_CERTIFICATE_KEY=ssl/server-prod.key
+   ```
+4) enregistrer theses-rp de prod comme service provider dans la [fédération d'identités Education-Recherche de prod](https://registry.federation.renater.fr/?action=get_all)
 
-Attention : ne jamais commiter ces certificats (surtout le fichier ``server.key`` qui est un secret) sur le git !
+Attention : ne jamais commiter ces certificats (surtout le fichier ``server-prod.key`` qui est un secret) sur le github !
 
 ## Comment configurer la fédération d'identités de theses.fr en local ?
 

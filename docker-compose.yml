@@ -19,7 +19,7 @@ services:
   # (à adapter)
   theses-rp:
     container_name: theses-rp
-    image: abesesr/docker-shibboleth-renater-sp:1.5.1
+    image: abesesr/docker-shibboleth-renater-sp:1.6.0
     ports:
       - ${THESES_RP_HTTPS_PORT}:443
       - ${THESES_RP_HTTP_PORT}:80
@@ -27,6 +27,8 @@ services:
       RENATER_SP_TEST_OR_PROD: ${THESES_RP_RENATER_SP_TEST_OR_PROD}
       RENATER_SP_ENTITY_ID: ${THESES_RP_RENATER_SP_ENTITY_ID}
       RENATER_SP_ADMIN_MAIL: ${THESES_RP_RENATER_SP_ADMIN_MAIL}
+      RENATER_SP_CERTIFICATE_CRT: ${THESES_RP_RENATER_SP_CERTIFICATE_CRT}
+      RENATER_SP_CERTIFICATE_KEY: ${THESES_RP_RENATER_SP_CERTIFICATE_KEY}
       RENATER_SP_HTTPD_SERVER_NAME: ${THESES_RP_RENATER_SP_HTTPD_SERVER_NAME}
       RENATER_SP_HTTPD_LOG_LEVEL: "info ssl:warn"
       RENATER_SP_HTTPD_LOG_FORMAT: '%h \"%{Shib-Identity-Provider}i\" \"%{eppn}i\" \"%{primary-affiliation}i\" \"%{supannEtablissement}i\" %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"'
