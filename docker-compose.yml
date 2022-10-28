@@ -19,7 +19,7 @@ services:
   # (à adapter)
   theses-rp:
     container_name: theses-rp
-    image: abesesr/docker-shibboleth-renater-sp:1.6.0
+    image: abesesr/docker-shibboleth-renater-sp:1.6.1
     ports:
       - ${THESES_RP_HTTPS_PORT}:443
       - ${THESES_RP_HTTP_PORT}:80
