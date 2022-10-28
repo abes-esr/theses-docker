@@ -352,7 +352,7 @@ services:
       - cluster.name=${THESES_ELASTICSEARCH_CLUSTER_NAME}
       - cluster.initial_master_nodes=${THESES_ELASTICSEARCH_CLUSTER_INITIAL_MASTER_NODES}
       - discovery.seed_hosts=${THESES_ELASTICSEARCH_CLUSTER_DISCOVER_SEED_HOSTS}
-      # pour désactiver le swap (https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-configuration-memory.html#bootstrap-memory_lock)
+      # réglage pour désactiver le swap: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
       - bootstrap.memory_lock=true
       # pour éviter que les dump geoip soient téléchargés régulièrement dans /tmp/
       # cf https://abes-esr.atlassian.net/browse/THE-188
@@ -377,6 +377,7 @@ services:
       # le port http pour le healthcheck d'elasticsearch
       - THESES_ELASTICSEARCH_HTTP_PORT=${THESES_ELASTICSEARCH_HTTP_PORT}
     mem_limit: ${THESES_ELASTICSEARCH_MEM_LIMIT}
+    # réglage ulimits pour désactiver le swap: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
     ulimits:
       memlock:
         soft: -1
