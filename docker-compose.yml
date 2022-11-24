@@ -149,6 +149,9 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=apache"
+      
+
+
   theses-api-recherche:
     container_name: theses-api-recherche
     image: abesesr/theses:${THESES_API_RECHERCHE_VERSION}
@@ -172,6 +175,7 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
       # pour que les mises à jour de cette image soient auto-déployées par watchtower
       - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
+
 
 
   #######################################
@@ -270,7 +274,6 @@ services:
 
 
 
-
   #######################################
   # theses-elasticsearch-setupusers
   # conteneur chargé de créer les différents comptes applicatifs pour accès à elasticsearch et aussi le compte pour kibana
@@ -361,6 +364,7 @@ services:
       - cluster.name=${THESES_ELASTICSEARCH_CLUSTER_NAME}
       - cluster.initial_master_nodes=${THESES_ELASTICSEARCH_CLUSTER_INITIAL_MASTER_NODES}
       - discovery.seed_hosts=${THESES_ELASTICSEARCH_CLUSTER_DISCOVER_SEED_HOSTS}
+      # réglage pour désactiver le swap: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
       - bootstrap.memory_lock=true
       # pour éviter que les dump geoip soient téléchargés régulièrement dans /tmp/
       # cf https://abes-esr.atlassian.net/browse/THE-188
@@ -384,6 +388,11 @@ services:
       - xpack.license.self_generated.type=basic
       # le port http pour le healthcheck d'elasticsearch
       - THESES_ELASTICSEARCH_HTTP_PORT=${THESES_ELASTICSEARCH_HTTP_PORT}
+<<<<<<< HEAD
+=======
+    mem_limit: ${THESES_ELASTICSEARCH_MEM_LIMIT}
+    # réglage ulimits pour désactiver le swap: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
+>>>>>>> 8dc8697ae6f5d587c452be7d6baa7f35542b5d5c
     ulimits:
       memlock:
         soft: -1
