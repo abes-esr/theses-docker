@@ -51,6 +51,10 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_3: "http://theses-kibana:5601/"
       RENATER_SP_HTTPD_PUBLIC_PATH_4: "/api/v1/recherche-java/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_4: "http://theses-api-recherche:8990/api/v1/recherche/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_5: "/api/v1/personnes/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_5: "http://theses-api-recherche:8990/api/v1/personnes/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_6: "/api/v1/theses/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_6: "http://theses-api-recherche:8990/api/v1/theses/"
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
     # Ces commentaires sont conservés pour expliquer pourquoi theses-rp ne dépend pas des autres conteneurs
