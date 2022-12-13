@@ -11,22 +11,24 @@ Configuration docker 🐳 pour déployer le portail national des thèses dont le
 Les URLs temporaires du futur theses.fr sont les suivantes :
 - en préprod :
   - https://v2-prod.theses.fr : la homepage de theses.fr
-  - https://v2-prod.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
+  - https://v2-prod.theses.fr/api/v1/recherche-java/completion/?q=n%C3%A9olithique : l'API de recherche par les theses de theses.fr
+  - https://v2-prod.theses.fr/api/v1/personnes/completion/?q=erwann : l'API de recherche par les personnes de theses.fr
   - https://v2-prod.theses.fr/poc-fede/ : le PoC de fédération d'identités
   - https://v2-prod.theses.fr/kibana/ : le kibana backoffice de theses.fr
 - en test :
   - https://v2-test.theses.fr : la homepage de theses.fr
-  - https://v2-test.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
-  - https://v2-test.theses.fr/poc-fede/ : le PoC de fédération d'identités
+  - https://v2-test.theses.fr/api/v1/recherche-java/completion/?q=n%C3%A9olithique : l'API de recherche par les theses de theses.fr
+  - https://v2-test.theses.fr/api/v1/personnes/completion/?q=erwann : l'API de recherche par les personnes de theses.fr
   - https://v2-test.theses.fr/kibana/ : le kibana backoffice de theses.fr
 - en dev :
   - https://v2-dev.theses.fr : la homepage de theses.fr
-  - https://v2-dev.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
-  - https://v2-dev.theses.fr/poc-fede/ : le PoC de fédération d'identités
+  - https://v2-dev.theses.fr/api/v1/recherche-java/completion/?q=n%C3%A9olithique : l'API de recherche par les theses de theses.fr
+  - https://v2-dev.theses.fr/api/v1/personnes/completion/?q=erwann : l'API de recherche par les personnes de theses.fr
   - https://v2-dev.theses.fr/kibana/ : le kibana backoffice de theses.fr
 - en local : (fonctionne uniquement si vous avez une intallation de theses.fr avec [cette configuration](./README-faq.md))
   - https://v2-local.theses.fr : la homepage de theses.fr
-  - https://v2-local.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
+  - https://v2-local.theses.fr/api/v1/recherche-java/completion/?q=n%C3%A9olithique : l'API de recherche par les theses de theses.fr
+  - https://v2-local.theses.fr/api/v1/personnes/completion/?q=erwann : l'API de recherche par les personnes de theses.fr
   - https://v2-local.theses.fr/poc-fede/ : le PoC de fédération d'identités
   - https://v2-local.theses.fr/kibana/ : le kibana backoffice de theses.fr
 
