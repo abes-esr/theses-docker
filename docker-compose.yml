@@ -189,7 +189,7 @@ services:
   # (travail en cours pour la preuve de concept de l'indexation de 11 thèses)
   theses-batch-11theses:
     container_name: theses-batch-11theses
-    image: abesesr/theses:${THESES_BATCH_INDEXATION_VERSION}
+    image: abesesr/theses:${THESES_BATCH_INDEXATION_11THESES_VERSION}
     mem_limit: ${MEM_LIMIT}
     depends_on:
       theses-elasticsearch:
@@ -203,6 +203,31 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=adhoc"
+      # pour que les mises à jour de cette image soient auto-déployées par watchtower
+      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
+
+
+
+  #######################################
+  # theses-batch-indexation
+  # batch pour indexer les thèses dans elasticsearch
+  #
+  theses-batch-indexation:
+    container_name: theses-batch-indexation
+    image: abesesr/theses:${THESES_BATCH_INDEXATION_VERSION}
+    mem_limit: ${MEM_LIMIT}
+    depends_on:
+      theses-elasticsearch:
+        condition: service_healthy
+    environment:
+      ELASTICSEARCH_PASSWORD: ${THESES_ELASTICSEARCH_PASSWORD}
+      ELASTICSEARCH_HOST: "https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}"
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
       # pour que les mises à jour de cette image soient auto-déployées par watchtower
       - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
 
