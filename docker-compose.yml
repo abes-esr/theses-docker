@@ -420,6 +420,9 @@ services:
       - xpack.license.self_generated.type=basic
       # le port http pour le healthcheck d'elasticsearch
       - THESES_ELASTICSEARCH_HTTP_PORT=${THESES_ELASTICSEARCH_HTTP_PORT}
+      # pour les sauvegardes (snapshots)
+      - path.repo=/usr/share/elasticsearch/backup/
+
     # réglage ulimits pour désactiver le swap: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
     ulimits:
       memlock:
