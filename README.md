@@ -231,3 +231,9 @@ Les images docker de theses.fr sont générées à partir des codes open sources
 - https://github.com/abes-esr/theses-api-indexation
 - https://github.com/abes-esr/theses-front
 - https://github.com/abes-esr/theses-batch
+
+## Schéma global de l'application : 
+
+![image](https://user-images.githubusercontent.com/3686902/223732169-6daccf99-f86b-40aa-9289-40b626128a8d.png)
+
+
