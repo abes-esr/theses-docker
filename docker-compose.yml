@@ -377,7 +377,7 @@ services:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
       - ./volumes/theses-elasticsearch/:/usr/share/elasticsearch/data/
       - ./volumes/theses-elasticsearch-tmp/:/usr/share/elasticsearch/tmp/
-      - ./volumes/theses-elasticsearch-backup/:/usr/share/elasticsearch/backup/
+      - ./volumes/theses-elasticsearch-backup/:${THESES_ELASTICSEARCH_SNAPSHOTS_DIR}
     ports:
       # réglage explicites des ports internes et externes pour pouvoir fonctionner en cluster
       # cf https://blog.cri.epita.fr/post/2019-06-10-elasticsearch-cluster-formation-issue/
@@ -421,7 +421,7 @@ services:
       # le port http pour le healthcheck d'elasticsearch
       - THESES_ELASTICSEARCH_HTTP_PORT=${THESES_ELASTICSEARCH_HTTP_PORT}
       # pour les sauvegardes (snapshots)
-      - path.repo=/usr/share/elasticsearch/backup/
+      - path.repo=${THESES_ELASTICSEARCH_SNAPSHOTS_DIR}
 
     # réglage ulimits pour désactiver le swap: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
     ulimits:
