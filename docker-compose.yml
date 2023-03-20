@@ -49,7 +49,7 @@ services:
       # pour -local -dev -test mais pour -prod THESES_RP_KIBANA_PUBLIC_PATH est vide et c'est THESES_RP_KIBANA_PROTECTED_PATH qui est renseigné
       RENATER_SP_HTTPD_PUBLIC_PATH_3: ${THESES_RP_KIBANA_PUBLIC_PATH}
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_3: "http://theses-kibana:5601/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_4: "/api/v1/recherche-java/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_4: "/api/v1/recherche/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_4: "http://theses-api-recherche:8990/api/v1/recherche/"
       RENATER_SP_HTTPD_PUBLIC_PATH_5: "/api/v1/personnes/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_5: "http://theses-api-recherche:8990/api/v1/personnes/"
