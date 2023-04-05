@@ -55,6 +55,8 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_5: "http://theses-api-recherche:8990/api/v1/personnes/"
       RENATER_SP_HTTPD_PUBLIC_PATH_6: "/api/v1/theses/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_6: "http://theses-api-recherche:8990/api/v1/theses/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_7: "/SiteMap"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-seo:8991/SiteMap"
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
     # Ces commentaires sont conservés pour expliquer pourquoi theses-rp ne dépend pas des autres conteneurs
@@ -174,6 +176,38 @@ services:
       ES_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
       ES_THESES_INDEXNAME: ${THESES_ELASTICSEARCH_THESES_INDEXNAME}
       ES_PERSONNES_INDEXNAME: ${THESES_ELASTICSEARCH_PERSONNES_INDEXNAME}
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
+      # pour que les mises à jour de cette image soient auto-déployées par watchtower
+      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
+
+
+
+  #######################################
+  # theses-seo
+  # Fournit le sitemap et le robot.txt de theses.fr
+  
+    theses-seo:
+    container_name: theses-seo
+    image: abesesr/theses:${THESES_SEO_VERSION}
+    depends_on:
+      theses-elasticsearch:
+        condition: service_healthy
+    restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    environment:
+      SERVER_PORT: 8991
+      ES_HOSTNAME: 'theses-elasticsearch-01'
+      ES_PORT: ${THESES_ELASTICSEARCH_HTTP_PORT}
+      ES_PROTOCOL: 'https'
+      ES_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME}
+      ES_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
+      ES_THESES_INDEXNAME: ${THESES_ELASTICSEARCH_THESES_INDEXNAME}
+      NBURLSPAGE: ${NBURLSPAGE}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
