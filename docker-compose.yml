@@ -191,7 +191,7 @@ services:
   # theses-seo
   # Fournit le sitemap et le robot.txt de theses.fr
   
-    theses-seo:
+  theses-seo:
     container_name: theses-seo
     image: abesesr/theses:${THESES_SEO_VERSION}
     depends_on:
