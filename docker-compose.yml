@@ -57,6 +57,8 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_6: "http://theses-api-recherche:8990/api/v1/theses/"
       RENATER_SP_HTTPD_PUBLIC_PATH_7: "/SiteMap"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-seo:8991/SiteMap"
+      RENATER_SP_HTTPD_PUBLIC_PATH_8: "/robots.txt"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_8: "http://theses-seo:8991/robots.txt"
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
     # Ces commentaires sont conservés pour expliquer pourquoi theses-rp ne dépend pas des autres conteneurs
