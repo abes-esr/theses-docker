@@ -174,7 +174,7 @@ services:
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
-    cpus: '0.5'
+    cpus: ${CPU_LIMIT}
     environment:
       SERVER_PORT: 8990
       ES_HOSTNAME: 'theses-elasticsearch-01'
