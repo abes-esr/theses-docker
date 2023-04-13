@@ -22,6 +22,7 @@ services:
     image: abesesr/docker-shibboleth-renater-sp:1.6.1
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
     ports:
       - ${THESES_RP_HTTPS_PORT}:443
       - ${THESES_RP_HTTP_PORT}:80
@@ -85,6 +86,7 @@ services:
     image: abesesr/theses:${THESES_FRONT_VERSION}
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
     ports:
       - ${THESES_FRONT_HTTP_PORT}:80
     environment:
@@ -118,6 +120,7 @@ services:
     image: httpd:2.4.54-theses-api-diffusion
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -148,6 +151,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
     environment:
       THESES_API_RECHERCHE_ELASTIC_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME}
       THESES_API_RECHERCHE_ELASTIC_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
@@ -169,6 +173,8 @@ services:
         condition: service_healthy
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: '0.5'
     environment:
       SERVER_PORT: 8990
       ES_HOSTNAME: 'theses-elasticsearch-01'
@@ -201,6 +207,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
     environment:
       SERVER_PORT: 8991
       ES_HOSTNAME: 'theses-elasticsearch-01'
@@ -229,6 +236,7 @@ services:
     container_name: theses-batch-11theses
     image: abesesr/theses:${THESES_BATCH_INDEXATION_11THESES_VERSION}
     mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
@@ -254,6 +262,7 @@ services:
     container_name: theses-batch-indexation
     image: abesesr/theses:${THESES_BATCH_INDEXATION_VERSION}
     mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
@@ -279,6 +288,7 @@ services:
     container_name: theses-elasticsearch-setupcerts
     image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
     mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
     user: "0"
@@ -352,6 +362,7 @@ services:
     container_name: theses-elasticsearch-setupusers
     image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
     mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
@@ -410,6 +421,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
       - ./volumes/theses-elasticsearch/:/usr/share/elasticsearch/data/
@@ -496,6 +508,7 @@ services:
     image: docker.elastic.co/kibana/kibana:8.3.0
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/kibana/config/certs/
       - ./volumes/theses-kibana/:/usr/share/kibana/data/
@@ -539,6 +552,7 @@ services:
     image: containrrr/watchtower:1.4.0
     container_name: theses-watchtower
     mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
