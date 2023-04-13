@@ -217,6 +217,7 @@ services:
       ES_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
       ES_THESES_INDEXNAME: ${THESES_ELASTICSEARCH_THESES_INDEXNAME}
       NBURLSPAGE: ${THESES_SEO_NBURLSPAGE}
+      RACINE: ${THESES_SEO_RACINE}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
