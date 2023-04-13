@@ -56,8 +56,8 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_5: "http://theses-api-recherche:8990/api/v1/personnes/"
       RENATER_SP_HTTPD_PUBLIC_PATH_6: "/api/v1/theses/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_6: "http://theses-api-recherche:8990/api/v1/theses/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_7: "/SiteMap"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-seo:8991/SiteMap"
+      RENATER_SP_HTTPD_PUBLIC_PATH_7: "/sitemap.xml"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-seo:8991/sitemap.xml"
       RENATER_SP_HTTPD_PUBLIC_PATH_8: "/robots.txt"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_8: "http://theses-seo:8991/robots.txt"
     volumes:
@@ -216,7 +216,7 @@ services:
       ES_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME}
       ES_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
       ES_THESES_INDEXNAME: ${THESES_ELASTICSEARCH_THESES_INDEXNAME}
-      NBURLSPAGE: ${NBURLSPAGE}
+      NBURLSPAGE: ${THESES_SEO_NBURLSPAGE}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
