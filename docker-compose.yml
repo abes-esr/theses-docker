@@ -88,6 +88,7 @@ services:
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     ports:
       - ${THESES_FRONT_HTTP_PORT}:80
     environment:
@@ -122,6 +123,7 @@ services:
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -153,6 +155,7 @@ services:
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     environment:
       THESES_API_RECHERCHE_ELASTIC_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME}
       THESES_API_RECHERCHE_ELASTIC_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
@@ -209,6 +212,7 @@ services:
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     environment:
       SERVER_PORT: 8991
       ES_HOSTNAME: 'theses-elasticsearch-01'
@@ -239,6 +243,7 @@ services:
     image: abesesr/theses:${THESES_BATCH_INDEXATION_11THESES_VERSION}
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
@@ -265,6 +270,7 @@ services:
     image: abesesr/theses:${THESES_BATCH_INDEXATION_VERSION}
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
@@ -291,6 +297,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
     user: "0"
@@ -365,6 +372,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
@@ -424,6 +432,7 @@ services:
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
       - ./volumes/theses-elasticsearch/:/usr/share/elasticsearch/data/
@@ -511,6 +520,7 @@ services:
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/kibana/config/certs/
       - ./volumes/theses-kibana/:/usr/share/kibana/data/
@@ -555,6 +565,7 @@ services:
     container_name: theses-watchtower
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
