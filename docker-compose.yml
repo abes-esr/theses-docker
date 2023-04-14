@@ -39,11 +39,11 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PATH_0: "/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_0: "http://theses-front:80/"
       RENATER_SP_HTTPD_PUBLIC_PATH_1: "/poc-fede/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:80/poc-fede/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion-poc:80/poc-fede/"
       RENATER_SP_HTTPD_PUBLIC_PATH_2: "/api/v1/recherche/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "http://theses-api-recherche-passe-plat:80/api/v1/recherche/"
       RENATER_SP_HTTPD_PROTECTED_PATH_0: "/poc-fede/74979_GERARDIN_2018_archivage.pdf"
-      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-api-diffusion/poc-fede/74979_GERARDIN_2018_archivage.pdf"
+      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-api-diffusion-poc/poc-fede/74979_GERARDIN_2018_archivage.pdf"
       # pour -prod THESES_RP_KIBANA_PROTECTED_PATH est renseigné mais THESES_KIBANA_PUBLIC_PATH est vide
       RENATER_SP_HTTPD_PROTECTED_PATH_1: ${THESES_RP_KIBANA_PROTECTED_PATH}
       RENATER_SP_HTTPD_PROTECTED_PROXY_TO_1: "http://theses-kibana:5601/"
@@ -67,7 +67,7 @@ services:
     # la raison est que theses-rp est relativement long à démarrer (plusieurs minutes) et qu'il ne sera que
     # très rarrement mis à jour, donc autant ne pas le redémarrer si jamais une de ses dépendance redémarre.
     #depends_on:
-    #  - theses-api-diffusion
+    #  - theses-api-diffusion-poc
     #  - theses-api-recherche
     #  - theses-front
     labels:
@@ -95,7 +95,7 @@ services:
       THESES_FRONT_VITE_APP_API: ${THESES_FRONT_VITE_APP_API}
       THESES_FRONT_VITE_APP_APIREF: ${THESES_FRONT_VITE_APP_APIREF}
     depends_on:
-      - theses-api-diffusion
+      - theses-api-diffusion-poc
       - theses-api-recherche-passe-plat
       - theses-api-recherche
     labels:
@@ -110,16 +110,16 @@ services:
 
 
   #######################################
-  # theses-api-diffusion
+  # theses-api-diffusion-poc
   # API de diffusion des thèses en java spring de theses.fr
   # (travail en cours, pour la preuve de concept il est
   #  chargé de mettre à disposition un PDF en 
   #  accès restreint que theses-rp protège)
-  theses-api-diffusion:
-    container_name: theses-api-diffusion
+  theses-api-diffusion-poc:
+    container_name: theses-api-diffusion-poc
     #image: mendhak/http-https-echo:23
-    build: ./images/theses-api-diffusion/
-    image: httpd:2.4.54-theses-api-diffusion
+    build: ./images/theses-api-diffusion-poc/
+    image: httpd:2.4.54-theses-api-diffusion-poc
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
