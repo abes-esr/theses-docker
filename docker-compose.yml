@@ -127,6 +127,7 @@ services:
       SPRING_DATASOURCE_URL: ${THESES_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${THESES_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${THESES_DATASOURCE_PASSWORD}
+      JAVA_OPTS: "-Doracle.jdbc.timezoneAsRegion=false -Duser.timezone=CEST"
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
