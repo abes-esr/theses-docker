@@ -38,8 +38,10 @@ services:
       RENATER_SP_HTTPD_LOG_FORMAT: '%h \"%{Shib-Identity-Provider}i\" \"%{eppn}i\" \"%{primary-affiliation}i\" \"%{supannEtablissement}i\" %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"'
       RENATER_SP_HTTPD_PUBLIC_PATH_0: "/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_0: "http://theses-front:80/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_1: "/poc-fede/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion-poc:80/poc-fede/"
+      #RENATER_SP_HTTPD_PUBLIC_PATH_1: "/poc-fede/"
+      #RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion-poc:80/poc-fede/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_1: "/button/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:8992/button/"
       RENATER_SP_HTTPD_PUBLIC_PATH_2: "/api/v1/recherche/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "http://theses-api-recherche-passe-plat:80/api/v1/recherche/"
       RENATER_SP_HTTPD_PROTECTED_PATH_0: "/poc-fede/74979_GERARDIN_2018_archivage.pdf"
@@ -65,8 +67,7 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_8: "http://theses-seo:8991/robots.txt"
       RENATER_SP_HTTPD_PUBLIC_PATH_9: "/document/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_9: "http://theses-api-diffusion:8992/document/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_10: "/button/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_10: "http://theses-api-diffusion:8992/button/"
+     
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
     # Ces commentaires sont conservés pour expliquer pourquoi theses-rp ne dépend pas des autres conteneurs
