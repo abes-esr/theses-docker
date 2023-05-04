@@ -40,7 +40,7 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_0: "http://theses-front:80/"
       #RENATER_SP_HTTPD_PUBLIC_PATH_1: "/poc-fede/"
       #RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion-poc:80/poc-fede/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_1: "/api/button/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_1: "/api/v1/button/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:8992/button/"
       RENATER_SP_HTTPD_PUBLIC_PATH_2: "/api/v1/recherche/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "http://theses-api-recherche-passe-plat:80/api/v1/recherche/"
@@ -65,7 +65,7 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-seo:8991/sitemap.xml"
       RENATER_SP_HTTPD_PUBLIC_PATH_8: "/robots.txt"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_8: "http://theses-seo:8991/robots.txt"
-      RENATER_SP_HTTPD_PUBLIC_PATH_9: "/api/document/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_9: "/api/v1/document/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_9: "http://theses-api-diffusion:8992/document/"
      
     volumes:
