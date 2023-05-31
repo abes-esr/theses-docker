@@ -492,7 +492,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -s --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} https://localhost:${THESES_ELASTICSEARCH_HTTP_PORT}/_cluster/health?timeout=5s | grep -q '\"status\":\"${THESES_ELASTICSEARCH_CLUSTER_HEALTHY_STATUS}\"'",
+          "curl -s --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} 'https://localhost:${THESES_ELASTICSEARCH_HTTP_PORT}/_cluster/health?timeout=5s&pretty=true' | grep status | grep -E -q '${THESES_ELASTICSEARCH_CLUSTER_HEALTHY_STATUS}'",
         ]
       interval: 10s
       timeout: 10s
