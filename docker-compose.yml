@@ -125,7 +125,7 @@ services:
     ports:
       - ${THESES_API_DIFFUSION_HTTP_PORT}:8992
     volumes:
-      - /applis/portail/theses/STARSTOCK/:/volumes/starstock/
+      - ${THESES_PATH_HOST}:${THESES_PATH_LOCAL}
     environment:
       SERVER_PORT: 8992
       SPRING_DATASOURCE_URL: ${THESES_DATASOURCE_URL}
@@ -134,6 +134,7 @@ services:
       TEL_USERID: ${THESES_TEL_USERID}
       TEL_PASSWORD: ${THESES_TEL_PASSWORD}
       TEL_HOSTSWORD: ${THESES_TEL_HOSTSWORD}
+      THESES_PATH_LOCAL: ${THESES_PATH_LOCAL}
       JAVA_OPTS: "-Doracle.jdbc.timezoneAsRegion=false -Duser.timezone=CEST"
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
