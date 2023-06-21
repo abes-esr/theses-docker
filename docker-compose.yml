@@ -487,7 +487,9 @@ services:
       - THESES_ELASTICSEARCH_HTTP_PORT=${THESES_ELASTICSEARCH_HTTP_PORT}
       # pour les sauvegardes (snapshots)
       - path.repo=${THESES_ELASTICSEARCH_SNAPSHOTS_DIR}
-
+      # pour avoir plus ou moins de logs elasticsearch
+      # DEBUG ou INFO (en prod mettre INFO)
+      - logger.org.elasticsearch.discovery=INFO
     # réglage ulimits pour désactiver le swap: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
     ulimits:
       memlock:
