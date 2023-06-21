@@ -10,25 +10,27 @@ Configuration docker 🐳 pour déployer le portail national des thèses dont le
 
 Les URLs temporaires du futur theses.fr sont les suivantes :
 - en préprod :
-  - https://apollo-prod.theses.fr : la homepage de theses.fr
-  - https://apollo-prod.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
-  - https://apollo-prod.theses.fr/poc-fede/ : le PoC de fédération d'identités
-  - https://apollo-prod.theses.fr/kibana/ : le kibana backoffice de theses.fr
+  - https://v2-prod.theses.fr : la homepage de theses.fr
+  - https://v2-prod.theses.fr/api/v1/recherche-java/completion/?q=n%C3%A9olithique : l'API de recherche par les theses de theses.fr
+  - https://v2-prod.theses.fr/api/v1/personnes/completion/?q=erwann : l'API de recherche par les personnes de theses.fr
+  - https://v2-prod.theses.fr/poc-fede/ : le PoC de fédération d'identités
+  - https://v2-prod.theses.fr/kibana/ : le kibana backoffice de theses.fr
 - en test :
-  - https://apollo-test.theses.fr : la homepage de theses.fr
-  - https://apollo-test.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
-  - https://apollo-test.theses.fr/poc-fede/ : le PoC de fédération d'identités
-  - https://apollo-test.theses.fr/kibana/ : le kibana backoffice de theses.fr
+  - https://v2-test.theses.fr : la homepage de theses.fr
+  - https://v2-test.theses.fr/api/v1/recherche-java/completion/?q=n%C3%A9olithique : l'API de recherche par les theses de theses.fr
+  - https://v2-test.theses.fr/api/v1/personnes/completion/?q=erwann : l'API de recherche par les personnes de theses.fr
+  - https://v2-test.theses.fr/kibana/ : le kibana backoffice de theses.fr
 - en dev :
-  - https://apollo-dev.theses.fr : la homepage de theses.fr
-  - https://apollo-dev.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
-  - https://apollo-dev.theses.fr/poc-fede/ : le PoC de fédération d'identités
-  - https://apollo-dev.theses.fr/kibana/ : le kibana backoffice de theses.fr
+  - https://v2-dev.theses.fr : la homepage de theses.fr
+  - https://v2-dev.theses.fr/api/v1/recherche-java/completion/?q=n%C3%A9olithique : l'API de recherche par les theses de theses.fr
+  - https://v2-dev.theses.fr/api/v1/personnes/completion/?q=erwann : l'API de recherche par les personnes de theses.fr
+  - https://v2-dev.theses.fr/kibana/ : le kibana backoffice de theses.fr
 - en local : (fonctionne uniquement si vous avez une intallation de theses.fr avec [cette configuration](./README-faq.md))
-  - https://apollo-local.theses.fr : la homepage de theses.fr
-  - https://apollo-local.theses.fr/api/v1/recherche/_search : l'API de recherche de theses.fr
-  - https://apollo-local.theses.fr/poc-fede/ : le PoC de fédération d'identités
-  - https://apollo-local.theses.fr/kibana/ : le kibana backoffice de theses.fr
+  - https://v2-local.theses.fr : la homepage de theses.fr
+  - https://v2-local.theses.fr/api/v1/recherche-java/completion/?q=n%C3%A9olithique : l'API de recherche par les theses de theses.fr
+  - https://v2-local.theses.fr/api/v1/personnes/completion/?q=erwann : l'API de recherche par les personnes de theses.fr
+  - https://v2-local.theses.fr/poc-fede/ : le PoC de fédération d'identités
+  - https://v2-local.theses.fr/kibana/ : le kibana backoffice de theses.fr
 
 ## Prérequis
 
@@ -139,15 +141,15 @@ Le fait de passer ``THESES_WATCHTOWER_RUN_ONCE`` à ``false`` va faire en sorte 
 
 ## Configuration dans un reverse proxy d'entreprise
 
-Cette section explique comment préparer la belle URL publique https://theses.fr finale ou aussi les URL temporaires de type https://apollo-dev.theses.fr/ au niveau de l'infra Abes.
+Cette section explique comment préparer la belle URL publique https://theses.fr finale ou aussi les URL temporaires de type https://v2-dev.theses.fr/ au niveau de l'infra Abes.
 
-Il est nécessaire de configurer une entrée DNS pointant associant ``theses.fr`` ou ``apollo-dev.theses.fr`` (pour ne prendre que cet exemple) à l'IP (ou au CNAME) du reverse proxy de l'Abes.
+Il est nécessaire de configurer une entrée DNS pointant associant ``theses.fr`` ou ``v2-dev.theses.fr`` (pour ne prendre que cet exemple) à l'IP (ou au CNAME) du reverse proxy de l'Abes.
 
 Ensuite il faut ajouter un VirtualHost au niveau du reverse proxy (à adapter en fonction des noms de domaines à gérer) :
 ```apache
 # redirection automatique http vers https
 <VirtualHost *:80>
-        ServerName apollo-dev.theses.fr
+        ServerName v2-dev.theses.fr
         ServerAdmin admin@theses.fr
         RewriteEngine On
         RewriteCond %{HTTPS} !=on
@@ -155,7 +157,7 @@ Ensuite il faut ajouter un VirtualHost au niveau du reverse proxy (à adapter en
 </VirtualHost>
 
 <VirtualHost *:443>
-        ServerName apollo-dev.theses.fr
+        ServerName v2-dev.theses.fr
         ServerAdmin admin@theses.fr
         RewriteEngine on
         
@@ -229,3 +231,9 @@ Les images docker de theses.fr sont générées à partir des codes open sources
 - https://github.com/abes-esr/theses-api-indexation
 - https://github.com/abes-esr/theses-front
 - https://github.com/abes-esr/theses-batch
+
+## Schéma global de l'application : 
+
+![image](https://user-images.githubusercontent.com/3686902/223732169-6daccf99-f86b-40aa-9289-40b626128a8d.png)
+
+
