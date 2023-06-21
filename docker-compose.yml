@@ -20,6 +20,10 @@ services:
   theses-rp:
     container_name: theses-rp
     image: abesesr/docker-shibboleth-renater-sp:1.6.1
+    restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     ports:
       - ${THESES_RP_HTTPS_PORT}:443
       - ${THESES_RP_HTTP_PORT}:80
@@ -34,29 +38,41 @@ services:
       RENATER_SP_HTTPD_LOG_FORMAT: '%h \"%{Shib-Identity-Provider}i\" \"%{eppn}i\" \"%{primary-affiliation}i\" \"%{supannEtablissement}i\" %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"'
       RENATER_SP_HTTPD_PUBLIC_PATH_0: "/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_0: "http://theses-front:80/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_1: "/poc-fede/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:80/poc-fede/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_2: "/api/v1/recherche/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "http://theses-api-recherche-passe-plat:80/api/v1/recherche/"
+      #RENATER_SP_HTTPD_PUBLIC_PATH_1: "/poc-fede/"
+      #RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion-poc:80/poc-fede/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_1: "/api/v1/button/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:8992/button/"
       RENATER_SP_HTTPD_PROTECTED_PATH_0: "/poc-fede/74979_GERARDIN_2018_archivage.pdf"
-      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-api-diffusion/poc-fede/74979_GERARDIN_2018_archivage.pdf"
+      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-api-diffusion-poc/poc-fede/74979_GERARDIN_2018_archivage.pdf"
       # pour -prod THESES_RP_KIBANA_PROTECTED_PATH est renseigné mais THESES_KIBANA_PUBLIC_PATH est vide
       RENATER_SP_HTTPD_PROTECTED_PATH_1: ${THESES_RP_KIBANA_PROTECTED_PATH}
       RENATER_SP_HTTPD_PROTECTED_PROXY_TO_1: "http://theses-kibana:5601/"
+      RENATER_SP_HTTPD_PROTECTED_PATH_2: "/document/protected/"
+      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_2: "http://theses-api-diffusion:8992/document/protected/"
       RENATER_SP_HTTPD_PROTECTED_REQUIRE_1_0: "Require shib-attr Shib-Identity-Provider https://ciboulette.abes.fr/idp/shibboleth"
       # pour -local -dev -test mais pour -prod THESES_RP_KIBANA_PUBLIC_PATH est vide et c'est THESES_RP_KIBANA_PROTECTED_PATH qui est renseigné
       RENATER_SP_HTTPD_PUBLIC_PATH_3: ${THESES_RP_KIBANA_PUBLIC_PATH}
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_3: "http://theses-kibana:5601/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_4: "/api/v1/recherche-java/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_4: "/api/v1/recherche/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_4: "http://theses-api-recherche:8990/api/v1/recherche/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_5: "/api/v1/personnes/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_5: "http://theses-api-recherche:8990/api/v1/personnes/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_6: "/api/v1/theses/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_6: "http://theses-api-recherche:8990/api/v1/theses/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_7: "/sitemap.xml"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-seo:8991/sitemap.xml"
+      RENATER_SP_HTTPD_PUBLIC_PATH_8: "/robots.txt"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_8: "http://theses-seo:8991/robots.txt"
+      RENATER_SP_HTTPD_PUBLIC_PATH_9: "/api/v1/document/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_9: "http://theses-api-diffusion:8992/document/"
+     
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
-    restart: unless-stopped
     # Ces commentaires sont conservés pour expliquer pourquoi theses-rp ne dépend pas des autres conteneurs
     # la raison est que theses-rp est relativement long à démarrer (plusieurs minutes) et qu'il ne sera que
     # très rarrement mis à jour, donc autant ne pas le redémarrer si jamais une de ses dépendance redémarre.
     #depends_on:
-    #  - theses-api-diffusion
+    #  - theses-api-diffusion-poc
     #  - theses-api-recherche
     #  - theses-front
     labels:
@@ -75,13 +91,16 @@ services:
     container_name: theses-front
     image: abesesr/theses:${THESES_FRONT_VERSION}
     restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     ports:
       - ${THESES_FRONT_HTTP_PORT}:80
     environment:
       THESES_FRONT_VITE_APP_API: ${THESES_FRONT_VITE_APP_API}
+      THESES_FRONT_VITE_APP_APIREF: ${THESES_FRONT_VITE_APP_APIREF}
     depends_on:
-      - theses-api-diffusion
-      - theses-api-recherche-passe-plat
+      - theses-api-diffusion-poc
       - theses-api-recherche
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -93,72 +112,30 @@ services:
       - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"
 
 
-
   #######################################
   # theses-api-diffusion
   # API de diffusion des thèses en java spring de theses.fr
-  # (travail en cours, pour la preuve de concept il est
-  #  chargé de mettre à disposition un PDF en 
-  #  accès restreint que theses-rp protège)
   theses-api-diffusion:
     container_name: theses-api-diffusion
-    #image: mendhak/http-https-echo:23
-    build: ./images/theses-api-diffusion/
-    image: httpd:2.4.54-theses-api-diffusion
+    image: abesesr/theses:${THESES_API_DIFFUSION_VERSION}
     restart: unless-stopped
-    labels:
-      # pour envoyer les logs dans le puits de log de l'abes
-      - "co.elastic.logs/enabled=true"
-      - "co.elastic.logs/processors.add_fields.target="
-      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
-      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=apache"
-
-
-
-  #######################################
-  # theses-api-recherche
-  # API de recherche de theses.fr qui fait entre autre l'intermédiaire avec elasticsearch
-  # (travail en cours car sera remplacé par du Java Sprint ensuite)
-  # - theses-api-recherche-passe-plat :
-  #     permet d'accéder à elasticsearch sans aucun filtrage ce qui permet de travailler
-  #     sur le front en attendant le développement de la partie java qui elle aura du filtrage 
-  #     et une API dédiée a theses.fr
-  # - theses-api-recherche :
-  #     permet d'accéder à elasticsearch via l'API java développée sur https://github.com/abes-esr/theses-api-recherche
-  #     c'est ce conteneur qui restera à terme et theses-api-recherche-passe-plat disparaitra
-  theses-api-recherche-passe-plat:
-    container_name: theses-api-recherche-passe-plat
-    # TODO : à remplacer par sa version en java spring
-    build: ./images/theses-api-recherche/
-    image: abesesr/theses:develop-api-recherche-passe-plat
-    depends_on:
-      theses-elasticsearch:
-        condition: service_healthy
-    restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
+    ports:
+      - ${THESES_API_DIFFUSION_HTTP_PORT}:8992
+    volumes:
+      - ${THESES_PATH_HOST}:${THESES_PATH_LOCAL}
     environment:
-      THESES_API_RECHERCHE_ELASTIC_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME}
-      THESES_API_RECHERCHE_ELASTIC_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
-      ELASTICSEARCH_HOST_PROXY_TO: "https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/"
-    labels:
-      # pour envoyer les logs dans le puits de log de l'abes
-      - "co.elastic.logs/enabled=true"
-      - "co.elastic.logs/processors.add_fields.target="
-      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
-      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=apache"
-  theses-api-recherche:
-    container_name: theses-api-recherche
-    image: abesesr/theses:${THESES_API_RECHERCHE_VERSION}
-    depends_on:
-      theses-elasticsearch:
-        condition: service_healthy
-    restart: unless-stopped
-    environment:
-      SERVER_PORT: 8990
-      ES_HOSTNAME: 'theses-elasticsearch-01'
-      ES_PORT: ${THESES_ELASTICSEARCH_HTTP_PORT}
-      ES_PROTOCOL: 'https'
-      ES_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME}
-      ES_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
+      SERVER_PORT: 8992
+      SPRING_DATASOURCE_URL: ${THESES_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${THESES_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${THESES_DATASOURCE_PASSWORD}
+      TEL_USERID: ${THESES_TEL_USERID}
+      TEL_PASSWORD: ${THESES_TEL_PASSWORD}
+      TEL_HOSTSWORD: ${THESES_TEL_HOSTSWORD}
+      THESES_PATH_LOCAL: ${THESES_PATH_LOCAL}
+      JAVA_OPTS: "-Doracle.jdbc.timezoneAsRegion=false -Duser.timezone=CEST"
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -170,12 +147,108 @@ services:
 
 
   #######################################
+  # theses-api-diffusion-poc
+  # API de diffusion des thèses en java spring de theses.fr
+  # (travail en cours, pour la preuve de concept il est
+  #  chargé de mettre à disposition un PDF en 
+  #  accès restreint que theses-rp protège)
+  theses-api-diffusion-poc:
+    container_name: theses-api-diffusion-poc
+    #image: mendhak/http-https-echo:23
+    build: ./images/theses-api-diffusion-poc/
+    image: httpd:2.4.54-theses-api-diffusion-poc
+    restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=apache"
+      
+
+  #######################################
+  # theses-api-recherche
+  # API de recherche de theses.fr
+  theses-api-recherche:
+    container_name: theses-api-recherche
+    image: abesesr/theses:${THESES_API_RECHERCHE_VERSION}
+    depends_on:
+      theses-elasticsearch:
+        condition: service_healthy
+    restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
+    ports:
+      - ${THESES_API_RECHERCHE_HTTP_PORT}:8990
+    environment:
+      SERVER_PORT: 8990
+      ES_HOSTNAME: 'theses-elasticsearch-01'
+      ES_PORT: ${THESES_ELASTICSEARCH_HTTP_PORT}
+      ES_PROTOCOL: 'https'
+      ES_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME}
+      ES_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
+      ES_THESES_INDEXNAME: ${THESES_ELASTICSEARCH_THESES_INDEXNAME}
+      ES_PERSONNES_INDEXNAME: ${THESES_ELASTICSEARCH_PERSONNES_INDEXNAME}
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
+      # pour que les mises à jour de cette image soient auto-déployées par watchtower
+      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
+
+
+
+  #######################################
+  # theses-seo
+  # Fournit le sitemap et le robot.txt de theses.fr
+  
+  theses-seo:
+    container_name: theses-seo
+    image: abesesr/theses:${THESES_SEO_VERSION}
+    depends_on:
+      theses-elasticsearch:
+        condition: service_healthy
+    restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
+    environment:
+      SERVER_PORT: 8991
+      ES_HOSTNAME: 'theses-elasticsearch-01'
+      ES_PORT: ${THESES_ELASTICSEARCH_HTTP_PORT}
+      ES_PROTOCOL: 'https'
+      ES_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME}
+      ES_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
+      ES_THESES_INDEXNAME: ${THESES_ELASTICSEARCH_THESES_INDEXNAME}
+      NBURLSPAGE: ${THESES_SEO_NBURLSPAGE}
+      RACINE: ${THESES_SEO_RACINE}
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
+      # pour que les mises à jour de cette image soient auto-déployées par watchtower
+      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
+
+
+
+  #######################################
   # theses-batch-11theses
   # batch pour indexer les 11 thèses dans elasticsearch
   # (travail en cours pour la preuve de concept de l'indexation de 11 thèses)
   theses-batch-11theses:
     container_name: theses-batch-11theses
-    image: abesesr/theses:${THESES_BATCH_INDEXATION_VERSION}
+    image: abesesr/theses:${THESES_BATCH_INDEXATION_11THESES_VERSION}
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
@@ -194,12 +267,42 @@ services:
 
 
   #######################################
+  # theses-batch-indexation
+  # batch pour indexer les thèses dans elasticsearch
+  #
+  theses-batch-indexation:
+    container_name: theses-batch-indexation
+    image: abesesr/theses:${THESES_BATCH_INDEXATION_VERSION}
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
+    depends_on:
+      theses-elasticsearch:
+        condition: service_healthy
+    environment:
+      ELASTICSEARCH_PASSWORD: ${THESES_ELASTICSEARCH_PASSWORD}
+      ELASTICSEARCH_HOST: "https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}"
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
+      # pour que les mises à jour de cette image soient auto-déployées par watchtower
+      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
+
+
+
+  #######################################
   # theses-elasticsearch-setupcerts
   # conteneur chargé de configurer les certificats pour que les X noeuds elasticsearch communiquent entre eux de façon sécurisé
   # - créer les différents comptes applicatifs pour accès à elasticsearch
   theses-elasticsearch-setupcerts:
     container_name: theses-elasticsearch-setupcerts
     image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
     user: "0"
@@ -263,7 +366,6 @@ services:
 
 
 
-
   #######################################
   # theses-elasticsearch-setupusers
   # conteneur chargé de créer les différents comptes applicatifs pour accès à elasticsearch et aussi le compte pour kibana
@@ -273,6 +375,9 @@ services:
   theses-elasticsearch-setupusers:
     container_name: theses-elasticsearch-setupusers
     image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
@@ -330,10 +435,14 @@ services:
         condition: service_healthy
     image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
     restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
       - ./volumes/theses-elasticsearch/:/usr/share/elasticsearch/data/
       - ./volumes/theses-elasticsearch-tmp/:/usr/share/elasticsearch/tmp/
+      - ./volumes/theses-elasticsearch-backup/:${THESES_ELASTICSEARCH_SNAPSHOTS_DIR}
     ports:
       # réglage explicites des ports internes et externes pour pouvoir fonctionner en cluster
       # cf https://blog.cri.epita.fr/post/2019-06-10-elasticsearch-cluster-formation-issue/
@@ -352,6 +461,7 @@ services:
       - cluster.name=${THESES_ELASTICSEARCH_CLUSTER_NAME}
       - cluster.initial_master_nodes=${THESES_ELASTICSEARCH_CLUSTER_INITIAL_MASTER_NODES}
       - discovery.seed_hosts=${THESES_ELASTICSEARCH_CLUSTER_DISCOVER_SEED_HOSTS}
+      # réglage pour désactiver le swap: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
       - bootstrap.memory_lock=true
       # pour éviter que les dump geoip soient téléchargés régulièrement dans /tmp/
       # cf https://abes-esr.atlassian.net/browse/THE-188
@@ -375,7 +485,12 @@ services:
       - xpack.license.self_generated.type=basic
       # le port http pour le healthcheck d'elasticsearch
       - THESES_ELASTICSEARCH_HTTP_PORT=${THESES_ELASTICSEARCH_HTTP_PORT}
-    mem_limit: ${THESES_ELASTICSEARCH_MEM_LIMIT}
+      # pour les sauvegardes (snapshots)
+      - path.repo=${THESES_ELASTICSEARCH_SNAPSHOTS_DIR}
+      # pour avoir plus ou moins de logs elasticsearch
+      # DEBUG ou INFO (en prod mettre INFO)
+      - logger.org.elasticsearch.discovery=INFO
+    # réglage ulimits pour désactiver le swap: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
     ulimits:
       memlock:
         soft: -1
@@ -384,7 +499,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -s --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} https://localhost:${THESES_ELASTICSEARCH_HTTP_PORT}/_cluster/health?timeout=5s | grep -q '\"status\":\"${THESES_ELASTICSEARCH_CLUSTER_HEALTHY_STATUS}\"'",
+          "curl -s --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} 'https://localhost:${THESES_ELASTICSEARCH_HTTP_PORT}/_cluster/health?timeout=5s&pretty=true' | grep status | grep -E -q '${THESES_ELASTICSEARCH_CLUSTER_HEALTHY_STATUS}'",
         ]
       interval: 10s
       timeout: 10s
@@ -410,6 +525,9 @@ services:
         condition: service_healthy
     image: docker.elastic.co/kibana/kibana:8.3.0
     restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/kibana/config/certs/
       - ./volumes/theses-kibana/:/usr/share/kibana/data/
@@ -422,7 +540,6 @@ services:
       xpack.reporting.roles.enabled: "false"
       XPACK_SECURITY_ENCRYPTIONKEY: ${THESES_KIBANA_SECURITY_ENCRYPTIONKEY}
       LOGGING_ROOT_LEVEL: "info" # ex: "info", "error", "warn", "fatal", "debug"
-    mem_limit: ${THESES_ELASTICSEARCH_MEM_LIMIT}
     healthcheck:
       test:
         [
@@ -453,6 +570,9 @@ services:
   theses-watchtower:
     image: containrrr/watchtower:1.4.0
     container_name: theses-watchtower
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:

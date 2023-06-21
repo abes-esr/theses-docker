@@ -77,21 +77,21 @@ Tout d'abord, positionnez au niveau de votre fichier ``.env`` le port HTTPS par 
 THESES_RP_HTTPS_PORT=443
 ```
 
-Ensuite vous devez faire pointer le nom de domaine ``apollo-local.theses.fr`` sur votre IP local, pour cela voici une astuce en modifiant votre fichier ``hosts`` :
+Ensuite vous devez faire pointer le nom de domaine ``v2-local.theses.fr`` sur votre IP local, pour cela voici une astuce en modifiant votre fichier ``hosts`` :
 ```
 # ajouter ces lignes 
 # dans votre fichier /etc/hosts (sous linux - besoin de droits admin)
 # ou dans C:\Windows\System32\drivers\etc\hosts (sous windows - besoin de droits admin)
-127.0.0.1 apollo-local.theses.fr
+127.0.0.1 v2-local.theses.fr
 ```
 
-Une fois ces modifications réalisées, vous pourrez accéder à votre theses.fr local sur l'URL suivante (en acceptant au passage l'erreur de sécurité liée au certificat auto-signé) : https://apollo-local.theses.fr
+Une fois ces modifications réalisées, vous pourrez accéder à votre theses.fr local sur l'URL suivante (en acceptant au passage l'erreur de sécurité liée au certificat auto-signé) : https://v2-local.theses.fr
 
 ## Comment activer le monitoring du cluster elasticsearch ?
 
 Pour pouvoir suivre l'état du cluster ElasticSearch depuis le Kibana sans installer les outils préconisés du type MetricBeats (qui nécessite une architecture plus complexe), voici comme procéder :
 
-Se rendre dans le kibana et dans l'onglet dev-tools, exemple https://apollo-dev.theses.fr/kibana/, puis taper ceci :
+Se rendre dans le kibana et dans l'onglet dev-tools, exemple https://v2-dev.theses.fr/kibana/, puis taper ceci :
 ```json
 PUT _cluster/settings
 {
@@ -107,7 +107,7 @@ GET _cluster/settings
 ```
 
 Ensuite rendez vous dans l'onglet "Stack monitoring de kibana", par exemple :  
-https://apollo-dev.theses.fr/kibana/app/monitoring#/elasticsearch
+https://v2-dev.theses.fr/kibana/app/monitoring#/elasticsearch
 
 On obtiendra alors ce type d'écran :  
 TODO placer une copie d'écran

@@ -1,5 +1,2 @@
 .env
-volumes/theses-rp/shibboleth/ssl/
-volumes/theses-elasticsearch/
-volumes/theses-elasticsearch-setupcerts/
-volumes/theses-kibana/
+volumes
