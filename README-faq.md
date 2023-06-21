@@ -142,4 +142,41 @@ Si vous devez ajouter un Nieme noeud au cluster elasticsearch de theses.fr et qu
    docker-compose logs --tail=100 theses-elasticsearch-setupcerts
    ```
 5) Redéployez finalement les fichiers ``ca.zip`` et ``certs.zip`` sur les N noeuds en suivant la procédure d'installation d'un nouveau noeud: https://github.com/abes-esr/theses-es-cluster-docker/#installation--serveurs-2--3--noeuds-2--3 
-   
+
+
+## Comment tester les performances du cluster elasticsearch
+
+Avec l'outil siege on peut simuler un grand nombre de requêtes simultanées. Voici un exemple de benchmark des perf du cluster elasticsearch en appelant directement l'API d'ES sans passer par l'API Java de theses.fr 
+
+Constituer le fichier des URL à appeler (dans cette exemple on va appeler les 4 noeuds du cluster à tours de rôle) :
+```
+$ cat siege-urls.txt
+https://diplotaxis1-prod.v102.abes.fr:10302/_search POST {"query":{"query_string":{"default_operator": "and","fields": ["resumes.*^30","titres.*^30","nnt^15","discipline^15","sujetsRameauPpn^15","sujetsRameauLibelle^15","sujets^15","auteursNP^12","directeursNP^2","ecolesDoctoralesN^5","etabSoutenanceN^5","oaiSets^5","etabsCotutelleN^1","membresJuryNP^1","partenairesRechercheN^1","presidentJuryNP^1","rapporteurs^1"],"query": "science","quote_field_suffix": ".exact"}}}
+https://diplotaxis2-prod.v102.abes.fr:10302/_search POST {"query":{"query_string":{"default_operator": "and","fields": ["resumes.*^30","titres.*^30","nnt^15","discipline^15","sujetsRameauPpn^15","sujetsRameauLibelle^15","sujets^15","auteursNP^12","directeursNP^2","ecolesDoctoralesN^5","etabSoutenanceN^5","oaiSets^5","etabsCotutelleN^1","membresJuryNP^1","partenairesRechercheN^1","presidentJuryNP^1","rapporteurs^1"],"query": "science","quote_field_suffix": ".exact"}}}
+https://diplotaxis3-prod.v102.abes.fr:10302/_search POST {"query":{"query_string":{"default_operator": "and","fields": ["resumes.*^30","titres.*^30","nnt^15","discipline^15","sujetsRameauPpn^15","sujetsRameauLibelle^15","sujets^15","auteursNP^12","directeursNP^2","ecolesDoctoralesN^5","etabSoutenanceN^5","oaiSets^5","etabsCotutelleN^1","membresJuryNP^1","partenairesRechercheN^1","presidentJuryNP^1","rapporteurs^1"],"query": "science","quote_field_suffix": ".exact"}}}
+https://diplotaxis4-prod.v102.abes.fr:10302/_search POST {"query":{"query_string":{"default_operator": "and","fields": ["resumes.*^30","titres.*^30","nnt^15","discipline^15","sujetsRameauPpn^15","sujetsRameauLibelle^15","sujets^15","auteursNP^12","directeursNP^2","ecolesDoctoralesN^5","etabSoutenanceN^5","oaiSets^5","etabsCotutelleN^1","membresJuryNP^1","partenairesRechercheN^1","presidentJuryNP^1","rapporteurs^1"],"query": "science","quote_field_suffix": ".exact"}}} 
+```
+
+Ensuite lancer la commande suivante (remplacer "xxxxxxxxxxxxxxxxxxx" par le mot de passe correpsondant au login "theses-api-recherche" issu du .env) :
+```
+auth=$(echo -n 'theses-api-recherche:xxxxxxxxxxxxxxxxxxx' | openssl base64)
+
+siege -c200 --content-type "application/json" --header="Authorization:Basic $auth" -f ./siege-urls.txt
+```
+
+Ensuite CTRL+C pour stopper le test, un rapport s'affichera :
+```
+Transactions:                   2948 hits
+Availability:                 100.00 %
+Elapsed time:                  24.05 secs
+Data transferred:             133.76 MB
+Response time:                  1.55 secs
+Transaction rate:             122.58 trans/sec
+Throughput:                     5.56 MB/sec
+Concurrency:                  190.15
+Successful transactions:        2948
+Failed transactions:               0
+Longest transaction:            6.91
+Shortest transaction:           0.23
+```
+
