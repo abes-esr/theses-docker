@@ -182,7 +182,7 @@ Shortest transaction:           0.23
 
 Pour tester via l'API Java theses-api-recherche :
 ```
-siege -c 100 https://v2-prod.theses.fr/api/v1/theses/recherche/?q=science&debut=0&nombre=10&tri=pertinence
+siege -c 100 "https://v2-prod.theses.fr/api/v1/theses/recherche/?q=science&debut=0&nombre=10&tri=pertinence"
 ```
 
 Pour mémo pour tester des requêtes sur le solr de theses.fr actuel :
