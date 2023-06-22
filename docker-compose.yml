@@ -461,7 +461,8 @@ services:
       - cluster.name=${THESES_ELASTICSEARCH_CLUSTER_NAME}
       - cluster.initial_master_nodes=${THESES_ELASTICSEARCH_CLUSTER_INITIAL_MASTER_NODES}
       - discovery.seed_hosts=${THESES_ELASTICSEARCH_CLUSTER_DISCOVER_SEED_HOSTS}
-      - search.allow_expensive_queries=false
+      # pour désactiver/activer les recherches complexe (false est conseillé mais les recherches sur l'index personnes en ont besoin à la date du 22/06/2023)
+      - search.allow_expensive_queries=true
       # réglage pour désactiver le swap: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
       - bootstrap.memory_lock=true
       # pour éviter que les dump geoip soient téléchargés régulièrement dans /tmp/
