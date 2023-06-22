@@ -180,3 +180,7 @@ Longest transaction:            6.91
 Shortest transaction:           0.23
 ```
 
+Pour mémo pour tester des requêtes sur le solr de theses.fr actuel :
+```
+siege -c100 "http://denim.v102.abes.fr:8080/solr2/select/?q=*%3A*&version=2.2&start=0&rows=10&indent=on&wt=json&fl=*"
+```
