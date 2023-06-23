@@ -226,3 +226,6 @@ cat /var/log/httpd/theses-access_log | \
   grep -v ppn | grep -v '^$' | grep -v -E '^.{1,4}$' | \
   sort | uniq > /tmp/mots-recherche-theses.log
 ```
+
+Voici un exemple de mots clés recherchés à la date du 23/06/2023 : [mots-recherche-theses.log](https://github.com/abes-esr/theses-docker/files/11847315/mots-recherche-theses.log)
+
