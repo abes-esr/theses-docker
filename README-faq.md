@@ -215,3 +215,14 @@ curl -k -v -u elastic:xxxxxxxx -XPUT -H 'Content-Type: application/json' https:/
   }
 }'
 ```
+
+## Comment générer un fichier de benchmark à partir de recherches réelles sur le theses.fr actuel ?
+
+Voici une commande permettant de récupérer les mots recherchés sur theses.fr de plus de 5 caractères dédoublonnés depuis son fichier de log apache (serveur raiponce) :
+```
+cat /var/log/httpd/theses-access_log | \
+  grep -E "(GET \/fr\/\?q=)|(GET \/\?q=)" | \
+  sed 's#^.*?q=##g' | sed 's# HTTP.*$##g' | sed 's#\([a-z-]*\).*#\1#g' | \
+  grep -v ppn | grep -v '^$' | grep -v -E '^.{1,4}$' | \
+  sort | uniq > /tmp/mots-recherche-theses.log
+```
