@@ -234,6 +234,9 @@ Ensuite on peut préparer un fichier en y ajoutant les URL de l'API de prod qui 
 sed 's#^.*$#https://v2-prod.theses.fr/api/v1/theses/recherche/?q=&\&debut=0\&nombre=10\&tri=pertinence#g' mots-recherche-theses.log > siege-urls.txt
 ```
 
+Voici le résultat à la date du 32/06/2023 : [siege-urls.txt](https://github.com/abes-esr/theses-docker/files/11847438/siege-urls.txt)
+
+
 Et lancer siege avec ce fichier pendant par exemple 5 secondes et une concurrence de 100 requêtes :
 ```
 $ siege -c 100 -t 5S -f siege-urls.txt
