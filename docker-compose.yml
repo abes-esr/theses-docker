@@ -302,7 +302,7 @@ services:
   # - créer les différents comptes applicatifs pour accès à elasticsearch
   theses-elasticsearch-setupcerts:
     container_name: theses-elasticsearch-setupcerts
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.1
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
     cpus: ${CPU_LIMIT}
@@ -377,7 +377,7 @@ services:
   # - kibana_system
   theses-elasticsearch-setupusers:
     container_name: theses-elasticsearch-setupusers
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.1
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
     cpus: ${CPU_LIMIT}
