@@ -260,7 +260,7 @@ Shortest transaction:           0.18
 
 ## Quelles sont les requêtes réèles envoyées depuis l'API vers elasticsearch ?
 
-Pour une recherche sur les personnes de ce style :
+Pour une recherche sur les personnes de ce style :  
 https://v2-prod.theses.fr/api/v1/personnes/recherche/?q=*&debut=0&nombre=10&tri=pertinence
 
 Voici ce que cela va générer coté ES :
@@ -363,7 +363,7 @@ GET /personnes/_search/
 }
 ```
 
-Et pour une recherche de ce type sur les thèses :
+Et pour une recherche de ce type sur les thèses :  
 https://v2-prod.theses.fr/api/v1/personnes/recherche/?q=*&debut=0&nombre=10&tri=pertinence
 
 Voici ce que cela génère coté ES :
