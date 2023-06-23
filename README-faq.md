@@ -257,3 +257,144 @@ Failed transactions:               0
 Longest transaction:            2.82
 Shortest transaction:           0.18
 ```
+
+## Quelles sont les requêtes réèles envoyées depuis l'API vers elasticsearch ?
+
+Pour une recherche sur les personnes de ce style :
+https://v2-prod.theses.fr/api/v1/personnes/recherche/?q=*&debut=0&nombre=10&tri=pertinence
+
+Voici ce que cela va générer coté ES :
+```
+GET /personnes/_search/
+{
+  "query": {
+    "function_score": {
+      "boost_mode": "multiply",
+      "functions": [
+        {
+          "filter": {
+            "term": {
+              "has_idref": {
+                "value": true
+              }
+            }
+          },
+          "weight": 10
+        },
+        {
+          "filter": {
+            "term": {
+              "roles": {
+                "value": "directeur de thèse"
+              }
+            }
+          },
+          "weight": 1
+        },
+        {
+          "filter": {
+            "term": {
+              "roles": {
+                "value": "rapporteur"
+              }
+            }
+          },
+          "weight": 1
+        },
+        {
+          "script_score": {
+            "script": {
+              "source": "doc['theses_id'].length"
+            }
+          }
+        },
+        {
+          "filter": {
+            "range": {
+              "theses_date": {
+                "gte": "now-5y",
+                "lte": "now"
+              }
+            }
+          },
+          "weight": 0.1
+        }
+      ],
+      "query": {
+        "bool": {
+          "should": [
+            {
+              "query_string": {
+                "default_operator": "and",
+                "fields": [
+                  "nom",
+                  "prenom",
+                  "nom_complet",
+                  "nom_complet.exact"
+                ],
+                "query": "*",
+                "quote_field_suffix": ".exact"
+              }
+            },
+            {
+              "nested": {
+                "path": "theses",
+                "query": {
+                  "query_string": {
+                    "default_operator": "and",
+                    "fields": [
+                      "theses.sujets.*",
+                      "theses.sujets_rameau",
+                      "theses.resumes.*",
+                      "theses.discipline"
+                    ],
+                    "query": "*",
+                    "quote_field_suffix": ".exact"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "score_mode": "sum"
+    }
+  }
+}
+```
+
+Et pour une recherche de ce type sur les thèses :
+https://v2-prod.theses.fr/api/v1/personnes/recherche/?q=*&debut=0&nombre=10&tri=pertinence
+
+Voici ce que cela génère coté ES :
+```
+GET /theses_test/_search
+{
+  "query": {
+    "query_string": {
+      "default_operator": "and",
+      "fields": [
+        "resumes.*^30",
+        "titres.*^30",
+        "nnt^15",
+        "discipline^15",
+        "sujetsRameauPpn^15",
+        "sujetsRameauLibelle^15",
+        "sujets^15",
+        "auteursNP^12",
+        "directeursNP^2",
+        "ecolesDoctoralesN^5",
+        "etabSoutenanceN^5",
+        "oaiSets^5",
+        "etabsCotutelleN^1",
+        "membresJuryNP^1",
+        "partenairesRechercheN^1",
+        "presidentJuryNP^1",
+        "rapporteurs^1"
+      ],
+      "query": "*",
+      "quote_field_suffix": ".exact"
+    }
+  }
+}
+```
