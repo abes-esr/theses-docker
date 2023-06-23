@@ -193,4 +193,13 @@ Pour mémo pour tester des requêtes sur le solr de theses.fr actuel :
 siege -c100 "http://denim.v102.abes.fr:8080/solr2/select/?q=*%3A*&version=2.2&start=0&rows=10&indent=on&wt=json&fl=*"
 ```
 
+## Comment requêter le cluster elasticsearch directement avec cURL ?
 
+Voici un exemple de requête pour attaquer directement le cluster elasticsearch de dev (remplacer xxxxxxx par le mot de passe correspondant au login "elastic")
+```bash
+curl -k -v -u elastic:xxxxxxxx -XGET https://diplotaxis1-dev.v212.abes.fr:10302/_search
+```
+
+- `-k` permet d'ignorer les warning du certificat autosigné du cluster
+- `-u` permet de passer les login/mdp
+- `-XGET` permet de lancer une requête GET sur le cluster mais à adapter avec -XPUT par exemple si on veut passer du PUT
