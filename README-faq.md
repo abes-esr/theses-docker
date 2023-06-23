@@ -203,3 +203,15 @@ curl -k -v -u elastic:xxxxxxxx -XGET https://diplotaxis1-dev.v212.abes.fr:10302/
 - `-k` permet d'ignorer les warning du certificat autosigné du cluster
 - `-u` permet de passer les login/mdp
 - `-XGET` permet de lancer une requête GET sur le cluster mais à adapter avec -XPUT par exemple si on veut passer du PUT
+
+Exemple avec un PUT et une grande structure JSON dont on peut avoir besoin pour les migrations : 
+```
+curl -k -v -u elastic:xxxxxxxx -XPUT https://diplotaxis1-dev.v212.abes.fr:10302/_cluster/settings -d '{
+  "transient": {
+    "cluster.routing.allocation.enable": null
+  },
+  "persistent": {
+    "cluster.routing.allocation.enable": null
+  }
+}'
+```
