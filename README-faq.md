@@ -237,9 +237,9 @@ sed 's#^.*$#https://v2-prod.theses.fr/api/v1/theses/recherche/?q=&\&debut=0\&nom
 Voici le résultat à la date du 32/06/2023 : [siege-urls.txt](https://github.com/abes-esr/theses-docker/files/11847438/siege-urls.txt)
 
 
-Et lancer siege avec ce fichier pendant par exemple 5 secondes et une concurrence de 100 requêtes :
+Et lancer siege avec ce fichier pendant par exemple 5 secondes (option `-t 5S`) et une concurrence de 100 requêtes (option `-c 100`) en prenant aléatoirement les URL (option `-i`) :
 ```
-$ siege -c 100 -t 5S -f siege-urls.txt
+$ siege -c 100 -t 5S -i -f siege-urls.txt
 ** SIEGE 4.0.4
 ** Preparing 100 concurrent users for battle.
 The server is now under siege...
