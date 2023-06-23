@@ -229,3 +229,28 @@ cat /var/log/httpd/theses-access_log | \
 
 Voici un exemple de mots clés recherchés à la date du 23/06/2023 : [mots-recherche-theses.log](https://github.com/abes-esr/theses-docker/files/11847315/mots-recherche-theses.log)
 
+Ensuite on peut préparer un fichier en y ajoutant les URL de l'API de prod qui soit prêt pour être utilisé par siege comme ceci :
+```
+sed 's#^.*$#https://v2-prod.theses.fr/api/v1/theses/recherche/?q=&\&debut=0\&nombre=10\&tri=pertinence#g' mots-recherche-theses.log > siege-urls.txt
+```
+
+Et lancer siege avec ce fichier pendant par exemple 5 secondes et une concurrence de 100 requêtes :
+```
+$ siege -c 100 -t 5S -f siege-urls.txt
+** SIEGE 4.0.4
+** Preparing 100 concurrent users for battle.
+The server is now under siege...
+Lifting the server siege...
+Transactions:                   1352 hits
+Availability:                 100.00 %
+Elapsed time:                   4.39 secs
+Data transferred:               4.88 MB
+Response time:                  0.30 secs
+Transaction rate:             307.97 trans/sec
+Throughput:                     1.11 MB/sec
+Concurrency:                   93.57
+Successful transactions:        1352
+Failed transactions:               0
+Longest transaction:            2.82
+Shortest transaction:           0.18
+```
