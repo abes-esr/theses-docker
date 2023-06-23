@@ -1,1 +1,0 @@
-https://v2-prod.theses.fr/api/v1/theses/recherche/?q=science&debut=0&nombre=10&tri=pertinence

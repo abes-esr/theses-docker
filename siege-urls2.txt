@@ -1,4 +1,0 @@
-https://diplotaxis1-prod.v102.abes.fr:10302/theses_test/_search POST {"query":{"query_string":{"query": "science"}}}
-https://diplotaxis2-prod.v102.abes.fr:10302/theses_test/_search POST {"query":{"query_string":{"query": "science"}}}
-https://diplotaxis3-prod.v102.abes.fr:10302/theses_test/_search POST {"query":{"query_string":{"query": "science"}}}
-https://diplotaxis4-prod.v102.abes.fr:10302/theses_test/_search POST {"query":{"query_string":{"query": "science"}}}
