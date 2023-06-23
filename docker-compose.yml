@@ -466,6 +466,9 @@ services:
       - discovery.seed_hosts=${THESES_ELASTICSEARCH_CLUSTER_DISCOVER_SEED_HOSTS}
       # pour désactiver/activer les recherches complexe (false est conseillé mais les recherches sur l'index personnes en ont besoin à la date du 22/06/2023)
       - search.allow_expensive_queries=true
+      # pour la quantité de données mises en cache
+      # https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-request-cache.html#_cache_settings
+      - indices.requests.cache.size=10%
       # réglage pour désactiver le swap: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
       - bootstrap.memory_lock=true
       # pour éviter que les dump geoip soient téléchargés régulièrement dans /tmp/
