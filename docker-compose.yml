@@ -436,7 +436,7 @@ services:
     depends_on:
       theses-elasticsearch-setupcerts:
         condition: service_healthy
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.1
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
