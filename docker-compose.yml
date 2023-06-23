@@ -531,7 +531,7 @@ services:
         condition: service_healthy
       theses-elasticsearch:
         condition: service_healthy
-    image: docker.elastic.co/kibana/kibana:8.3.0
+    image: docker.elastic.co/kibana/kibana:8.7.1
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
