@@ -206,7 +206,7 @@ curl -k -v -u elastic:xxxxxxxx -XGET https://diplotaxis1-dev.v212.abes.fr:10302/
 
 Exemple avec un PUT et une grande structure JSON dont on peut avoir besoin pour les migrations : 
 ```
-curl -k -v -u elastic:xxxxxxxx -XPUT https://diplotaxis1-dev.v212.abes.fr:10302/_cluster/settings -d '{
+curl -k -v -u elastic:xxxxxxxx -XPUT -H 'Content-Type: application/json' https://diplotaxis1-dev.v212.abes.fr:10302/_cluster/settings -d '{
   "transient": {
     "cluster.routing.allocation.enable": null
   },
