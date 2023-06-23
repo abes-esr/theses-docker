@@ -98,6 +98,52 @@ cd /opt/pod/theses-docker/
 docker-compose stop
 ```
 
+## Mise à jour
+Arrêt du cluster (console DevTool) :
+```bash
+PUT _cluster/settings
+{
+  "persistent": {
+    "cluster.routing.allocation.enable": "primaries"
+  }
+}
+
+POST /_flush
+```
+
+Stopper un par un les noeuds data puis finir par les master.
+Modifier la version dans "image" et faire docker-compose up -d
+
+# Redémarrage cluster
+```bash
+GET _cat/nodes
+
+PUT _cluster/settings
+{
+  "persistent": {
+    "cluster.routing.allocation.enable": null
+  }
+}
+
+# vérification
+GET _cat/health
+
+```
+Si Kibana ne migre pas (voir les logs) : 
+
+```bash
+[.kibana] Action failed with '[incompatible_cluster_routing_allocation] Incompatible Elasticsearch cluster settings detected. Remove the persistent and transient Elasticsearch cluster setting 'cluster.routing.allocation.enable' or set it to a value of 'all' to allow migrations to proceed. Refer to https://www.elastic.co/guide/en/kibana/8.7/resolve-migrations-failures.html#routing-allocation-disabled for more information on how to resolve the issue.
+
+curl -k -v -u elastic:<snip> -XPUT -H 'Content-Type: application/json' https://diplotaxis1-dev.v212.abes.fr:10302/_cluster/settings -d '{
+  "transient": {
+    "cluster.routing.allocation.enable": null
+  },
+  "persistent": {
+    "cluster.routing.allocation.enable": null
+  }
+}'
+
+```
 
 ## Supervision
 
