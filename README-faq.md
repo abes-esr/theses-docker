@@ -161,7 +161,7 @@ Ensuite lancer la commande suivante (remplacer "xxxxxxxxxxxxxxxxxxx" par le mot 
 ```
 auth=$(echo -n 'theses-api-recherche:xxxxxxxxxxxxxxxxxxx' | openssl base64)
 
-siege -c200 --content-type "application/json" --header="Authorization:Basic $auth" -f ./siege-urls.txt
+siege -c200 -t 5S --content-type "application/json" --header="Authorization:Basic $auth" -f ./siege-urls.txt
 ```
 
 Ensuite CTRL+C pour stopper le test, un rapport s'affichera :
@@ -183,17 +183,17 @@ Shortest transaction:           0.23
 Pour tester via l'API Java theses-api-recherche :
 ```
 # sur des recherches de thèses 
-siege -c 100 "https://v2-prod.theses.fr/api/v1/theses/recherche/?q=science&debut=0&nombre=10&tri=pertinence"
+siege -c 100 -t 5S "https://v2-prod.theses.fr/api/v1/theses/recherche/?q=science&debut=0&nombre=10&tri=pertinence"
 # sur des recherches de personnes
-siege -c 100 "https://v2-prod.theses.fr/api/v1/personnes/recherche/?q=science&debut=0&nombre=10&tri=pertinence"
+siege -c 100 -t 5S "https://v2-prod.theses.fr/api/v1/personnes/recherche/?q=science&debut=0&nombre=10&tri=pertinence"
 ```
 
 Pour mémo pour tester des requêtes sur le solr de theses.fr actuel :
 ```
-siege -c100 "http://denim.v102.abes.fr:8080/solr2/select/?q=*%3A*&version=2.2&start=0&rows=10&indent=on&wt=json&fl=*"
+siege -c100 -t 5S "http://denim.v102.abes.fr:8080/solr2/select/?q=*%3A*&version=2.2&start=0&rows=10&indent=on&wt=json&fl=*"
 ```
 
-## Comment requêter le cluster elasticsearch directement avec cURL ?
+## Comment requêter (GET ou PUT) le cluster elasticsearch directement avec cURL ?
 
 Voici un exemple de requête pour attaquer directement le cluster elasticsearch de dev (remplacer xxxxxxx par le mot de passe correspondant au login "elastic")
 ```bash
