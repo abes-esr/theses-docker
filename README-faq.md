@@ -408,5 +408,12 @@ L'outil utilisé est [elasticsearch-dump](https://github.com/elasticsearch-dump/
 Work in progress :
 ```
 # ci-dessous une commande work in progress testée en local sur un cluster local
-docker run --net=theses-docker-es-cluster-network -e NODE_TLS_REJECT_UNAUTHORIZED=0 --rm -ti -v /opt/pod/theses-docker/tmp/:/tmp/ elasticdump/elasticsearch-dump   --input=https://elastic:xxxxxxxxxxxxxxxxxxxxx@theses-elasticsearch:20302/theses-sample   --output=/tmp/my_index_mapping.json --type=data
+docker run --rm -ti \
+  --net=theses-docker-es-cluster-network \
+  -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
+  -v /opt/pod/theses-docker/tmp/:/tmp/ \
+  elasticdump/elasticsearch-dump \
+    --input=https://elastic:xxxxxxxxxxxxxxxxxxxxx@theses-elasticsearch:20302/theses-sample \
+    --output=/tmp/my_index_mapping.json \
+    --type=data --size=11
 ```
