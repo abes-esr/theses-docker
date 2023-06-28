@@ -413,7 +413,7 @@ docker run --rm -ti \
   -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
   -v /opt/pod/theses-docker/tmp/:/tmp/ \
   elasticdump/elasticsearch-dump \
-    --input=https://elastic:xxxxxxxxxxxxxxxxxxxxx@theses-elasticsearch:20302/theses-sample \
-    --output=/tmp/my_index_mapping.json \
+    --input=https://elastic:xxxxxxx@diplotaxis1-prod.v102.abes.fr:10302/theses_test \
+    --output=/tmp/theses-data.json \
     --type=data --size=11
 ```
