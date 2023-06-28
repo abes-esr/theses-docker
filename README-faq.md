@@ -407,11 +407,21 @@ L'outil utilisé est [elasticsearch-dump](https://github.com/elasticsearch-dump/
 
 Work in progress :
 ```
-# ci-dessous une commande work in progress testée en local sur un cluster local
+# dump du mapping
 docker run --rm -ti \
   --net=theses-docker-es-cluster-network \
   -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
-  -v /opt/pod/theses-docker/tmp/:/tmp/ \
+  -v $(pwd):/tmp/ \
+  elasticdump/elasticsearch-dump \
+    --input=https://elastic:xxxxxxx@diplotaxis1-prod.v102.abes.fr:10302/theses_test \
+    --output=/tmp/theses-mapping.json \
+    --type=mapping
+
+# dump des données
+docker run --rm -ti \
+  --net=theses-docker-es-cluster-network \
+  -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
+  -v $(pwd):/tmp/ \
   elasticdump/elasticsearch-dump \
     --input=https://elastic:xxxxxxx@diplotaxis1-prod.v102.abes.fr:10302/theses_test \
     --output=/tmp/theses-data.json \
