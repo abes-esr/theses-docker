@@ -409,7 +409,6 @@ Work in progress :
 ```
 # dump du mapping
 docker run --rm -ti \
-  --net=theses-docker-es-cluster-network \
   -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
   -v $(pwd):/tmp/ \
   elasticdump/elasticsearch-dump \
@@ -419,11 +418,13 @@ docker run --rm -ti \
 
 # dump des données
 docker run --rm -ti \
-  --net=theses-docker-es-cluster-network \
   -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
   -v $(pwd):/tmp/ \
   elasticdump/elasticsearch-dump \
     --input=https://elastic:xxxxxxx@diplotaxis1-prod.v102.abes.fr:10302/theses_test \
     --output=/tmp/theses-data.json \
     --type=data --size=11
+
+# import des données (ne fonctionne pas)
+docker run --net=theses-docker-es-cluster-network -e NODE_TLS_REJECT_UNAUTHORIZED=0 --rm -ti -v $(pwd):/tmp/ elasticdump/elasticsearch-dump  --output-index=theses-sample --output=https://elastic:xxxxxxxxxxxxxxxxx@theses-elasticsearch:20302/theses-sample   --input=/tmp/theses-data.json --type=data
 ```
