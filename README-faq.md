@@ -398,3 +398,15 @@ GET /theses_test/_search
   }
 }
 ```
+
+## Comment générer un échantillon de données à l'aide des données de production ?
+
+L'usage de cet échantillon de données et d'être intégré dans le batch [``theses-batch-11theses``](https://github.com/abes-esr/theses-batch-indexation/tree/11theses) de manière à disposer d'un batch pour injecter des données partielles mais fonctionnelles dans une installation theses-docker from scratch.
+
+L'outil utilisé est [elasticsearch-dump](https://github.com/elasticsearch-dump/elasticsearch-dump)https://github.com/elasticsearch-dump/elasticsearch-dump.
+
+Work in progress :
+```
+# ci-dessous une commande work in progress testée en local sur un cluster local
+docker run --net=theses-docker-es-cluster-network -e NODE_TLS_REJECT_UNAUTHORIZED=0 --rm -ti -v /opt/pod/theses-docker/tmp/:/tmp/ elasticdump/elasticsearch-dump   --input=https://elastic:xxxxxxxxxxxxxxxxxxxxx@theses-elasticsearch:20302/theses-sample   --output=/tmp/my_index_mapping.json --type=data
+```
