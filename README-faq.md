@@ -403,7 +403,7 @@ GET /theses_test/_search
 
 L'usage de cet échantillon de données et d'être intégré dans le batch [``theses-batch-11theses``](https://github.com/abes-esr/theses-batch-indexation/tree/11theses) de manière à disposer d'un batch pour injecter des données partielles mais fonctionnelles dans une installation theses-docker from scratch.
 
-L'outil utilisé est [elasticsearch-dump](https://github.com/elasticsearch-dump/elasticsearch-dump)https://github.com/elasticsearch-dump/elasticsearch-dump.
+L'outil utilisé est [elasticsearch-dump](https://github.com/elasticsearch-dump/elasticsearch-dump).
 
 Work in progress :
 ```
