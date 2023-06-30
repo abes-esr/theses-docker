@@ -143,31 +143,7 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
       # pour que les mises à jour de cette image soient auto-déployées par watchtower
-      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
-
-
-  #######################################
-  # theses-api-diffusion-poc
-  # API de diffusion des thèses en java spring de theses.fr
-  # (travail en cours, pour la preuve de concept il est
-  #  chargé de mettre à disposition un PDF en 
-  #  accès restreint que theses-rp protège)
-  theses-api-diffusion-poc:
-    container_name: theses-api-diffusion-poc
-    #image: mendhak/http-https-echo:23
-    build: ./images/theses-api-diffusion-poc/
-    image: httpd:2.4.54-theses-api-diffusion-poc
-    restart: unless-stopped
-    mem_limit: ${MEM_LIMIT}
-    memswap_limit: ${MEM_LIMIT}
-    cpus: ${CPU_LIMIT}
-    labels:
-      # pour envoyer les logs dans le puits de log de l'abes
-      - "co.elastic.logs/enabled=true"
-      - "co.elastic.logs/processors.add_fields.target="
-      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
-      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=apache"
-      
+      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"       
 
   #######################################
   # theses-api-recherche
@@ -240,8 +216,6 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
       # pour que les mises à jour de cette image soient auto-déployées par watchtower
       - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
-
-
 
   #######################################
   # theses-batch-11theses
