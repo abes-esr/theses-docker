@@ -439,8 +439,9 @@ services:
       - cluster.name=${THESES_ELASTICSEARCH_CLUSTER_NAME}
       - cluster.initial_master_nodes=${THESES_ELASTICSEARCH_CLUSTER_INITIAL_MASTER_NODES}
       - discovery.seed_hosts=${THESES_ELASTICSEARCH_CLUSTER_DISCOVER_SEED_HOSTS}
-      # pour désactiver/activer les recherches complexe (false est conseillé mais les recherches sur l'index personnes en ont besoin à la date du 22/06/2023)
-      - search.allow_expensive_queries=true
+      # pour désactiver les recherches complexe (conseillé par https://checkups.opster.com/checkup/result/75470)
+      # "Recommendations : Allow expensive queries can be disabled by setting config search.allow_expensive_queries: false in the yaml config file and then restarting the node."
+      - search.allow_expensive_queries=false
       # pour la quantité de données mises en cache
       # https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-request-cache.html#_cache_settings
       - indices.requests.cache.size=10%
