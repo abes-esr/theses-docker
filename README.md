@@ -255,7 +255,21 @@ Pour restaurer l'application, il faut :
 
 Se référer au code de https://github.com/abes-esr/theses-batch-indexation
 
+Le batch peu être utilisé pour :
+- Indexer les thèses depuis la base de données
+- Indexer les personnes présentes dans toutes les thèses
 
+Il faut choisir le job en l'indiquant dans spring.batch.job.names: 
+- indexationThesesDansES
+- indexationPersonnesDansES
+
+Puis lancer en ligne de commande : ./jdk-11.0.2/bin/java -jar theses-batch-indexation-0.0.1-SNAPSHOT.jar > log.txt
+
+Pour le job qui indexe les personnes, il y a une première étape qui construit le json en base de données, dans la table PERSONNE_CACHE.
+Les informations pour créer la table sont dans src/main/resources/personne_cache_table.
+Dans une seconde étape, on va envoyer le contenu de PERSONNE_CACHE dans Elastic Search.
+
+Il y a un job qui peut faire uniquement cette étape: indexationPersonnesDeBddVersES
 
 ## Architecture
 
