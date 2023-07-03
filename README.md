@@ -256,7 +256,7 @@ Pour restaurer l'application, il faut :
 Se référer au code de https://github.com/abes-esr/theses-batch-indexation
 
 Le batch peu être utilisé pour :
-- Indexer les thèses depuis la base de données
+- Indexer toutes les thèses depuis la base de données (base oracle THESES)
 - Indexer les personnes présentes dans toutes les thèses
 
 Il faut choisir le job en l'indiquant dans spring.batch.job.names: 
