@@ -42,8 +42,6 @@ services:
       #RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion-poc:80/poc-fede/"
       RENATER_SP_HTTPD_PUBLIC_PATH_1: "/api/v1/button/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:8992/button/"
-      RENATER_SP_HTTPD_PROTECTED_PATH_0: "/poc-fede/74979_GERARDIN_2018_archivage.pdf"
-      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-api-diffusion-poc/poc-fede/74979_GERARDIN_2018_archivage.pdf"
       # pour -prod THESES_RP_KIBANA_PROTECTED_PATH est renseigné mais THESES_KIBANA_PUBLIC_PATH est vide
       RENATER_SP_HTTPD_PROTECTED_PATH_1: ${THESES_RP_KIBANA_PROTECTED_PATH}
       RENATER_SP_HTTPD_PROTECTED_PROXY_TO_1: "http://theses-kibana:5601/"
@@ -53,18 +51,16 @@ services:
       # pour -local -dev -test mais pour -prod THESES_RP_KIBANA_PUBLIC_PATH est vide et c'est THESES_RP_KIBANA_PROTECTED_PATH qui est renseigné
       RENATER_SP_HTTPD_PUBLIC_PATH_3: ${THESES_RP_KIBANA_PUBLIC_PATH}
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_3: "http://theses-kibana:5601/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_4: "/api/v1/recherche/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_4: "http://theses-api-recherche:8990/api/v1/recherche/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_5: "/api/v1/personnes/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_5: "http://theses-api-recherche:8990/api/v1/personnes/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_6: "/api/v1/theses/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_6: "http://theses-api-recherche:8990/api/v1/theses/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_7: "/sitemap.xml"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-seo:8991/sitemap.xml"
-      RENATER_SP_HTTPD_PUBLIC_PATH_8: "/robots.txt"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_8: "http://theses-seo:8991/robots.txt"
-      RENATER_SP_HTTPD_PUBLIC_PATH_9: "/api/v1/document/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_9: "http://theses-api-diffusion:8992/document/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_4: "/api/v1/personnes/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_4: "http://theses-api-recherche:8990/api/v1/personnes/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_5: "/api/v1/theses/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_5: "http://theses-api-recherche:8990/api/v1/theses/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_6: "/sitemap.xml"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_6: "http://theses-seo:8991/sitemap.xml"
+      RENATER_SP_HTTPD_PUBLIC_PATH_7: "/robots.txt"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-seo:8991/robots.txt"
+      RENATER_SP_HTTPD_PUBLIC_PATH_8: "/api/v1/document/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_8: "http://theses-api-diffusion:8992/document/"
      
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
