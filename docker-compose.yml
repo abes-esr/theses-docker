@@ -100,7 +100,7 @@ services:
       THESES_FRONT_VITE_APP_API: ${THESES_FRONT_VITE_APP_API}
       THESES_FRONT_VITE_APP_APIREF: ${THESES_FRONT_VITE_APP_APIREF}
     depends_on:
-      - theses-api-diffusion-poc
+      - theses-api-diffusion
       - theses-api-recherche
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
