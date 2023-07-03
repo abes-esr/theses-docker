@@ -432,54 +432,7 @@ GET /theses_test/_search
 }
 ```
 
-## Comment générer un échantillon de données à l'aide des données de production ?
+## Comment générer et charger un échantillon de données à l'aide des données de production ?
 
-L'usage de cet échantillon de données et d'être intégré dans le batch [``theses-batch-11theses``](https://github.com/abes-esr/theses-batch-indexation/tree/11theses) de manière à disposer d'un batch pour injecter des données partielles mais fonctionnelles dans une installation theses-docker from scratch.
+Voir [theses-batch-indexation-sample](https://github.com/abes-esr/theses-batch-indexation-sample) qui réalise cela en se basant sur l'outil [elasticsearch-dump](https://github.com/elasticsearch-dump/elasticsearch-dump).
 
-L'outil utilisé est [elasticsearch-dump](https://github.com/elasticsearch-dump/elasticsearch-dump).
-
-Work in progress :
-```
-# dump du mapping
-docker run --rm -ti --net=host \
-  -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
-  -v $(pwd):/tmp/ \
-  elasticdump/elasticsearch-dump \
-    --input=https://elastic:xxxxxxx@diplotaxis1-prod.v102.abes.fr:10302/theses_test \
-    --output=/tmp/theses-mapping.json \
-    --type=mapping
-
-# dump des données
-docker run --rm -ti --net=host \
-  -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
-  -v $(pwd):/tmp/ \
-  elasticdump/elasticsearch-dump \
-    --input=https://elastic:xxxxxxx@diplotaxis1-prod.v102.abes.fr:10302/theses_test \
-    --output=/tmp/theses-data.json \
-    --type=data \
-    --searchBody="{\"query\":{\"ids\":{\"values\":[\"2003MON30025\",\"2015TOU20116\",\"2011AIX10218\",\"2001MNHN0022\",\"2020TOU20084\",\"2014TOU20047\",\"2003PA100181\",\"2000PA010697\",\"2014TOU20035\",\"2012PA010501\",\"2020PA100137\"]}}}"
-
-
-# --------------
-
-# charger le mapping
-docker run --rm -ti --net=host \
-  -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
-  -v $(pwd):/tmp/ \
-  elasticdump/elasticsearch-dump \
-    --input=/tmp/theses-mapping.json \
-    --output-index=theses-sample \
-    --output=https://elastic:xxxxxxx@127.0.0.1:10302/ \
-    --type=mapping
-
-# charger les thèses
-docker run --rm -ti --net=host \
-  -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
-  -v $(pwd):/tmp/ \
-  elasticdump/elasticsearch-dump \
-    --input=/tmp/theses-data.json \
-    --output-index=theses-sample \
-    --output=https://elastic:xxxxxxx@127.0.0.1:10302/ \
-    --type=data
-
-```
