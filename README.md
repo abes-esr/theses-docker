@@ -98,53 +98,6 @@ cd /opt/pod/theses-docker/
 docker-compose stop
 ```
 
-## Mise à jour
-Arrêt du cluster (console DevTool) :
-```bash
-PUT _cluster/settings
-{
-  "persistent": {
-    "cluster.routing.allocation.enable": "primaries"
-  }
-}
-
-POST /_flush
-```
-
-Stopper un par un les noeuds data puis finir par les master.
-Modifier la version dans "image" et faire docker-compose up -d
-
-# Redémarrage cluster
-```bash
-GET _cat/nodes
-
-PUT _cluster/settings
-{
-  "persistent": {
-    "cluster.routing.allocation.enable": null
-  }
-}
-
-# vérification
-GET _cat/health
-
-```
-Si Kibana ne migre pas (voir les logs) : 
-
-```bash
-[.kibana] Action failed with '[incompatible_cluster_routing_allocation] Incompatible Elasticsearch cluster settings detected. Remove the persistent and transient Elasticsearch cluster setting 'cluster.routing.allocation.enable' or set it to a value of 'all' to allow migrations to proceed. Refer to https://www.elastic.co/guide/en/kibana/8.7/resolve-migrations-failures.html#routing-allocation-disabled for more information on how to resolve the issue.
-
-curl -k -v -u elastic:<snip> -XPUT -H 'Content-Type: application/json' https://diplotaxis1-dev.v212.abes.fr:10302/_cluster/settings -d '{
-  "transient": {
-    "cluster.routing.allocation.enable": null
-  },
-  "persistent": {
-    "cluster.routing.allocation.enable": null
-  }
-}'
-
-```
-
 ## Supervision
 
 Pour vérifier que l'application est démarrée, on peut consulter l'état des conteneurs :
@@ -253,8 +206,63 @@ Pour restaurer l'application, il faut :
 
 ### Pour charger un échantillon de données
 
-Se référer au code de https://github.com/abes-esr/theses-batch-indexation
+Se référer au code de https://github.com/abes-esr/theses-batch-indexation/tree/11theses (branche 11theses)
 
+Ce batch s'exécute au démarrage de theses-docker et va charger des thèses et des personnes dans les indexes suivants :
+- theses-sample
+- personnes-sample
+
+Cet échantillon de données permet de démarrer theses-docker et de le tester en étant totalement indépendant du SI de l'Abes.
+
+Remarque : l'index sample des personnes n'est pas encore fonctionnel à la date du 03/07/2023
+
+### Procédure de mise à jour d'elasticsearch
+
+1) Arrêt du cluster (via la console DevTool dans Kibana) :
+```bash
+PUT _cluster/settings
+{
+  "persistent": {
+    "cluster.routing.allocation.enable": "primaries"
+  }
+}
+
+POST /_flush
+```
+
+2) Stopper un par un les noeuds data puis finir par les master.
+3) Modifier la version de l'image dans le docker-compose.yml et relancer tous les noeuds elasticsearch avec `docker-compose up -d`
+
+4) Redémarrer le cluster elasticsearch noeud après noeuds
+
+```bash
+GET _cat/nodes
+
+PUT _cluster/settings
+{
+  "persistent": {
+    "cluster.routing.allocation.enable": null
+  }
+}
+
+# vérification
+GET _cat/health
+```
+
+4) Si Kibana ne migre pas (voir les logs) : 
+
+```bash
+[.kibana] Action failed with '[incompatible_cluster_routing_allocation] Incompatible Elasticsearch cluster settings detected. Remove the persistent and transient Elasticsearch cluster setting 'cluster.routing.allocation.enable' or set it to a value of 'all' to allow migrations to proceed. Refer to https://www.elastic.co/guide/en/kibana/8.7/resolve-migrations-failures.html#routing-allocation-disabled for more information on how to resolve the issue.
+
+curl -k -v -u elastic:<snip> -XPUT -H 'Content-Type: application/json' https://diplotaxis1-dev.v212.abes.fr:10302/_cluster/settings -d '{
+  "transient": {
+    "cluster.routing.allocation.enable": null
+  },
+  "persistent": {
+    "cluster.routing.allocation.enable": null
+  }
+}'
+```
 
 
 ## Architecture
