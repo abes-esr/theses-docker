@@ -308,99 +308,89 @@ https://v2-prod.theses.fr/api/v1/personnes/recherche/?q=*&debut=0&nombre=10&tri=
 
 Voici ce que cela va générer coté ES :
 ```
-GET /personnes/_search/
+GET /recherche_personnes/_search/
 {
-  "query": {
-    "function_score": {
-      "boost_mode": "multiply",
-      "functions": [
+  "query":{
+    "function_score":{
+      "boost_mode":"multiply",
+      "functions":[
         {
-          "filter": {
-            "term": {
-              "has_idref": {
-                "value": true
+          "filter":{
+            "term":{
+              "has_idref":{
+                "value":true
               }
             }
           },
-          "weight": 10
+          "weight":10.0
         },
         {
-          "filter": {
-            "term": {
-              "roles": {
-                "value": "directeur de thèse"
+          "filter":{
+            "term":{
+              "roles":{
+                "value":"directeur de thèse"
               }
             }
           },
-          "weight": 1
+          "weight":1.0
         },
         {
-          "filter": {
-            "term": {
-              "roles": {
-                "value": "rapporteur"
+          "filter":{
+            "term":{
+              "roles":{
+                "value":"rapporteur"
               }
             }
           },
-          "weight": 1
+          "weight":1.0
         },
         {
-          "script_score": {
-            "script": {
-              "source": "doc['theses_id'].length"
-            }
+          "field_value_factor":{
+            "field":"nb_theses",
+            "modifier":"none"
           }
         },
         {
-          "filter": {
-            "range": {
-              "theses_date": {
-                "gte": "now-5y",
-                "lte": "now"
+          "filter":{
+            "range":{
+              "theses_date":{
+                "gte":"now-5y",
+                "lte":"now"
               }
             }
           },
-          "weight": 0.1
+          "weight":0.1
         }
       ],
-      "query": {
-        "bool": {
-          "should": [
+      "query":{
+        "bool":{
+          "should":[
             {
-              "query_string": {
-                "default_operator": "and",
-                "fields": [
+              "query_string":{
+                "default_operator":"and",
+                "fields":[
                   "nom",
                   "prenom",
                   "nom_complet",
                   "nom_complet.exact"
                 ],
-                "query": "*",
-                "quote_field_suffix": ".exact"
+                "query":"*",
+                "quote_field_suffix":".exact"
               }
             },
             {
-              "nested": {
-                "path": "theses",
-                "query": {
-                  "query_string": {
-                    "default_operator": "and",
-                    "fields": [
-                      "theses.sujets.*",
-                      "theses.sujets_rameau",
-                      "theses.resumes.*",
-                      "theses.discipline"
-                    ],
-                    "query": "*",
-                    "quote_field_suffix": ".exact"
-                  }
-                }
+              "query_string":{
+                "default_operator":"and",
+                "fields":[
+                  "thematiques.*"
+                ],
+                "query":"*"
               }
             }
           ]
         }
       },
-      "score_mode": "sum"
+      "score_mode":"sum"
     }
   }
 }
