@@ -257,7 +257,7 @@ Se référer au code de https://github.com/abes-esr/theses-batch-indexation
 
 Le batch peu être utilisé pour :
 - Indexer toutes les thèses depuis la base de données (base oracle THESES)
-- Indexer les personnes présentes dans toutes les thèses
+- Indexer toutes les personnes présentes dans toutes les thèses (idem, depuis la base de données oracle)
 
 Il faut choisir le job en l'indiquant dans spring.batch.job.names: 
 - indexationThesesDansES
