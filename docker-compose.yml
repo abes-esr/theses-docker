@@ -49,18 +49,18 @@ services:
       RENATER_SP_HTTPD_PROTECTED_PROXY_TO_1: "http://theses-api-diffusion:8992/document/protected/"
       RENATER_SP_HTTPD_PROTECTED_REQUIRE_1_0: "Require shib-attr Shib-Identity-Provider https://ciboulette.abes.fr/idp/shibboleth"
       # pour -local -dev -test mais pour -prod THESES_RP_KIBANA_PUBLIC_PATH est vide et c'est THESES_RP_KIBANA_PROTECTED_PATH qui est renseigné
-      RENATER_SP_HTTPD_PUBLIC_PATH_2: ${THESES_RP_KIBANA_PUBLIC_PATH}
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "http://theses-kibana:5601/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_3: "/api/v1/personnes/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_3: "http://theses-api-recherche:8990/api/v1/personnes/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_4: "/api/v1/theses/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_4: "http://theses-api-recherche:8990/api/v1/theses/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_5: "/sitemap.xml"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_5: "http://theses-seo:8991/sitemap.xml"
-      RENATER_SP_HTTPD_PUBLIC_PATH_6: "/robots.txt"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_6: "http://theses-seo:8991/robots.txt"
-      RENATER_SP_HTTPD_PUBLIC_PATH_7: "/api/v1/document/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-api-diffusion:8992/document/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_O: ${THESES_RP_KIBANA_PUBLIC_PATH}
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_0: "http://theses-kibana:5601/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_1: "/api/v1/personnes/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-recherche:8990/api/v1/personnes/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_2: "/api/v1/theses/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "http://theses-api-recherche:8990/api/v1/theses/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_3: "/sitemap.xml"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_3: "http://theses-seo:8991/sitemap.xml"
+      RENATER_SP_HTTPD_PUBLIC_PATH_4: "/robots.txt"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_4: "http://theses-seo:8991/robots.txt"
+      RENATER_SP_HTTPD_PUBLIC_PATH_5: "/api/v1/document/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_5: "http://theses-api-diffusion:8992/document/"
      
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
