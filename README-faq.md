@@ -441,7 +441,7 @@ L'outil utilisé est [elasticsearch-dump](https://github.com/elasticsearch-dump/
 Work in progress :
 ```
 # dump du mapping
-docker run --rm -ti \
+docker run --rm -ti --net=host \
   -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
   -v $(pwd):/tmp/ \
   elasticdump/elasticsearch-dump \
@@ -450,7 +450,7 @@ docker run --rm -ti \
     --type=mapping
 
 # dump des données
-docker run --rm -ti \
+docker run --rm -ti --net=host \
   -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
   -v $(pwd):/tmp/ \
   elasticdump/elasticsearch-dump \
