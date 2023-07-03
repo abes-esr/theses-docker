@@ -466,7 +466,8 @@ docker run --rm -ti \
   elasticdump/elasticsearch-dump \
     --input=https://elastic:xxxxxxx@diplotaxis1-prod.v102.abes.fr:10302/theses_test \
     --output=/tmp/theses-data.json \
-    --type=data --size=11
+    --type=data \
+    --searchBody="{\"query\":{\"ids\":{\"values\":[\"2003MON30025\",\"2015TOU20116\",\"2011AIX10218\",\"2001MNHN0022\",\"2020TOU20084\",\"2014TOU20047\",\"2003PA100181\",\"2000PA010697\",\"2014TOU20035\",\"2012PA010501\",\"2020PA100137\"]}}}"
 
 # import des données (ne fonctionne pas)
 docker run --net=theses-docker-es-cluster-network -e NODE_TLS_REJECT_UNAUTHORIZED=0 --rm -ti -v $(pwd):/tmp/ elasticdump/elasticsearch-dump  --output-index=theses-sample --output=https://elastic:xxxxxxxxxxxxxxxxx@theses-elasticsearch:20302/theses-sample   --input=/tmp/theses-data.json --type=data
