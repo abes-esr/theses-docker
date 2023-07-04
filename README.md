@@ -277,7 +277,6 @@ Voici la liste et la description des conteneurs déployés par le [docker-compos
 - ``theses-elasticsearch`` : conteneur qui sera chargé d'instancier le moteur de recherche elasticsearch qui contiendra l'indexation des TEF de theses.fr et qui mettra à disposition le langage de requêtage d'elasticsearch avec l'API d'elasticsearch (non exposé sur internet)
 - ``theses-kibana`` : conteneur qui sera chargé du backoffice de ``theses-elasticsearch`` en proposant des tableaux visuels
 
-
 Les images docker de theses.fr sont générées à partir des codes open sources disponibles ici :
 - https://github.com/abes-esr/docker-shibboleth-renater-sp (pour l'authentification avec la fédération d'identités)
 - https://github.com/abes-esr/theses-api-diffusion
@@ -286,8 +285,9 @@ Les images docker de theses.fr sont générées à partir des codes open sources
 - https://github.com/abes-esr/theses-front
 - https://github.com/abes-esr/theses-batch
 
-## Schéma global de l'application : 
+Voici le schéma de l'architecture :
 
-![image](https://user-images.githubusercontent.com/3686902/223732169-6daccf99-f86b-40aa-9289-40b626128a8d.png)
+<img src="https://docs.google.com/drawings/d/e/2PACX-1vR-eXVbpwNykQebMS1fpBLtUOGMs0hvM9AbsB6Qv1LCDmm28rcRlJJbaiWjekLcmD709M7bkNbninjY/pub?w=2634&amp;h=1374">
 
+Pour modifier le schéma voici [le lien](https://docs.google.com/drawings/d/1YxkcN3JUzhD-1W15KCFj0yIdaoJF96V9WadZ6oj9a7Q/edit?usp=sharing).
 
