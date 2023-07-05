@@ -150,6 +150,8 @@ services:
     depends_on:
       theses-elasticsearch:
         condition: service_healthy
+      theses-elasticsearch-setupusers:
+        condition: service_healthy
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
@@ -291,27 +293,33 @@ services:
           echo "Creating certs";
           echo -ne \
           "instances:\n"\
-          "  - name: es01\n"\
+          "  - name: es-01\n"\
           "    dns:\n"\
           "      - theses-elasticsearch-01\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
-          "  - name: es02\n"\
+          "  - name: es-02\n"\
           "    dns:\n"\
           "      - theses-elasticsearch-02\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
-          "  - name: es03\n"\
+          "  - name: es-03\n"\
           "    dns:\n"\
           "      - theses-elasticsearch-03\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
-          "  - name: es04\n"\
+          "  - name: es-04\n"\
           "    dns:\n"\
           "      - theses-elasticsearch-04\n"\
+          "      - localhost\n"\
+          "    ip:\n"\
+          "      - 127.0.0.1\n"\
+          "  - name: es-05\n"\
+          "    dns:\n"\
+          "      - theses-elasticsearch-05\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
@@ -327,7 +335,7 @@ services:
         sleep infinity; # never stop the container because elasticsearch depends on it
       '
     healthcheck:
-      test: ["CMD-SHELL", "[ -f config/certs/es01/es01.crt ]"]
+      test: ["CMD-SHELL", "[ -f config/certs/es-01/es-01.crt ]"]
       interval: 10s
       timeout: 5s
       retries: 120
@@ -397,13 +405,14 @@ services:
 
 
 
+
   #######################################
   # theses-elasticsearch
   # noeud n°1 de l'elasticsearch de theses.fr
   # Ref. https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
   # cf https://github.com/abes-esr/theses-es-cluster-docker#readme pour le mode cluster
   theses-elasticsearch:
-    container_name: theses-elasticsearch-${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}
+    container_name: theses-elasticsearch-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}
     depends_on:
       theses-elasticsearch-setupcerts:
         condition: service_healthy
@@ -431,7 +440,8 @@ services:
       - transport.port=${THESES_ELASTICSEARCH_TRANSPORT_PORT}
       - network.publish_host=${THESES_ELASTICSEARCH_CLUSTER_PUBLISH_HOST}
       # paramétrage du cluster elasticsearch
-      - node.name=theses-es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}
+      - node.name=theses-es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}
+      - node.roles=${THESES_ELASTICSEARCH_CLUSTER_NODE_ROLES}
       - cluster.name=${THESES_ELASTICSEARCH_CLUSTER_NAME}
       - cluster.initial_master_nodes=${THESES_ELASTICSEARCH_CLUSTER_INITIAL_MASTER_NODES}
       - discovery.seed_hosts=${THESES_ELASTICSEARCH_CLUSTER_DISCOVER_SEED_HOSTS}
@@ -452,13 +462,13 @@ services:
       # paramètres de sécurité d'elasticsearch
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
-      - xpack.security.http.ssl.key=certs/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}.key
-      - xpack.security.http.ssl.certificate=certs/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}.crt
+      - xpack.security.http.ssl.key=certs/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}.key
+      - xpack.security.http.ssl.certificate=certs/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}.crt
       - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.http.ssl.verification_mode=certificate
       - xpack.security.transport.ssl.enabled=true
-      - xpack.security.transport.ssl.key=certs/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}.key
-      - xpack.security.transport.ssl.certificate=certs/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}.crt
+      - xpack.security.transport.ssl.key=certs/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}.key
+      - xpack.security.transport.ssl.certificate=certs/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}.crt
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
       # licence à utiliser (basic ou trial pour un essai de 30 jours)
@@ -577,10 +587,11 @@ services:
 # pour lancer deux noeuds sur la même machine, il suffit alors de :
 # 1) créer ce réseau via "docker network create theses-docker-es-cluster-network"
 # 2) pour le noeud 2 utiliser la config suivante : https://github.com/abes-esr/theses-es-cluster-docker/
-# 3) paramétrer le .env de chaque noeud avec THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER qui vaut "01" ou "02" (fonction du noeud) :
-#    THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER=01
-#    THESES_ELASTICSEARCH_CLUSTER_DISCOVER_SEED_HOSTS=theses-elasticsearch-01:9300,theses-elasticsearch-02:9300
-#    THESES_ELASTICSEARCH_CLUSTER_INITIAL_MASTER_NODES=theses-es01,theses-es02
+# 3) paramétrer le .env de chaque noeud avec THESES_ELASTICSEARCH_CLUSTER_NODE_ID qui vaut "01" ou "02" (fonction du noeud) :
+#    THESES_ELASTICSEARCH_CLUSTER_NODE_ID=02
+#    THESES_ELASTICSEARCH_CLUSTER_NODE_ROLES=[data]
+#    THESES_ELASTICSEARCH_CLUSTER_DISCOVER_SEED_HOSTS=theses-elasticsearch-01:10305,theses-elasticsearch-02:10305
+#    THESES_ELASTICSEARCH_CLUSTER_INITIAL_MASTER_NODES=theses-es-02
 # 4) lancer les deux noeuds dans leurs deux répertoires dédié avec "docker-compose up"
 #networks:
 #  default:
