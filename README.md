@@ -256,20 +256,31 @@ Pour restaurer l'application, il faut :
 Se référer au code de https://github.com/abes-esr/theses-batch-indexation
 
 Le batch peu être utilisé pour :
-- Indexer toutes les thèses depuis la base de données (base oracle THESES)
-- Indexer toutes les personnes présentes dans toutes les thèses (idem, depuis la base de données oracle)
+- Indexer toutes les thèses depuis la base de données (base oracle THESES) (3h)
+- Indexer toutes les personnes présentes dans toutes les thèses (idem, depuis la base de données oracle) (5h)
 
 Il faut choisir le job en l'indiquant dans spring.batch.job.names: 
 - indexationThesesDansES
 - indexationPersonnesDansES
 
-Puis lancer en ligne de commande : ./jdk-11.0.2/bin/java -jar theses-batch-indexation-0.0.1-SNAPSHOT.jar > log.txt
+Puis lancer en ligne de commande :
+En changeant la valeur de -Dspring.batch.job.names si besoin.
+```bash 
+docker exec -it theses-batch-indexation ./jdk-11.0.2/bin/java -Dspring.batch.job.names=indexationThesesDansES -jar theses-batch-indexation-0.0.1-SNAPSHOT.jar > log.txt
+```
 
-Pour le job qui indexe les personnes, il y a une première étape qui construit le json en base de données, dans la table PERSONNE_CACHE.
-Les informations pour créer la table sont dans src/main/resources/personne_cache_table.
+Pour le job qui indexe les personnes (indexationPersonnesDansES), il y a une première étape qui construit le json en base de données, dans la table PERSONNE_CACHE.
+Cette table n'est pas créée par le batch, si elle n'existe pas les informations pour créer la créer sont dans src/main/resources/personne_cache_table.
 Dans une seconde étape, on va envoyer le contenu de PERSONNE_CACHE dans Elastic Search.
 
-Il y a un job qui peut faire uniquement cette étape: indexationPersonnesDeBddVersES
+Il y a un job qui peut faire uniquement cette dernière étape (1h): 
+- indexationPersonnesDeBddVersES
+
+```bash 
+docker exec -it theses-batch-indexation ./jdk-11.0.2/bin/java -Dspring.batch.job.names=indexationPersonnesDeBddVersES -jar theses-batch-indexation-0.0.1-SNAPSHOT.jar > log.txt
+```
+
+Il est judicieux de l'utiliser quand on vient d'indexer toutes les personnes dans un environnement, et qu'on souhaite indexer sur un ou plusieurs autres environnements.
 
 ## Architecture
 
