@@ -146,9 +146,60 @@ Si vous devez ajouter un Nieme noeud au cluster elasticsearch de theses.fr et qu
 
 ## Comment tester les performances du cluster elasticsearch
 
-Avec l'outil siege on peut simuler un grand nombre de requêtes simultanées. Voici un exemple de benchmark des perf du cluster elasticsearch en appelant directement l'API d'ES sans passer par l'API Java de theses.fr 
+Avec l'outil siege on peut simuler un grand nombre de requêtes simultanées. 
 
-Constituer le fichier des URL à appeler (dans cette exemple on va appeler les 4 noeuds du cluster à tours de rôle) :
+### Benchmark de perf via l'API Java de theses.fr
+
+Voici un exemple de benchmark des perf du cluster elasticsearch en appelant l'API Java theses-api-recherche :
+```
+# sur des recherches de thèses 
+siege -c 100 -t 5S "https://v2-prod.theses.fr/api/v1/theses/recherche/?q=science&debut=0&nombre=10&tri=pertinence"
+# sur des recherches de personnes
+siege -c 100 -t 5S "https://v2-prod.theses.fr/api/v1/personnes/recherche/?q=science&debut=0&nombre=10&tri=pertinence"
+```
+
+Ces commandes retournent quelque chose qui ressemble à ceci :
+```
+$ siege -c 100 -t 5S "https://v2-prod.theses.fr/api/v1/theses/recherche/?q=science&debut=0&nombre=10&tri=pertinence"
+** SIEGE 4.0.4
+** Preparing 100 concurrent users for battle.
+The server is now under siege...
+Lifting the server siege...
+Transactions:                    884 hits
+Availability:                 100.00 %
+Elapsed time:                   4.19 secs
+Data transferred:               3.79 MB
+Response time:                  0.44 secs
+Transaction rate:             210.98 trans/sec
+Throughput:                     0.90 MB/sec
+Concurrency:                   91.91
+Successful transactions:         884
+Failed transactions:               0
+Longest transaction:            2.23
+Shortest transaction:           0.17
+
+$ siege -c 100 -t 5S "https://v2-prod.theses.fr/api/v1/personnes/recherche/?q=science&debut=0&nombre=10&tri=pertinence"
+** SIEGE 4.0.4
+** Preparing 100 concurrent users for battle.
+The server is now under siege...
+Lifting the server siege...
+Transactions:                   1310 hits
+Availability:                 100.00 %
+Elapsed time:                   4.52 secs
+Data transferred:               4.67 MB
+Response time:                  0.33 secs
+Transaction rate:             289.82 trans/sec
+Throughput:                     1.03 MB/sec
+Concurrency:                   94.29
+Successful transactions:        1310
+Failed transactions:               0
+Longest transaction:            1.70
+Shortest transaction:           0.21
+```
+
+### Benchmark de perf via l'API d'elasticsearch
+
+Voici un exemple similaire de benchmark des perf du cluster elasticsearch en appelant directement l'API d'ES sans passer par l'API Java de theses.fr (le paramétrage du test est plus complexe et doit se faire sous VPN). Il faut pour cela commencer par constituer le fichier des URL à appeler (dans cette exemple on va appeler les 4 noeuds du cluster à tours de rôle) :
 ```
 $ cat siege-urls.txt
 https://diplotaxis1-prod.v102.abes.fr:10302/theses_test/_search POST {"query":{"query_string":{"default_operator": "and","fields": ["resumes.*^30","titres.*^30","nnt^15","discipline^15","sujetsRameauPpn^15","sujetsRameauLibelle^15","sujets^15","auteursNP^12","directeursNP^2","ecolesDoctoralesN^5","etabSoutenanceN^5","oaiSets^5","etabsCotutelleN^1","membresJuryNP^1","partenairesRechercheN^1","presidentJuryNP^1","rapporteurs^1"],"query": "science","quote_field_suffix": ".exact"}}}
@@ -164,7 +215,7 @@ auth=$(echo -n 'theses-api-recherche:xxxxxxxxxxxxxxxxxxx' | openssl base64)
 siege -c200 -t 5S --content-type "application/json" --header="Authorization:Basic $auth" -f ./siege-urls.txt
 ```
 
-Ensuite CTRL+C pour stopper le test, un rapport s'affichera :
+Le rapport s'affichera après 5 secondes :
 ```
 Transactions:                   2948 hits
 Availability:                 100.00 %
@@ -180,15 +231,7 @@ Longest transaction:            6.91
 Shortest transaction:           0.23
 ```
 
-Pour tester via l'API Java theses-api-recherche :
-```
-# sur des recherches de thèses 
-siege -c 100 -t 5S "https://v2-prod.theses.fr/api/v1/theses/recherche/?q=science&debut=0&nombre=10&tri=pertinence"
-# sur des recherches de personnes
-siege -c 100 -t 5S "https://v2-prod.theses.fr/api/v1/personnes/recherche/?q=science&debut=0&nombre=10&tri=pertinence"
-```
-
-Pour mémo pour tester des requêtes sur le solr de theses.fr actuel :
+Pour mémo pour tester des requêtes sur le solr de theses.fr actuel (sous VPN) :
 ```
 siege -c100 -t 5S "http://denim.v102.abes.fr:8080/solr2/select/?q=*%3A*&version=2.2&start=0&rows=10&indent=on&wt=json&fl=*"
 ```
@@ -265,99 +308,89 @@ https://v2-prod.theses.fr/api/v1/personnes/recherche/?q=*&debut=0&nombre=10&tri=
 
 Voici ce que cela va générer coté ES :
 ```
-GET /personnes/_search/
+GET /recherche_personnes/_search/
 {
-  "query": {
-    "function_score": {
-      "boost_mode": "multiply",
-      "functions": [
+  "query":{
+    "function_score":{
+      "boost_mode":"multiply",
+      "functions":[
         {
-          "filter": {
-            "term": {
-              "has_idref": {
-                "value": true
+          "filter":{
+            "term":{
+              "has_idref":{
+                "value":true
               }
             }
           },
-          "weight": 10
+          "weight":10.0
         },
         {
-          "filter": {
-            "term": {
-              "roles": {
-                "value": "directeur de thèse"
+          "filter":{
+            "term":{
+              "roles":{
+                "value":"directeur de thèse"
               }
             }
           },
-          "weight": 1
+          "weight":1.0
         },
         {
-          "filter": {
-            "term": {
-              "roles": {
-                "value": "rapporteur"
+          "filter":{
+            "term":{
+              "roles":{
+                "value":"rapporteur"
               }
             }
           },
-          "weight": 1
+          "weight":1.0
         },
         {
-          "script_score": {
-            "script": {
-              "source": "doc['theses_id'].length"
-            }
+          "field_value_factor":{
+            "field":"nb_theses",
+            "modifier":"none"
           }
         },
         {
-          "filter": {
-            "range": {
-              "theses_date": {
-                "gte": "now-5y",
-                "lte": "now"
+          "filter":{
+            "range":{
+              "theses_date":{
+                "gte":"now-5y",
+                "lte":"now"
               }
             }
           },
-          "weight": 0.1
+          "weight":0.1
         }
       ],
-      "query": {
-        "bool": {
-          "should": [
+      "query":{
+        "bool":{
+          "should":[
             {
-              "query_string": {
-                "default_operator": "and",
-                "fields": [
+              "query_string":{
+                "default_operator":"and",
+                "fields":[
                   "nom",
                   "prenom",
                   "nom_complet",
                   "nom_complet.exact"
                 ],
-                "query": "*",
-                "quote_field_suffix": ".exact"
+                "query":"*",
+                "quote_field_suffix":".exact"
               }
             },
             {
-              "nested": {
-                "path": "theses",
-                "query": {
-                  "query_string": {
-                    "default_operator": "and",
-                    "fields": [
-                      "theses.sujets.*",
-                      "theses.sujets_rameau",
-                      "theses.resumes.*",
-                      "theses.discipline"
-                    ],
-                    "query": "*",
-                    "quote_field_suffix": ".exact"
-                  }
-                }
+              "query_string":{
+                "default_operator":"and",
+                "fields":[
+                  "thematiques.*"
+                ],
+                "query":"*"
               }
             }
           ]
         }
       },
-      "score_mode": "sum"
+      "score_mode":"sum"
     }
   }
 }
@@ -399,32 +432,7 @@ GET /theses_test/_search
 }
 ```
 
-## Comment générer un échantillon de données à l'aide des données de production ?
+## Comment générer et charger un échantillon de données à l'aide des données de production ?
 
-L'usage de cet échantillon de données et d'être intégré dans le batch [``theses-batch-11theses``](https://github.com/abes-esr/theses-batch-indexation/tree/11theses) de manière à disposer d'un batch pour injecter des données partielles mais fonctionnelles dans une installation theses-docker from scratch.
+Voir [theses-batch-indexation-sample](https://github.com/abes-esr/theses-batch-indexation-sample) qui réalise cela en se basant sur l'outil [elasticsearch-dump](https://github.com/elasticsearch-dump/elasticsearch-dump).
 
-L'outil utilisé est [elasticsearch-dump](https://github.com/elasticsearch-dump/elasticsearch-dump).
-
-Work in progress :
-```
-# dump du mapping
-docker run --rm -ti \
-  -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
-  -v $(pwd):/tmp/ \
-  elasticdump/elasticsearch-dump \
-    --input=https://elastic:xxxxxxx@diplotaxis1-prod.v102.abes.fr:10302/theses_test \
-    --output=/tmp/theses-mapping.json \
-    --type=mapping
-
-# dump des données
-docker run --rm -ti \
-  -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
-  -v $(pwd):/tmp/ \
-  elasticdump/elasticsearch-dump \
-    --input=https://elastic:xxxxxxx@diplotaxis1-prod.v102.abes.fr:10302/theses_test \
-    --output=/tmp/theses-data.json \
-    --type=data --size=11
-
-# import des données (ne fonctionne pas)
-docker run --net=theses-docker-es-cluster-network -e NODE_TLS_REJECT_UNAUTHORIZED=0 --rm -ti -v $(pwd):/tmp/ elasticdump/elasticsearch-dump  --output-index=theses-sample --output=https://elastic:xxxxxxxxxxxxxxxxx@theses-elasticsearch:20302/theses-sample   --input=/tmp/theses-data.json --type=data
-```

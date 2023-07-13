@@ -42,29 +42,25 @@ services:
       #RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion-poc:80/poc-fede/"
       RENATER_SP_HTTPD_PUBLIC_PATH_1: "/api/v1/button/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:8992/button/"
-      RENATER_SP_HTTPD_PROTECTED_PATH_0: "/poc-fede/74979_GERARDIN_2018_archivage.pdf"
-      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-api-diffusion-poc/poc-fede/74979_GERARDIN_2018_archivage.pdf"
       # pour -prod THESES_RP_KIBANA_PROTECTED_PATH est renseigné mais THESES_KIBANA_PUBLIC_PATH est vide
-      RENATER_SP_HTTPD_PROTECTED_PATH_1: ${THESES_RP_KIBANA_PROTECTED_PATH}
-      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_1: "http://theses-kibana:5601/"
-      RENATER_SP_HTTPD_PROTECTED_PATH_2: "/document/protected/"
-      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_2: "http://theses-api-diffusion:8992/document/protected/"
+      RENATER_SP_HTTPD_PROTECTED_PATH_0: ${THESES_RP_KIBANA_PROTECTED_PATH}
+      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-kibana:5601/"
+      RENATER_SP_HTTPD_PROTECTED_PATH_1: "/document/protected/"
+      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_1: "http://theses-api-diffusion:8992/document/protected/"
       RENATER_SP_HTTPD_PROTECTED_REQUIRE_1_0: "Require shib-attr Shib-Identity-Provider https://ciboulette.abes.fr/idp/shibboleth"
       # pour -local -dev -test mais pour -prod THESES_RP_KIBANA_PUBLIC_PATH est vide et c'est THESES_RP_KIBANA_PROTECTED_PATH qui est renseigné
-      RENATER_SP_HTTPD_PUBLIC_PATH_3: ${THESES_RP_KIBANA_PUBLIC_PATH}
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_3: "http://theses-kibana:5601/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_4: "/api/v1/recherche/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_4: "http://theses-api-recherche:8990/api/v1/recherche/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_5: "/api/v1/personnes/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_5: "http://theses-api-recherche:8990/api/v1/personnes/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_6: "/api/v1/theses/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_6: "http://theses-api-recherche:8990/api/v1/theses/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_7: "/sitemap.xml"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-seo:8991/sitemap.xml"
-      RENATER_SP_HTTPD_PUBLIC_PATH_8: "/robots.txt"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_8: "http://theses-seo:8991/robots.txt"
-      RENATER_SP_HTTPD_PUBLIC_PATH_9: "/api/v1/document/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_9: "http://theses-api-diffusion:8992/document/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_2: ${THESES_RP_KIBANA_PUBLIC_PATH}
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "http://theses-kibana:5601/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_3: "/api/v1/personnes/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_3: "http://theses-api-recherche:8990/api/v1/personnes/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_4: "/api/v1/theses/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_4: "http://theses-api-recherche:8990/api/v1/theses/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_5: "/sitemap.xml"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_5: "http://theses-seo:8991/sitemap.xml"
+      RENATER_SP_HTTPD_PUBLIC_PATH_6: "/robots.txt"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_6: "http://theses-seo:8991/robots.txt"
+      RENATER_SP_HTTPD_PUBLIC_PATH_7: "/api/v1/document/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-api-diffusion:8992/document/"
      
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
@@ -100,7 +96,7 @@ services:
       THESES_FRONT_VITE_APP_API: ${THESES_FRONT_VITE_APP_API}
       THESES_FRONT_VITE_APP_APIREF: ${THESES_FRONT_VITE_APP_APIREF}
     depends_on:
-      - theses-api-diffusion-poc
+      - theses-api-diffusion
       - theses-api-recherche
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -153,6 +149,8 @@ services:
     image: abesesr/theses:${THESES_API_RECHERCHE_VERSION}
     depends_on:
       theses-elasticsearch:
+        condition: service_healthy
+      theses-elasticsearch-setupusers:
         condition: service_healthy
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
@@ -218,12 +216,12 @@ services:
       - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
 
   #######################################
-  # theses-batch-11theses
-  # batch pour indexer les 11 thèses dans elasticsearch
-  # (travail en cours pour la preuve de concept de l'indexation de 11 thèses)
-  theses-batch-11theses:
-    container_name: theses-batch-11theses
-    image: abesesr/theses:${THESES_BATCH_INDEXATION_11THESES_VERSION}
+  # theses-batch-indexation-sample
+  # batch pour charger quelques thèses et quelques personnes dans des indexes échantillon
+  # theses-sample, personnes-sample, et recherche_personnes-sample
+  theses-batch-indexation-sample:
+    container_name: theses-batch-indexation-sample
+    image: abesesr/theses:${THESES_BATCH_INDEXATION_SAMPLE_VERSION}
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
     cpus: ${CPU_LIMIT}
@@ -232,7 +230,7 @@ services:
         condition: service_healthy
     environment:
       ELASTICSEARCH_PASSWORD: ${THESES_ELASTICSEARCH_PASSWORD}
-      ELASTICSEARCH_HOST: "https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}"
+      ELASTICSEARCH_HOST_PORT: "theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}"
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -295,27 +293,33 @@ services:
           echo "Creating certs";
           echo -ne \
           "instances:\n"\
-          "  - name: es01\n"\
+          "  - name: es-01\n"\
           "    dns:\n"\
           "      - theses-elasticsearch-01\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
-          "  - name: es02\n"\
+          "  - name: es-02\n"\
           "    dns:\n"\
           "      - theses-elasticsearch-02\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
-          "  - name: es03\n"\
+          "  - name: es-03\n"\
           "    dns:\n"\
           "      - theses-elasticsearch-03\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
-          "  - name: es04\n"\
+          "  - name: es-04\n"\
           "    dns:\n"\
           "      - theses-elasticsearch-04\n"\
+          "      - localhost\n"\
+          "    ip:\n"\
+          "      - 127.0.0.1\n"\
+          "  - name: es-05\n"\
+          "    dns:\n"\
+          "      - theses-elasticsearch-05\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
@@ -331,7 +335,7 @@ services:
         sleep infinity; # never stop the container because elasticsearch depends on it
       '
     healthcheck:
-      test: ["CMD-SHELL", "[ -f config/certs/es01/es01.crt ]"]
+      test: ["CMD-SHELL", "[ -f config/certs/es-01/es-01.crt ]"]
       interval: 10s
       timeout: 5s
       retries: 120
@@ -377,9 +381,9 @@ services:
           exit 1;
         fi;
         echo "Setting kibana_system password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/kibana_system/_password -d "{\"password\":\"${THESES_KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        until curl -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/kibana_system/_password -d "{\"password\":\"${THESES_KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
         echo "Setting ${THESES_API_RECHERCHE_ELASTIC_USERNAME} password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/${THESES_API_RECHERCHE_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_RECHERCHE_ELASTIC_PASSWORD}\", \"enabled\": true, \"roles\":[\"viewer\"], \"full_name\":\"\", \"email\":\"\"}" | grep -q "^{\"created\":"; do sleep 10; done;        
+        until curl -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/${THESES_API_RECHERCHE_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_RECHERCHE_ELASTIC_PASSWORD}\", \"enabled\": true, \"roles\":[\"viewer\"], \"full_name\":\"\", \"email\":\"\"}" | grep -q "^{\"created\":"; do sleep 10; done;        
         echo "All done!";
         sleep infinity; # never stop the container because kibana depends on it
       '
@@ -401,13 +405,14 @@ services:
 
 
 
+
   #######################################
   # theses-elasticsearch
   # noeud n°1 de l'elasticsearch de theses.fr
   # Ref. https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
   # cf https://github.com/abes-esr/theses-es-cluster-docker#readme pour le mode cluster
   theses-elasticsearch:
-    container_name: theses-elasticsearch-${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}
+    container_name: theses-elasticsearch-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}
     depends_on:
       theses-elasticsearch-setupcerts:
         condition: service_healthy
@@ -435,12 +440,14 @@ services:
       - transport.port=${THESES_ELASTICSEARCH_TRANSPORT_PORT}
       - network.publish_host=${THESES_ELASTICSEARCH_CLUSTER_PUBLISH_HOST}
       # paramétrage du cluster elasticsearch
-      - node.name=theses-es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}
+      - node.name=theses-es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}
+      - node.roles=${THESES_ELASTICSEARCH_CLUSTER_NODE_ROLES}
       - cluster.name=${THESES_ELASTICSEARCH_CLUSTER_NAME}
       - cluster.initial_master_nodes=${THESES_ELASTICSEARCH_CLUSTER_INITIAL_MASTER_NODES}
       - discovery.seed_hosts=${THESES_ELASTICSEARCH_CLUSTER_DISCOVER_SEED_HOSTS}
-      # pour désactiver/activer les recherches complexe (false est conseillé mais les recherches sur l'index personnes en ont besoin à la date du 22/06/2023)
-      - search.allow_expensive_queries=true
+      # pour désactiver les recherches complexe (conseillé par https://checkups.opster.com/checkup/result/75470)
+      # "Recommendations : Allow expensive queries can be disabled by setting config search.allow_expensive_queries: false in the yaml config file and then restarting the node."
+      - search.allow_expensive_queries=false
       # pour la quantité de données mises en cache
       # https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-request-cache.html#_cache_settings
       - indices.requests.cache.size=10%
@@ -455,13 +462,13 @@ services:
       # paramètres de sécurité d'elasticsearch
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
-      - xpack.security.http.ssl.key=certs/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}.key
-      - xpack.security.http.ssl.certificate=certs/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}.crt
+      - xpack.security.http.ssl.key=certs/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}.key
+      - xpack.security.http.ssl.certificate=certs/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}.crt
       - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.http.ssl.verification_mode=certificate
       - xpack.security.transport.ssl.enabled=true
-      - xpack.security.transport.ssl.key=certs/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}.key
-      - xpack.security.transport.ssl.certificate=certs/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}/es${THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER}.crt
+      - xpack.security.transport.ssl.key=certs/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}.key
+      - xpack.security.transport.ssl.certificate=certs/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}/es-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}.crt
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
       # licence à utiliser (basic ou trial pour un essai de 30 jours)
@@ -580,10 +587,11 @@ services:
 # pour lancer deux noeuds sur la même machine, il suffit alors de :
 # 1) créer ce réseau via "docker network create theses-docker-es-cluster-network"
 # 2) pour le noeud 2 utiliser la config suivante : https://github.com/abes-esr/theses-es-cluster-docker/
-# 3) paramétrer le .env de chaque noeud avec THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER qui vaut "01" ou "02" (fonction du noeud) :
-#    THESES_ELASTICSEARCH_CLUSTER_NODE_NUMBER=01
-#    THESES_ELASTICSEARCH_CLUSTER_DISCOVER_SEED_HOSTS=theses-elasticsearch-01:9300,theses-elasticsearch-02:9300
-#    THESES_ELASTICSEARCH_CLUSTER_INITIAL_MASTER_NODES=theses-es01,theses-es02
+# 3) paramétrer le .env de chaque noeud avec THESES_ELASTICSEARCH_CLUSTER_NODE_ID qui vaut "01" ou "02" (fonction du noeud) :
+#    THESES_ELASTICSEARCH_CLUSTER_NODE_ID=02
+#    THESES_ELASTICSEARCH_CLUSTER_NODE_ROLES=[data]
+#    THESES_ELASTICSEARCH_CLUSTER_DISCOVER_SEED_HOSTS=theses-elasticsearch-01:10305,theses-elasticsearch-02:10305
+#    THESES_ELASTICSEARCH_CLUSTER_INITIAL_MASTER_NODES=theses-es-02
 # 4) lancer les deux noeuds dans leurs deux répertoires dédié avec "docker-compose up"
 #networks:
 #  default:
