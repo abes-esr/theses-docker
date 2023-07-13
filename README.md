@@ -264,6 +264,36 @@ curl -k -v -u elastic:<snip> -XPUT -H 'Content-Type: application/json' https://d
 }'
 ```
 
+### Pour charger un échantillon de données
+
+Se référer au code de https://github.com/abes-esr/theses-batch-indexation
+
+Le batch peu être utilisé pour :
+- Indexer toutes les thèses depuis la base de données (base oracle THESES) (3h)
+- Indexer toutes les personnes présentes dans toutes les thèses (idem, depuis la base de données oracle) (5h)
+
+Il faut choisir le job en l'indiquant dans spring.batch.job.names:
+- indexationThesesDansES
+- indexationPersonnesDansES
+
+Puis lancer en ligne de commande :
+En changeant la valeur de -Dspring.batch.job.names si besoin.
+```bash 
+docker exec -it theses-batch-indexation ./jdk-11.0.2/bin/java -Dspring.batch.job.names=indexationThesesDansES -jar theses-batch-indexation-0.0.1-SNAPSHOT.jar > log.txt
+```
+
+Pour le job qui indexe les personnes (indexationPersonnesDansES), il y a une première étape qui construit le json en base de données, dans la table PERSONNE_CACHE.
+Cette table n'est pas créée par le batch, si elle n'existe pas les informations pour créer la créer sont dans src/main/resources/personne_cache_table.
+Dans une seconde étape, on va envoyer le contenu de PERSONNE_CACHE dans Elastic Search.
+
+Il y a un job qui peut faire uniquement cette dernière étape (1h): 
+- indexationPersonnesDeBddVersES
+
+```bash 
+docker exec -it theses-batch-indexation ./jdk-11.0.2/bin/java -Dspring.batch.job.names=indexationPersonnesDeBddVersES -jar theses-batch-indexation-0.0.1-SNAPSHOT.jar > log.txt
+```
+
+Il est judicieux de l'utiliser quand on vient d'indexer toutes les personnes dans un environnement, et qu'on souhaite indexer sur un ou plusieurs autres environnements.
 
 ## Architecture
 
@@ -277,6 +307,7 @@ Voici la liste et la description des conteneurs déployés par le [docker-compos
 - ``theses-elasticsearch`` : conteneur qui sera chargé d'instancier le moteur de recherche elasticsearch qui contiendra l'indexation des TEF de theses.fr et qui mettra à disposition le langage de requêtage d'elasticsearch avec l'API d'elasticsearch (non exposé sur internet)
 - ``theses-kibana`` : conteneur qui sera chargé du backoffice de ``theses-elasticsearch`` en proposant des tableaux visuels
 
+
 Les images docker de theses.fr sont générées à partir des codes open sources disponibles ici :
 - https://github.com/abes-esr/docker-shibboleth-renater-sp (pour l'authentification avec la fédération d'identités)
 - https://github.com/abes-esr/theses-api-diffusion
@@ -285,9 +316,8 @@ Les images docker de theses.fr sont générées à partir des codes open sources
 - https://github.com/abes-esr/theses-front
 - https://github.com/abes-esr/theses-batch
 
-Voici le schéma de l'architecture :
+## Schéma global de l'application : 
 
-<img src="https://docs.google.com/drawings/d/e/2PACX-1vR-eXVbpwNykQebMS1fpBLtUOGMs0hvM9AbsB6Qv1LCDmm28rcRlJJbaiWjekLcmD709M7bkNbninjY/pub?w=2634&amp;h=1374">
+![image](https://user-images.githubusercontent.com/3686902/223732169-6daccf99-f86b-40aa-9289-40b626128a8d.png)
 
-Pour modifier le schéma voici [le lien](https://docs.google.com/drawings/d/1YxkcN3JUzhD-1W15KCFj0yIdaoJF96V9WadZ6oj9a7Q/edit?usp=sharing).
 
