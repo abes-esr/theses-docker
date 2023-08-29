@@ -159,6 +159,7 @@ services:
     ports:
       - ${THESES_API_RECHERCHE_HTTP_PORT}:8990
     environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILE_ACTIVE}
       SERVER_PORT: 8990
       ES_HOSTNAME: 'theses-elasticsearch-01'
       ES_HOSTNAME2: ${THESES_ELASTICSEARCH_HOST2}
