@@ -180,6 +180,7 @@ services:
       GOOGLE_RECAPTCHA_KEY_THRESHOLD: ${THESES_GOOGLE_RECAPTCHA_KEY_THRESHOLD}
       THESES_MAIL: ${THESES_MAIL}
       MAIL_WS: ${THESES_MAIL_WS}
+      JAVA_OPTS: "-Doracle.jdbc.timezoneAsRegion=false -Duser.timezone=CEST"
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
