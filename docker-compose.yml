@@ -131,6 +131,8 @@ services:
       TEL_PASSWORD: ${THESES_TEL_PASSWORD}
       TEL_HOSTSWORD: ${THESES_TEL_HOSTSWORD}
       THESES_PATH_LOCAL: ${THESES_PATH_LOCAL}
+      CHASSEAUXLIVRES_URL: ${THESES_CHASSEAUXLIVRES_URL}
+      CHASSEAUXLIVRES_KEY: ${THESES_CHASSEAUXLIVRES_KEY}
       JAVA_OPTS: "-Doracle.jdbc.timezoneAsRegion=false -Duser.timezone=CEST"
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
