@@ -37,7 +37,7 @@ services:
       RENATER_SP_HTTPD_LOG_LEVEL: "info ssl:warn"
       RENATER_SP_HTTPD_LOG_FORMAT: '%h \"%{Shib-Identity-Provider}i\" \"%{eppn}i\" \"%{primary-affiliation}i\" \"%{supannEtablissement}i\" %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"'
       RENATER_SP_HTTPD_PUBLIC_PATH_0: "/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_0: "http://theses-front:80/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_0: "http://theses-front:3000/"
       #RENATER_SP_HTTPD_PUBLIC_PATH_1: "/poc-fede/"
       #RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion-poc:80/poc-fede/"
       RENATER_SP_HTTPD_PUBLIC_PATH_1: "/api/v1/button/"
@@ -91,7 +91,7 @@ services:
     memswap_limit: ${MEM_LIMIT}
     cpus: ${CPU_LIMIT}
     ports:
-      - ${THESES_FRONT_HTTP_PORT}:80
+      - ${THESES_FRONT_HTTP_PORT}:3000
     environment:
       NUXT_PUBLIC_API: ${THESES_FRONT_VITE_APP_API}
       NUXT_PUBLIC_APIREF: ${THESES_FRONT_VITE_APP_APIREF}
