@@ -287,7 +287,7 @@ services:
   # - créer les différents comptes applicatifs pour accès à elasticsearch
   theses-elasticsearch-setupcerts:
     container_name: theses-elasticsearch-setupcerts
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:${THESES_ELASTICSEARCH_VERSION}
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
     cpus: ${CPU_LIMIT}
@@ -368,7 +368,7 @@ services:
   # - kibana_system
   theses-elasticsearch-setupusers:
     container_name: theses-elasticsearch-setupusers
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:${THESES_ELASTICSEARCH_VERSION}
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
     cpus: ${CPU_LIMIT}
@@ -428,7 +428,7 @@ services:
     depends_on:
       theses-elasticsearch-setupcerts:
         condition: service_healthy
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:${THESES_ELASTICSEARCH_VERSION}
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
@@ -525,7 +525,7 @@ services:
         condition: service_healthy
       theses-elasticsearch:
         condition: service_healthy
-    image: docker.elastic.co/kibana/kibana:8.7.1
+    image: docker.elastic.co/kibana/kibana:${THESES_ELASTICSEARCH_VERSION}
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
