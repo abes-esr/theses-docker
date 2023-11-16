@@ -492,6 +492,8 @@ services:
       # pour avoir plus ou moins de logs elasticsearch
       # DEBUG ou INFO (en prod mettre INFO)
       - logger.org.elasticsearch.discovery=INFO
+      # max de pages possible via recherche simple
+      - index.max_result_window=1000000
     # réglage ulimits pour désactiver le swap: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
     ulimits:
       memlock:
