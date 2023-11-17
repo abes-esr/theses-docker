@@ -197,6 +197,9 @@ Pour sauvegarder l'application, il faut :
 - Sauvegarder le paramétrage kibana : todo vraiement nécessaire ? et todo expliquer comment faire ?
 - Sauvegarder les certificats elasticsearch : todo vraiement nécessaire ? et todo expliquer comment faire ?
 
+Les chemins volumineux à d'exclure des sauvegardes sont les suivants :
+- ``/opt/pod/theses-docker/volumes/theses-elasticsearch/*`` : car il contient les données binaires d'elasticsearch
+
 Pour restaurer l'application, il faut :
 - restaurer la base de données
 - réinstaller l'application (cf plus haut la section installation) en réutilisant le ``.env`` précédement sauvegardé.
