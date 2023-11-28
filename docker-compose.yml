@@ -35,7 +35,7 @@ services:
       RENATER_SP_CERTIFICATE_KEY: ${THESES_RP_RENATER_SP_CERTIFICATE_KEY}
       RENATER_SP_HTTPD_SERVER_NAME: ${THESES_RP_RENATER_SP_HTTPD_SERVER_NAME}
       RENATER_SP_HTTPD_LOG_LEVEL: "info ssl:warn"
-      RENATER_SP_HTTPD_LOG_FORMAT: '%h %l %u %t \"%r\" %>s %b \"%{Shib-Identity-Provider}i\" \"%{eppn}i\" \"%{primary-affiliation}i\" \"%{supannEtablissement}i\" \"%{Referer}i\" \"%{User-Agent}i\"'
+      RENATER_SP_HTTPD_LOG_FORMAT: '%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" \"%{Shib-Identity-Provider}i\" \"%{eppn}i\" \"%{primary-affiliation}i\" \"%{supannEtablissement}i\"'
       RENATER_SP_HTTPD_PUBLIC_PATH_0: "/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_0: "http://theses-front:3000/"
       #RENATER_SP_HTTPD_PUBLIC_PATH_1: "/poc-fede/"
