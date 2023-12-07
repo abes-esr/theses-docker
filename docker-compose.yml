@@ -268,7 +268,7 @@ services:
       theses-elasticsearch:
         condition: service_healthy
     environment:
-      ELASTIC_USERNAME: ${THESES_BATCH_ELASTIC_USERNAME}
+      ELASTIC_USERNAME: 'elastic'
       ELASTIC_PASSWORD: ${THESES_ELASTICSEARCH_PASSWORD}
       ELASTIC_HOSTNAME: 'theses-elasticsearch-01'
       ELASTIC_PORT: ${THESES_ELASTICSEARCH_HTTP_PORT}
