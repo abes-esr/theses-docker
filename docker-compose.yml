@@ -62,7 +62,7 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PATH_7: "/api/v1/document/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-api-diffusion:8992/document/"
       RENATER_SP_HTTPD_PUBLIC_PATH_8: "/api/v1/openapi.json"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_8: "http://theses-api-recherche:8990/v3/api-docs/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_8: "http://theses-api-recherche:8990/v3/api-docs"
      
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
