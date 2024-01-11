@@ -137,6 +137,7 @@ services:
       THESES_PATH_LOCAL: ${THESES_PATH_LOCAL}
       CHASSEAUXLIVRES_URL: ${THESES_CHASSEAUXLIVRES_URL}
       CHASSEAUXLIVRES_KEY: ${THESES_CHASSEAUXLIVRES_KEY}
+      LOGGING_LEVEL_FR_ABES: ${THESES_LOGGING_LEVEL_FR_ABES}
       JAVA_OPTS: "-Doracle.jdbc.timezoneAsRegion=false -Duser.timezone=CEST"
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
