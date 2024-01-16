@@ -61,9 +61,9 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_6: "http://theses-seo:8991/robots.txt"
       RENATER_SP_HTTPD_PUBLIC_PATH_7: "/api/v1/document/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-api-diffusion:8992/document/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_8: "/api/v1/openapi.json"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_8: "http://theses-api-recherche:8990/v3/api-docs"
-      RENATER_SP_HTTPD_PUBLIC_PATH_9: "/api/v1/openapi.yaml"
+      RENATER_SP_HTTPD_PUBLIC_PATH_8: "/api/v1/diffusion/openapi.yaml"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_8: "http://theses-api-diffusion:8992/v3/api-docs.yaml"
+      RENATER_SP_HTTPD_PUBLIC_PATH_9: "/api/v1/recherche/openapi.yaml"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_9: "http://theses-api-recherche:8990/v3/api-docs.yaml"
      
     volumes:
