@@ -222,7 +222,7 @@ services:
       ES_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
       ES_THESES_INDEXNAME: ${THESES_ELASTICSEARCH_THESES_INDEXNAME}
       NBURLSPAGE: ${THESES_SEO_NBURLSPAGE}
-      RACINE: ${THESES_SEO_RACINE}
+      RACINE: ${THESES_RACINE}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -231,6 +231,40 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
       # pour que les mises à jour de cette image soient auto-déployées par watchtower
       - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
+
+  #######################################
+  # theses-api-export
+  # API d'exportation des métadonnées des thèses de theses.fr
+  
+  theses-api-export:
+    container_name: theses-api-export
+    image: abesesr/theses:${THESES_API_EXPORT_VERSION}
+    restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
+    ports:
+      - ${THESES_API_EXPORT_HTTP_PORT}:8993
+    volumes:
+      - ${THESES_PATH_XSL_HOST}:${THESES_PATH_XSL_LOCAL}
+    environment:
+      SERVER_PORT: 8993
+      SPRING_DATASOURCE_URL: ${THESES_SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${THESES_SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${THESES_SPRING_DATASOURCE_PASSWORD}
+  
+      PATH_XSLS: ${THESES_PATH_XSL_LOCAL}
+      RACINE: ${THESES_RACINE}
+      LOGGING_LEVEL_FR_ABES: ${THESES_LOGGING_LEVEL_FR_ABES_EXPORT}
+      JAVA_OPTS: "-Doracle.jdbc.timezoneAsRegion=false -Duser.timezone=CEST"
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
+      # pour que les mises à jour de cette image soient auto-déployées par watchtower
+      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"       
 
   #######################################
   # theses-batch-indexation-sample
