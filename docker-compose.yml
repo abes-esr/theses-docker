@@ -47,7 +47,8 @@ services:
       RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-kibana:5601/"
       RENATER_SP_HTTPD_PROTECTED_PATH_1: "/api/v1/document/protected/"
       RENATER_SP_HTTPD_PROTECTED_PROXY_TO_1: "http://theses-api-diffusion:8992/document/protected/"
-      RENATER_SP_HTTPD_PROTECTED_REQUIRE_1_0: "Require shib-attr Shib-Identity-Provider https://ciboulette.abes.fr/idp/shibboleth"
+      #RENATER_SP_HTTPD_PROTECTED_REQUIRE_1_0: "Require shib-attr Shib-Identity-Provider https://ciboulette.abes.fr/idp/shibboleth"
+      RENATER_SP_HTTPD_PROTECTED_REQUIRE_1_0: "Require shib-attr Shib-Identity-Provider https://test-idp.federation.renater.fr/idp/shibboleth"
       # pour -local -dev -test mais pour -prod THESES_RP_KIBANA_PUBLIC_PATH est vide et c'est THESES_RP_KIBANA_PROTECTED_PATH qui est renseigné
       RENATER_SP_HTTPD_PUBLIC_PATH_2: ${THESES_RP_KIBANA_PUBLIC_PATH}
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_2: "http://theses-kibana:5601/"
