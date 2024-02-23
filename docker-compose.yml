@@ -19,7 +19,7 @@ services:
   # (à adapter)
   theses-rp:
     container_name: theses-rp
-    image: abesesr/docker-shibboleth-renater-sp:1.6.2
+    image: abesesr/docker-shibboleth-renater-sp:2.0.0
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
