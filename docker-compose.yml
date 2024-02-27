@@ -69,7 +69,7 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PATH_10: "/api/v1/export/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_10: "http://theses-api-export:8993/export/"
       RENATER_SP_HTTPD_PUBLIC_PATH_11: '/([0-9A-Za-z]{12})\.xml'
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_11: "http://theses-api-export:8993/export/$1"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_11: "http://theses-api-export:8993/export/xml/$1"
      
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
