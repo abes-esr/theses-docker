@@ -67,9 +67,9 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PATH_9: "/api/v1/recherche/openapi.yaml"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_9: "http://theses-api-recherche:8990/v3/api-docs.yaml"
       RENATER_SP_HTTPD_PUBLIC_PATH_10: "/api/v1/export/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_10: "http://theses-api-export:8993/export/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_10: "http://theses-api-export:8993/api/v1/export/"
       RENATER_SP_HTTPD_PUBLIC_PATH_11: '/([0-9A-Za-z]{12}|[0-9A-Za-z]{7})\.([a-zA-Z]{7}|[a-zA-Z]{3})'
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_11: "http://theses-api-export:8993/export/$2/$1"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_11: "http://theses-api-export:8993/api/v1/export/$2/$1"
      
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
