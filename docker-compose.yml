@@ -69,7 +69,7 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PATH_10: "/api/v1/export/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_10: "http://theses-api-export:8993/api/v1/export/"
       RENATER_SP_HTTPD_PUBLIC_PATH_11: '/([0-9A-Za-z]{12}|[0-9A-Za-z]{7})\.([a-zA-Z]{7}|[a-zA-Z]{3})'
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_11: "http://theses-api-export:8993/api/v1/export/$2/$1"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_11: "http://theses-api-export:8993/$1.$2"
      
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
@@ -324,6 +324,7 @@ services:
       SPRING_DATASOURCE_HIKARI_MINIMUMIDLE: 3
       SPRING_DATASOURCE_HIKARI_MAXIMUMPOOLSIZE: 15
       SPRING_PROFILES_ACTIVE: ${THESES_BATCH_SPRING_PROFILES_ACTIVE}
+      SPRING_BATCH_INITIALIZE-SCHEMA: 'always'
       JOB_WHERE_LIMITE: ${THESES_BATCH_JOB_WHERE_LIMITE}
       JOB_CHUNK: ${THESES_BATCH_JOB_CHUNK}
       JOB_THROTTLE: 1
