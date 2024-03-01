@@ -54,7 +54,7 @@ cp .env-dist .env
 # pour un déploiement en local, vous n'avez pas besoin de personnaliser le .env
 ```
 
-Finalement on ràgle quelques droits sur les répertoires et on peut démarrer l'application :
+Finalement on règle quelques droits sur les répertoires et on peut démarrer l'application :
 ```bash
 # forcer les droits max pour les volumes déportés sur le systàme de fichier local
 cd /opt/pod/theses-docker/
@@ -82,7 +82,7 @@ Pour la prod il est nécessaire de dérouler une [installation classique (cf sec
 - Il est nécessaire de [générer des certificats auto-signés](./README-faq.md#comment-générer-mes-propres-certificats-pour-la-fédération-didentités-en-prod-) pour enregistrer theses.fr comme fournisseur de service dans la fédération d'identités Education-Recherche.
 - Et il est nécessaire de configurer elasticsearch de theses.fr avec 3 noeuds minimum, cf la [doc pour configurer theses.fr avec un cluster elasticsearch à plusieurs noeuds](https://github.com/abes-esr/theses-es-cluster-docker/#readme)
 
-## Démarrage et arret
+## Démarrage et arrêt
 
 Pour démarrer l'application :
 ```bash
@@ -136,7 +136,7 @@ Le déploiement automatiquement de ``theses-docker`` utilise l'outil [watchtower
 THESES_WATCHTOWER_RUN_ONCE=false
 ```
 
-Le fonctionnement de watchtower est de surveiller réguliàrement l'éventuelle présence d'une nouvelle image docker de ``theses-front`` et ``theses-...``, si oui, de récupérer l'image en question, de stopper le ou les les vieux conteneurs et de créer le ou les conteneurs correspondants en réutilisant les mêmes paramàtres que ceux des vieux conteneurs. Pour le développeur, il lui suffit de faire un git commit+push par exemple sur la branche ``develop`` d'attendre que la github action build et publie l'image, puis que watchtower prenne la main pour que la modification soit disponible sur l'environnement cible, par exemple sur la machine ``diplotaxis1-dev``.
+Le fonctionnement de watchtower est de surveiller régulièrement l'éventuelle présence d'une nouvelle image docker de ``theses-front`` et ``theses-...``, si oui, de récupérer l'image en question, de stopper le ou les les vieux conteneurs et de créer le ou les conteneurs correspondants en réutilisant les mêmes paramètres que ceux des vieux conteneurs. Pour le développeur, il lui suffit de faire un git commit+push par exemple sur la branche ``develop`` d'attendre que la github action build et publie l'image, puis que watchtower prenne la main pour que la modification soit disponible sur l'environnement cible, par exemple sur la machine ``diplotaxis1-dev``.
 
 Le fait de passer ``THESES_WATCHTOWER_RUN_ONCE`` à ``false`` va faire en sorte d'exécuter périodiquement watchtower. Par défaut cette variable est à ``true`` car ce n'est pas utile voir cela peut générer du bruit dans le cas d'un déploiement sur un PC en local.
 
@@ -192,11 +192,11 @@ Ensuite il faut ajouter un VirtualHost au niveau du reverse proxy (à adapter en
 ## Sauvegardes et restauration
 
 Pour sauvegarder l'application, il faut :
-- Sauvegarder la base de données (base Oracle sur les serveurs orpin) : todo préciser de quel schéma et de quelles tables on parle
+- Sauvegarder la base de données (base Oracle sur les serveurs orpin) : TODO préciser de quel schéma et de quelles tables on parle
 - Sauvegarder le fichier ``/opt/pod/theses-docker/.env`` qui est un fichier non versionné et qui permet de configurer tous les conteneurs docker de l'appli
 - Sauvegarder les certificats auto-signés présents dans le répertoire ``/opt/pod/theses-docker/volumes/theses-rp/shibboleth/ssl/`` (ces certificats permettent à theses.fr d'être reconnu par la fédération d'identités Education-Recherche)
-- Sauvegarder le dump elasticsearch : todo vraiement nécessaire ? et todo expliquer comment faire ?
-- Sauvegarder le paramétrage kibana : todo vraiement nécessaire ? et todo expliquer comment faire ?
+- Sauvegarder le dump elasticsearch et/ou le paramétrage kibana : Il faut, via Kibana, programmer des sauvegardes (appellées 'snapshots') sur un volume externe NFS par ex. préalablement configuré et monté dans un volume local à l'application.
+On passe par le menu Management -> snapshot and restore et on choisit les données et la fréquence des sauvegardes.
 - Sauvegarder les certificats elasticsearch : todo vraiement nécessaire ? et todo expliquer comment faire ?
 
 Les chemins volumineux à d'exclure des sauvegardes sont les suivants :
@@ -221,7 +221,7 @@ Cet échantillon de données permet de démarrer theses-docker et de le tester e
 
 Remarque : l'index sample des personnes n'est pas encore fonctionnel à la date du 03/07/2023
 
-## Procedure de mise a jour ou pour un arret rdemarrage PROPRE d'elasticsearch
+## Procedure de Mise à jour ou pour un arrêt redémarrage PROPRE d'elasticsearch
 
 1) Arret propre du cluster
 
@@ -252,11 +252,11 @@ curl -XPOST "http://diplotaxis1-dev.v212.abes.fr:10302/_flush" -H "kbn-xsrf: rep
 
 2) Stopper un par un les noeuds data puis finir par les master.
 
-3) Si MISE a jour : Modifier la version de l'image dans le .env
+3) Pour une mise à jour des produits elastic.co : modifier la version de l'image dans le .env
 
-5) Redemarrer le cluster elasticsearch noeud apres noeud en commencant par les noeux data et en finissant par le(s) master
+5) Redémarrer le cluster elasticsearch noeud après noeud en commencant par les noeux data et en finissant par le(s) master
 
-Si Kibana est démarré :
+- Si Kibana est démarré par la console Devtool :
 ```bash
 GET _cat/nodes
 
@@ -271,11 +271,12 @@ PUT _cluster/settings
 GET _cat/health
 ```
 
-4) Si Kibana ne migre pas ou n'est pas démarré (voir les logs) : 
+ - Si Kibana n'est pas démarré (ou ne migre pas - voir les logs) avec Curl : 
 
 ```bash
 [.kibana] Action failed with '[incompatible_cluster_routing_allocation] Incompatible Elasticsearch cluster settings detected. Remove the persistent and transient Elasticsearch cluster setting 'cluster.routing.allocation.enable' or set it to a value of 'all' to allow migrations to proceed. Refer to https://www.elastic.co/guide/en/kibana/8.7/resolve-migrations-failures.html#routing-allocation-disabled for more information on how to resolve the issue.
-
+```
+```bash
 curl -k -v -u elastic:<snip> -XPUT "https://diplotaxis1-dev.v212.abes.fr:10302/_cluster/settings" -d -H 'Content-Type: application/json' '{
   "transient": {
     "cluster.routing.allocation.enable": null
@@ -304,11 +305,11 @@ En changeant la valeur de -Dspring.batch.job.names si besoin.
 docker exec -it theses-batch-indexation ./jdk-11.0.2/bin/java -Dspring.batch.job.names=indexationThesesDansES -jar theses-batch-indexation-0.0.1-SNAPSHOT.jar > log.txt
 ```
 
-Pour le job qui indexe les personnes (indexationPersonnesDansES), il y a une premiàre étape qui construit le json en base de données, dans la table PERSONNE_CACHE.
+Pour le job qui indexe les personnes (indexationPersonnesDansES), il y a une première étape qui construit le json en base de données, dans la table PERSONNE_CACHE.
 Cette table n'est pas créée par le batch, si elle n'existe pas les informations pour créer la créer sont dans src/main/resources/personne_cache_table.
 Dans une seconde étape, on va envoyer le contenu de PERSONNE_CACHE dans Elastic Search.
 
-Il y a un job qui peut faire uniquement cette derniàre étape (1h): 
+Il y a un job qui peut faire uniquement cette dernière étape (1h): 
 - indexationPersonnesDeBddVersES
 
 ```bash 
@@ -320,7 +321,7 @@ Il est judicieux de l'utiliser quand on vient d'indexer toutes les personnes dan
 ## Architecture
 
 Voici la liste et la description des conteneurs déployés par le [docker compose.yml](https://github.com/abes-esr/theses-docker/blob/develop/docker compose.yml)
-- ``theses-rp`` : conteneur servant de reverse proxy dédié à l'authentification des utilisateurs souhaitant accéder à des thèses en accàs restreint. Cette authentification est déléguée à la fédération d'identités Education-Recherche. Ce conteneur est l'instanciation de l'image docker [docker-shibboleth-renater-sp](https://github.com/abes-esr/docker-shibboleth-renater-sp).
+- ``theses-rp`` : conteneur servant de reverse proxy dédié à l'authentification des utilisateurs souhaitant accéder à des thèses en accès restreint. Cette authentification est déléguée à la fédération d'identités Education-Recherche. Ce conteneur est l'instanciation de l'image docker [docker-shibboleth-renater-sp](https://github.com/abes-esr/docker-shibboleth-renater-sp).
 - ``theses-api-diffusion`` : conteneur qui sera chargé de l'API (en Java Spring) de theses.fr (travail en cours). Dans le cadre du PoC fédé, ce conteneur est chargé de mettre à disposition un PDF en passant par la fédé.
 - ``theses-api-recherche`` : conteneur qui sera chargé de mettre à disposition l'API de recherche qui sera utilisée par le ``theses-front``. Cette API fait le passe plat avec le conteneur ``theses-elasticsearch`` qui contient les données indexée et recherchables dans le langage de requêtage d'elasticsearch.
 - ``theses-api-indexation`` : conteneur qui sera chargé de proposer une API pour pouvoir indexer une thèses à l'unité dans ``theses-elasticsearch``
