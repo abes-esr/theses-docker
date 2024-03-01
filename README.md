@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/abesesr/theses.svg)](https://hub.docker.com/r/abesesr/theses/)
 
-Configuration docker ðŸ³ pour dÃ©ployer le portail national des thÃ¨ses dont le but est de donner accÃ¨s Ã  toutes les theses de theses.fr Ã  l'ensemble de l'enseignement supÃ©rieur et de la recherche. Ces configurations visent Ã  permettre un dÃ©ploiement uniforme en local sur la machine d'un dÃ©veloppeur, et sur les serveurs de dev, test, et prod.
+Configuration docker pour déployer le portail national des thÃ¨ses dont le but est de donner accÃ¨s Ã  toutes les theses de theses.fr Ã  l'ensemble de l'enseignement supÃ©rieur et de la recherche. Ces configurations visent Ã  permettre un dÃ©ploiement uniforme en local sur la machine d'un dÃ©veloppeur, et sur les serveurs de dev, test, et prod.
 
 <img src="https://docs.google.com/drawings/d/e/2PACX-1vSh7awYvbYr54GU3F7hsmcbvK25QKixZ1I_a8-mg_X2nimit9SbllmdkXA_n-MaQQBR0KsgrX0dQvga/pub?w=200">
 
@@ -35,7 +35,7 @@ Les URLs temporaires du futur theses.fr sont les suivantes :
 ## PrÃ©requis
 
 - docker
-- docker-compose
+- docker compose
 - rÃ©glages ``vm.max_map_count`` pour elasticsearch (cf [FAQ pour les dÃ©tails du rÃ©glage](README-faq.md#comment-r%C3%A9gler-vmmax_map_count-pour-elasticsearch-))
 
 ## Installation
@@ -65,7 +65,7 @@ mkdir -p volumes/theses-kibana/                   && chmod 777 volumes/theses-ki
 
 # puis dÃ©marrer l'application
 cd /opt/pod/theses-docker/
-docker-compose up -d
+docker compose up -d
 ```
 A partir de cet instant l'application Ã©coutera sur l'IP du serveur et sera accessible sur les URL suivantes (remplacer 127.0.0.1 par le nom du serveur) :
 - http://127.0.0.1:10301/ : pour la homepage de theses.fr (``theses-front``)
@@ -87,7 +87,7 @@ Pour la prod il est nÃ©cessaire de dÃ©rouler une [installation classique (cf
 Pour dÃ©marrer l'application :
 ```bash
 cd /opt/pod/theses-docker/
-docker-compose up
+docker compose up
 # ajouter -d si vous souhaitez dÃ©marrer l'application en tache de fond
 # dans le cas contraire, utilisez CTRL+C pour ensuite quitter l'application
 ```
@@ -95,7 +95,7 @@ docker-compose up
 Pour arrÃªter l'applicationPROPREMENT voir chapitre Mise Ã  Jour ci aprÃs sinon dans l'urgence ou s'il n'y a pas d'activitÃ©:
 ```bash
 cd /opt/pod/theses-docker/
-docker-compose stop
+docker compose stop
 ```
 
 
@@ -104,9 +104,9 @@ docker-compose stop
 Pour vÃ©rifier que l'application est dÃ©marrÃ©e, on peut consulter l'Ã©tat des conteneurs :
 ```bash
 cd /opt/pod/theses-docker/
-docker-compose ps
+docker compose ps
 # doit retourner quelque chose comme ceci :
-#19:12 $ docker-compose ps
+#19:12 $ docker compose ps
 #                Name                       Command        State                      Ports                    
 #--------------------------------------------------------------------------------------------------------------
 #theses-docker_theses-api-diffusion_1   httpd-foreground   Up      80/tcp                                      
@@ -116,7 +116,7 @@ docker-compose ps
 Pour vÃ©rifier que l'application est bien lancÃ©e, on peut aussi consulter ses logs :
 ```bash
 cd /opt/pod/theses-docker/
-docker-compose logs --tail=50 -f
+docker compose logs --tail=50 -f
 ```
 
 Les logs de tous les conteneurs de theses-docker sont reversÃ©s dans le puits de log de l'Abes. Voici un exemple de ces logs :
@@ -318,7 +318,7 @@ Il est judicieux de l'utiliser quand on vient d'indexer toutes les personnes dan
 
 ## Architecture
 
-Voici la liste et la description des conteneurs dÃ©ployÃ©s par le [docker-compose.yml](https://github.com/abes-esr/theses-docker/blob/develop/docker-compose.yml)
+Voici la liste et la description des conteneurs dÃ©ployÃ©s par le [docker compose.yml](https://github.com/abes-esr/theses-docker/blob/develop/docker compose.yml)
 - ``theses-rp`` : conteneur servant de reverse proxy dÃ©diÃ© Ã  l'authentification des utilisateurs souhaitant accÃ©der Ã  des thÃ¨ses en accÃ¨s restreint. Cette authentification est dÃ©lÃ©guÃ©e Ã  la fÃ©dÃ©ration d'identitÃ©s Education-Recherche. Ce conteneur est l'instanciation de l'image docker [docker-shibboleth-renater-sp](https://github.com/abes-esr/docker-shibboleth-renater-sp).
 - ``theses-api-diffusion`` : conteneur qui sera chargÃ© de l'API (en Java Spring) de theses.fr (travail en cours). Dans le cadre du PoC fÃ©dÃ©, ce conteneur est chargÃ© de mettre Ã  disposition un PDF en passant par la fÃ©dÃ©.
 - ``theses-api-recherche`` : conteneur qui sera chargÃ© de mettre Ã  disposition l'API de recherche qui sera utilisÃ©e par le ``theses-front``. Cette API fait le passe plat avec le conteneur ``theses-elasticsearch`` qui contient les donnÃ©es indexÃ©e et recherchables dans le langage de requÃªtage d'elasticsearch.
