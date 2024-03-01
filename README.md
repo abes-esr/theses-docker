@@ -225,7 +225,7 @@ Remarque : l'index sample des personnes n'est pas encore fonctionnel à la date 
 
 1) Arret propre du cluster
 
-* Soit via la console DevTool dans Kibana :
+* Soit via la console Devtool dans Kibana :
 ```bash
 PUT _cluster/settings
 {
@@ -255,8 +255,12 @@ curl -XPOST "http://diplotaxis1-dev.v212.abes.fr:10302/_flush" -H "kbn-xsrf: rep
 3) Pour une mise à jour des produits elastic.co : modifier la version de l'image dans le .env
 
 5) Redémarrer le cluster elasticsearch noeud après noeud en commencant par les noeux data et en finissant par le(s) master
+   ATTENTION de bien vérifier que le cluster est en statut green ou yellow avant de redémarrer un autre noeud
+   cela peut prendre plusieurs minutes par noeud selon la quantité de données présentes
 
-- Si Kibana est démarré par la console Devtool :
+7) Remettre le cluster en mode actif (uniquement s'il est en statut 'yellow' ou 'green')
+
+- Si Kibana est actif (normalement non après une mise à jour) par la console Devtool :
 ```bash
 GET _cat/nodes
 
@@ -271,7 +275,7 @@ PUT _cluster/settings
 GET _cat/health
 ```
 
- - Si Kibana n'est pas démarré (ou ne migre pas - voir les logs) avec Curl : 
+ - Si Kibana n'est pas démarré (ou ne migre pas suite à une mise à jour - voir les logs) avec Curl : 
 
 ```bash
 [.kibana] Action failed with '[incompatible_cluster_routing_allocation] Incompatible Elasticsearch cluster settings detected. Remove the persistent and transient Elasticsearch cluster setting 'cluster.routing.allocation.enable' or set it to a value of 'all' to allow migrations to proceed. Refer to https://www.elastic.co/guide/en/kibana/8.7/resolve-migrations-failures.html#routing-allocation-disabled for more information on how to resolve the issue.
