@@ -92,11 +92,12 @@ docker-compose up
 # dans le cas contraire, utilisez CTRL+C pour ensuite quitter l'application
 ```
 
-Pour arrêter l'application :
+Pour arrêter l'applicationPROPREMENT voir chapitre Mise à Jour ci apr�s sinon dans l'urgence ou s'il n'y a pas d'activité:
 ```bash
 cd /opt/pod/theses-docker/
 docker-compose stop
 ```
+
 
 ## Supervision
 
@@ -219,9 +220,11 @@ Cet échantillon de données permet de démarrer theses-docker et de le tester e
 
 Remarque : l'index sample des personnes n'est pas encore fonctionnel à la date du 03/07/2023
 
-### Procédure de mise à jour d'elasticsearch
+### Procédure de mise à jou ou  pour un arr�t redémarrage PROPRE d'elasticsearch
 
-1) Arrêt du cluster (via la console DevTool dans Kibana) :
+1) Arr�t propre du cluster
+
+Soit via la console DevTool dans Kibana) :
 ```bash
 PUT _cluster/settings
 {
@@ -232,12 +235,27 @@ PUT _cluster/settings
 
 POST /_flush
 ```
+Soit avec Curl si la console n'est pas disponible :
+
+```bash
+curl -k -v -u elastic:<snip> -XPUT "http://diplotaxis1-dev.v212.abes.fr:10302/_cluster/settings" -H "kbn-xsrf: reporting" -H "Content-Type: application/json" -d'
+{
+  "persistent": {
+    "cluster.routing.allocation.enable": "primaries"
+  }
+}'
+
+# Flush
+curl -XPOST "http://diplotaxis1-dev.v212.abes.fr:10302/_flush" -H "kbn-xsrf: reporting"
+```
 
 2) Stopper un par un les noeuds data puis finir par les master.
-3) Modifier la version de l'image dans le docker-compose.yml et relancer tous les noeuds elasticsearch avec `docker-compose up -d`
 
-4) Redémarrer le cluster elasticsearch noeud après noeuds
+3) Si MISE àjour : Modifier la version de l'image dans le .env et relancer tous les noeuds elasticsearch avec `docker-compose up -d`
 
+4) Redémarrer le cluster elasticsearch noeud après noeuden commençant par les noeux data
+
+Si Kibana est d�marré :
 ```bash
 GET _cat/nodes
 
@@ -252,12 +270,12 @@ PUT _cluster/settings
 GET _cat/health
 ```
 
-4) Si Kibana ne migre pas (voir les logs) : 
+4) Si Kibana ne migre pas ou n'est pas démarré (voir les logs) : 
 
 ```bash
 [.kibana] Action failed with '[incompatible_cluster_routing_allocation] Incompatible Elasticsearch cluster settings detected. Remove the persistent and transient Elasticsearch cluster setting 'cluster.routing.allocation.enable' or set it to a value of 'all' to allow migrations to proceed. Refer to https://www.elastic.co/guide/en/kibana/8.7/resolve-migrations-failures.html#routing-allocation-disabled for more information on how to resolve the issue.
 
-curl -k -v -u elastic:<snip> -XPUT -H 'Content-Type: application/json' https://diplotaxis1-dev.v212.abes.fr:10302/_cluster/settings -d '{
+curl -k -v -u elastic:<snip> -XPUT "https://diplotaxis1-dev.v212.abes.fr:10302/_cluster/settings" -d -H 'Content-Type: application/json' '{
   "transient": {
     "cluster.routing.allocation.enable": null
   },
