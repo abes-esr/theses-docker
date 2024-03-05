@@ -68,7 +68,7 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_9: "http://theses-api-recherche:8990/v3/api-docs.yaml"
       RENATER_SP_HTTPD_PUBLIC_PATH_10: "/api/v1/export/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_10: "http://theses-api-export:8993/api/v1/export/"
-      RENATER_SP_HTTPD_PUBLIC_PATH_11: '^/([a-zA-Z0-9]{12}\.xml)$'
+      RENATER_SP_HTTPD_PUBLIC_PATH_11: '^/([a-zA-Z0-9]{12}\.(xml|tefudoc|ris|bib|rdf))$'
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_11: "http://theses-api-export:8993/$1"
      
     volumes:
