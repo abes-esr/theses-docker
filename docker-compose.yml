@@ -72,7 +72,7 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PATH_11: '^/([a-zA-Z0-9]{12}\.(tefudoc|xml|ris|bib|rdf))$'
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_11: "http://theses-api-export:8993/$1"
       # redirection export numSujet vers nouvelle API
-      RENATER_SP_HTTPD_PUBLIC_PATH_12: '^(s\d+\.(xml|tefudoc|ris|bib|rdf))$'
+      RENATER_SP_HTTPD_PUBLIC_PATH_12: '^/(s\d+\.(xml|tefudoc|ris|bib|rdf))$'
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_12: "http://theses-api-export:8993/$1"
       
       
