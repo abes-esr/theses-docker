@@ -616,8 +616,6 @@ services:
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
     cpus: ${CPU_LIMIT}
-    ports:
-      - 10315:5601
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/kibana/config/certs/
       - ./volumes/theses-kibana/:/usr/share/kibana/data/
