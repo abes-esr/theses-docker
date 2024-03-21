@@ -41,12 +41,12 @@ services:
       #RENATER_SP_HTTPD_PUBLIC_PATH_1: "/poc-fede/"
       #RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion-poc:80/poc-fede/"
       RENATER_SP_HTTPD_PUBLIC_PATH_1: "/api/v1/button/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:8992/button/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_1: "http://theses-api-diffusion:8992/api/v1/button/"
       # pour -prod THESES_RP_KIBANA_PROTECTED_PATH est renseigné mais THESES_KIBANA_PUBLIC_PATH est vide
       RENATER_SP_HTTPD_PROTECTED_PATH_0: ${THESES_RP_KIBANA_PROTECTED_PATH}
       RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-kibana:5601/"
       RENATER_SP_HTTPD_PROTECTED_PATH_1: "/api/v1/document/protected/"
-      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_1: "http://theses-api-diffusion:8992/document/protected/"
+      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_1: "http://theses-api-diffusion:8992/api/v1/document/protected/"
       #RENATER_SP_HTTPD_PROTECTED_REQUIRE_1_0: "Require shib-attr Shib-Identity-Provider https://ciboulette.abes.fr/idp/shibboleth"
       #RENATER_SP_HTTPD_PROTECTED_REQUIRE_1_0: "Require shib-attr Shib-Identity-Provider https://test-idp.federation.renater.fr/idp/shibboleth"
       # pour -local -dev -test mais pour -prod THESES_RP_KIBANA_PUBLIC_PATH est vide et c'est THESES_RP_KIBANA_PROTECTED_PATH qui est renseigné
@@ -61,7 +61,7 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PATH_6: "/robots.txt"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_6: "http://theses-seo:8991/robots.txt"
       RENATER_SP_HTTPD_PUBLIC_PATH_7: "/api/v1/document/"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-api-diffusion:8992/document/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_7: "http://theses-api-diffusion:8992/api/v1/document/"
       RENATER_SP_HTTPD_PUBLIC_PATH_8: "/api/v1/diffusion/openapi.yaml"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_8: "http://theses-api-diffusion:8992/v3/api-docs.yaml"
       RENATER_SP_HTTPD_PUBLIC_PATH_9: "/api/v1/recherche/openapi.yaml"
@@ -77,7 +77,7 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PATH_13: "/api/v1/export/openapi.yaml"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_13: "http://theses-api-export:8993/v3/api-docs.yaml"
       RENATER_SP_HTTPD_PUBLIC_PATH_14: '^/([a-zA-Z0-9]{12}\/document)$'
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_14: "http://theses-api-diffusion:8992/document/$1"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_14: "http://theses-api-diffusion:8992/api/v1/document/$1"
       
       
      
