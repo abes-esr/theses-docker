@@ -77,7 +77,7 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PATH_13: "/api/v1/export/openapi.yaml"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_13: "http://theses-api-export:8993/v3/api-docs.yaml"
       RENATER_SP_HTTPD_PUBLIC_PATH_14: "^/([a-zA-Z0-9]{12}/document"
-      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_14: http://theses-api-diffusion:8992/document/$1"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_14: "http://theses-api-diffusion:8992/document/$1"
       
       
      
