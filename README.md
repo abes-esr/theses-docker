@@ -194,7 +194,12 @@ Pour sauvegarder l'application, il faut :
 - Sauvegarder la base de données (base Oracle sur les serveurs orpin) : todo préciser de quel schéma et de quelles tables on parle
 - Sauvegarder le fichier ``/opt/pod/theses-docker/.env`` qui est un fichier non versionné et qui permet de configurer tous les conteneurs docker de l'appli
 - Sauvegarder les certificats auto-signés présents dans le répertoire ``/opt/pod/theses-docker/volumes/theses-rp/shibboleth/ssl/`` (ces certificats permettent à theses.fr d'être reconnu par la fédération d'identités Education-Recherche)
-- Sauvegarder le dump elasticsearch : todo vraiement nécessaire ? et todo expliquer comment faire ?
+- Sauvegarder le dump elasticsearch :
+
+Des sauvegardes quotidiennes de tous les index de l'application y compris ceux de Kibana pour chaque noeud Diplotaxis sont programmés et les sauvegardes se trouvent dans : ``/opt/pod/theses../volumes/theses-elasticsearch-backup/``
+Ce volume est situé sur le NAS  Methana et la rétention est de 30 jours (15 sauvegardes minimum sont conservées). 
+Le volume total est d'environ 36Gio.
+
 - Sauvegarder le paramétrage kibana : todo vraiement nécessaire ? et todo expliquer comment faire ?
 - Sauvegarder les certificats elasticsearch : todo vraiement nécessaire ? et todo expliquer comment faire ?
 
@@ -235,5 +240,6 @@ Les images docker de theses.fr sont générées à partir des codes open sources
 ## Schéma global de l'application : 
 
 ![image](https://user-images.githubusercontent.com/3686902/223732169-6daccf99-f86b-40aa-9289-40b626128a8d.png)
+
 
 
