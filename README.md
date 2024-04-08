@@ -35,7 +35,7 @@ Les URLs temporaires du futur theses.fr sont les suivantes :
 ## Prérequis
 
 - docker
-- docker-compose
+- sudo docker compose
 - réglages ``vm.max_map_count`` pour elasticsearch (cf [FAQ pour les détails du réglage](README-faq.md#comment-r%C3%A9gler-vmmax_map_count-pour-elasticsearch-))
 
 ## Installation
@@ -65,7 +65,7 @@ mkdir -p volumes/theses-kibana/                   && chmod 777 volumes/theses-ki
 
 # puis démarrer l'application
 cd /opt/pod/theses-docker/
-docker-compose up -d
+sudo docker compose up -d
 ```
 A partir de cet instant l'application écoutera sur l'IP du serveur et sera accessible sur les URL suivantes (remplacer 127.0.0.1 par le nom du serveur) :
 - http://127.0.0.1:10301/ : pour la homepage de theses.fr (``theses-front``)
@@ -87,7 +87,7 @@ Pour la prod il est nécessaire de dérouler une [installation classique (cf sec
 Pour démarrer l'application :
 ```bash
 cd /opt/pod/theses-docker/
-docker-compose up
+sudo docker compose up
 # ajouter -d si vous souhaitez démarrer l'application en tache de fond
 # dans le cas contraire, utilisez CTRL+C pour ensuite quitter l'application
 ```
@@ -95,7 +95,7 @@ docker-compose up
 Pour arrêter l'application :
 ```bash
 cd /opt/pod/theses-docker/
-docker-compose stop
+sudo docker compose stop
 ```
 
 
@@ -104,9 +104,8 @@ docker-compose stop
 Pour vérifier que l'application est démarrée, on peut consulter l'état des conteneurs :
 ```bash
 cd /opt/pod/theses-docker/
-docker-compose ps
+sudo docker compose ps
 # doit retourner quelque chose comme ceci :
-#19:12 $ docker-compose ps
 #                Name                       Command        State                      Ports                    
 #--------------------------------------------------------------------------------------------------------------
 #theses-docker_theses-api-diffusion_1   httpd-foreground   Up      80/tcp                                      
@@ -114,9 +113,9 @@ docker-compose ps
 ```
 
 Pour vérifier que l'application est bien lancée, on peut aussi consulter ses logs :
-```bash
+```
 cd /opt/pod/theses-docker/
-docker-compose logs --tail=50 -f
+sudo docker compose logs --tail=50 -f
 ```
 
 Les logs de tous les conteneurs de theses-docker sont reversés dans le puits de log de l'Abes. Voici un exemple de ces logs :
@@ -158,7 +157,7 @@ Ensuite il faut ajouter un VirtualHost au niveau du reverse proxy (à adapter en
 
 <VirtualHost *:443>
         ServerName v2-dev.theses.fr
-        ServerAdmin admin@theses.fr
+        ServerAdmin adminuser@theses.fr
         RewriteEngine on
         
         ErrorLog logs/theses-docker-test-error_log
@@ -196,15 +195,20 @@ Pour sauvegarder l'application, il faut :
 - Sauvegarder les certificats auto-signés de theses-rp présents dans le répertoire ``/opt/pod/theses-docker/volumes/theses-rp/shibboleth/ssl/`` (ces certificats permettent à theses.fr d'être reconnu par la fédération d'identités Education-Recherche)
 - Sauvegarder le dump elasticsearch :
 
-Des sauvegardes sont programmées quotidiennes de tous les index de l'application y compris ceux de Kibana pour chaque noeud Docker sont programmés et les sauvegardes se trouvent dans : ``/opt/pod/theses../volumes/theses-elasticsearch-backup/``
-Ce volume est un montage NFS situé sur NAS, la rétention est de 30 jours (15 sauvegardes minimum sont conservées). 
-(Le volume total est d'environ 36 Gio.)
+Des sauvegardes sont programmées via ``kibana/app/management/data/snapshot_restore/snapshots`` :
+Quotidienne avec rétention de 30 jours (15 sauvegardes minimum conservées par sécurité).
+Données concernées : les index de l'application et ceux de Kibana (``Include feature state -> kibana``)
+Les sauvegardes se trouvent dans : ``/opt/pod/theses../volumes/theses-elasticsearch-backup/``
+Ce volume est un montage NFS situé sur NAS, pour un total de l'ordre de 36 Gio.
 
-- Sauvegarder les fichiers plats : comprennent des données qui ne sont pas sur Git
+- Sauvegarder les fichiers plats : comprennent des données qui ne sont pas sur Git (``.env``, certificats)
 
-Pour restaurer l'application, il faut :
-- restaurer la base de données
-- réinstaller l'application (cf plus haut la section installation) en réutilisant le ``.env`` précédement sauvegardé.
+Pour restaurer l'application, il faut, selon un degré de gravité croissant :
+- restaurer le dernier snapshot (pour récupérer les données de la veille et les configurations Kibana)
+- réinstaller l'application (cf plus haut la section installation) en réutilisant le ``.env`` précédement sauvegardé avec les fichiers plats - si /opt/pod/theses.. a été effacé
+- restaurer le volume des snapshots avec la copie de secours du PRA - si le volume NFS est non récupérable 
+- restaurer la base de données Oracle (TODO : nécessaire / hors sujet ?)
+
 
 ## Développements
 
@@ -217,7 +221,7 @@ Se référer au code de https://github.com/abes-esr/theses-batch-indexation
 
 ## Architecture
 
-Voici la liste et la description des conteneurs déployés par le [docker-compose.yml](https://github.com/abes-esr/theses-docker/blob/develop/docker-compose.yml)
+Voici la liste et la description des conteneurs déployés par le [sudo docker compose.yml](https://github.com/abes-esr/theses-docker/blob/develop/sudo docker compose.yml)
 - ``theses-rp`` : conteneur servant de reverse proxy dédié à l'authentification des utilisateurs souhaitant accéder à des thèses en accès restreint. Cette authentification est déléguée à la fédération d'identités Education-Recherche. Ce conteneur est l'instanciation de l'image docker [docker-shibboleth-renater-sp](https://github.com/abes-esr/docker-shibboleth-renater-sp).
 - ``theses-api-diffusion`` : conteneur qui sera chargé de l'API (en Java Spring) de theses.fr (travail en cours). Dans le cadre du PoC fédé, ce conteneur est chargé de mettre à disposition un PDF en passant par la fédé.
 - ``theses-api-recherche`` : conteneur qui sera chargé de mettre à disposition l'API de recherche qui sera utilisée par le ``theses-front``. Cette API fait le passe plat avec le conteneur ``theses-elasticsearch`` qui contient les données indexée et recherchables dans le langage de requêtage d'elasticsearch.
