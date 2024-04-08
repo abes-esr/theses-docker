@@ -180,10 +180,10 @@ Ensuite il faut ajouter un VirtualHost au niveau du reverse proxy (à adapter en
         SSLProxyCheckPeerExpire off
 
         # proxification de theses-rp qui écoute par défaut sur le port 10300
-        # et dans cet exemple qui est hébergé sur le serveur diplotaxis2-dev
+        # et dans cet exemple qui est hébergé sur le serveur ${docker-node}-dev
         ProxyPreserveHost On
-        ProxyPass "/" "https://diplotaxis2-dev.v212.abes.fr:10300/"
-        ProxyPassReverse "/" "https://diplotaxis2-dev.v212.abes.fr:10300/"
+        ProxyPass "/" "https://${docker-node}-dev.${vlan}.abes.fr:10300/"
+        ProxyPassReverse "/" "https://${docker-node}-dev.${vlan}.abes.fr:10300/"
 </VirtualHost>
 ```
 
