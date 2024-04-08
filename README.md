@@ -191,17 +191,16 @@ Ensuite il faut ajouter un VirtualHost au niveau du reverse proxy (à adapter en
 ## Sauvegardes et restauration
 
 Pour sauvegarder l'application, il faut :
-- Sauvegarder la base de données (base Oracle sur les serveurs orpin) : todo préciser de quel schéma et de quelles tables on parle
+- Sauvegarder la base de données (base Oracle) : todo préciser de quel schéma et de quelles tables on parle
 - Sauvegarder le fichier ``/opt/pod/theses-docker/.env`` qui est un fichier non versionné et qui permet de configurer tous les conteneurs docker de l'appli
-- Sauvegarder les certificats auto-signés présents dans le répertoire ``/opt/pod/theses-docker/volumes/theses-rp/shibboleth/ssl/`` (ces certificats permettent à theses.fr d'être reconnu par la fédération d'identités Education-Recherche)
+- Sauvegarder les certificats auto-signés de theses-rp présents dans le répertoire ``/opt/pod/theses-docker/volumes/theses-rp/shibboleth/ssl/`` (ces certificats permettent à theses.fr d'être reconnu par la fédération d'identités Education-Recherche)
 - Sauvegarder le dump elasticsearch :
 
-Des sauvegardes quotidiennes de tous les index de l'application y compris ceux de Kibana pour chaque noeud Diplotaxis sont programmés et les sauvegardes se trouvent dans : ``/opt/pod/theses../volumes/theses-elasticsearch-backup/``
-Ce volume est situé sur le NAS  Methana et la rétention est de 30 jours (15 sauvegardes minimum sont conservées). 
-Le volume total est d'environ 36Gio.
+Des sauvegardes sont programmées quotidiennes de tous les index de l'application y compris ceux de Kibana pour chaque noeud Docker sont programmés et les sauvegardes se trouvent dans : ``/opt/pod/theses../volumes/theses-elasticsearch-backup/``
+Ce volume est un montage NFS situé sur NAS, la rétention est de 30 jours (15 sauvegardes minimum sont conservées). 
+(Le volume total est d'environ 36 Gio.)
 
-- Sauvegarder le paramétrage kibana : todo vraiement nécessaire ? et todo expliquer comment faire ?
-- Sauvegarder les certificats elasticsearch : todo vraiement nécessaire ? et todo expliquer comment faire ?
+- Sauvegarder les fichiers plats : comprennent des données qui ne sont pas sur Git
 
 Pour restaurer l'application, il faut :
 - restaurer la base de données
