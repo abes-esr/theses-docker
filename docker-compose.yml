@@ -314,11 +314,11 @@ services:
 
 
   #######################################
-  # theses-batch-indexation
+  # theses-batch-indexation-theses
   # batch pour indexer les thèses dans elasticsearch
   #
-  theses-batch-indexation:
-    container_name: theses-batch-indexation
+  theses-batch-indexation-theses:
+    container_name: theses-batch-indexation-theses
     image: abesesr/theses:${THESES_BATCH_INDEXATION_VERSION}
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
@@ -355,12 +355,66 @@ services:
       THESES_BATCH_SUPPRESSION_THESES_CRON: ${THESES_BATCH_SUPPRESSION_THESES_CRON}
       THESES_BATCH_INDEXATION_THEMATIQUES_CRON: ${THESES_BATCH_INDEXATION_THEMATIQUES_CRON}
       THESES_BATCH_SUPPRESSION_THEMATIQUES_CRON: ${THESES_BATCH_SUPPRESSION_THEMATIQUES_CRON}
+      THESES_BATCH_INDEXATION_THESES_CHOIX_JOB: 'theses'
+      LOGGING_LEVEL_FR_ABES: ${THESES_LOGGING_LEVEL_FR_ABES_BATCH}
+      
+      
+      
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
+      # pour que les mises à jour de cette image soient auto-déployées par watchtower
+      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
+
+
+  #######################################
+  # theses-batch-indexation-personnes
+  # batch pour indexer les personnes dans elasticsearch
+  #
+  theses-batch-indexation-personnes:
+    container_name: theses-batch-indexation-personnes
+    image: abesesr/theses:${THESES_BATCH_INDEXATION_VERSION}
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
+    depends_on:
+      theses-elasticsearch:
+        condition: service_healthy
+    environment:
+      ELASTIC_USERNAME: 'elastic'
+      ELASTIC_PASSWORD: ${THESES_ELASTICSEARCH_PASSWORD}
+      ELASTIC_HOSTNAME: 'theses-elasticsearch-01'
+      ELASTIC_PORT: ${THESES_ELASTICSEARCH_HTTP_PORT}
+      ELASTIC_PROTOCOL: 'https'
+      ELASTIC_SCHEME: 'https'
+      SPRING_DATASOURCE_URL: ${THESES_SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${THESES_SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${THESES_SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_HIKARI_MINIMUMIDLE: 3
+      SPRING_DATASOURCE_HIKARI_MAXIMUMPOOLSIZE: 15
+      SPRING_PROFILES_ACTIVE: ${THESES_BATCH_SPRING_PROFILES_ACTIVE}
+      SPRING_BATCH_INITIALIZE-SCHEMA: 'always'
+      JOB_WHERE_LIMITE: ${THESES_BATCH_JOB_WHERE_LIMITE}
+      JOB_CHUNK: ${THESES_BATCH_JOB_CHUNK}
+      JOB_THROTTLE: 6
+      TABLE_NAME: ${THESES_BATCH_TABLE_NAME}
+      INDEX_NAME: ${THESES_BATCH_INDEX_NAME}
+      TABLE_PERSONNE_NAME: ${THESES_BATCH_TABLE_PERSONNE_NAME}
+      INDEX_PATHTHESES: ${THESES_BATCH_INDEX_PATHTHESES}
+      INDEX_PATHPERSONNES: ${THESES_BATCH_INDEX_PATHPERSONNES}
+      INDEX_PATHTHEMATIQUES: ${THESES_BATCH_INDEX_PATHTHEMATIQUES}
+      INDEX_PATHRECHERCHEPERSONNES: ${THESES_BATCH_INDEX_PATHRECHERCHEPERSONNES}
+      OAISETS_PATH: ${THESES_BATCH_OAISETS_PATH}
       THESES_BATCH_INDEXATION_PERSONNES_CRON: ${THESES_BATCH_INDEXATION_PERSONNES_CRON}
       THESES_BATCH_SUPPRESSION_PERSONNES_CRON: ${THESES_BATCH_SUPPRESSION_PERSONNES_CRON}
       TABLE_AJOUT_PERSONNE_NAME: ${THESES_BATCH_TABLE_AJOUT_PERSONNE_NAME}
       TABLE_SUPPRESSION_PERSONNE_NAME: ${THESES_BATCH_TABLE_SUPPRESSION_PERSONNE_NAME}
+      THESES_BATCH_INDEXATION_THESES_CHOIX_JOB: 'personnes'
       LOGGING_LEVEL_FR_ABES: ${THESES_LOGGING_LEVEL_FR_ABES_BATCH}
-      
+     
       
       
     labels:
