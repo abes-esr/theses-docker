@@ -652,6 +652,25 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=kibana"
 
 
+  #######################################
+  # theses-schemas-tef-stef
+  # Documentation du format TEF (site statique, basé sur une image nginx basique)
+  theses-schemas-tef-stef:
+    container_name: theses-schemas-tef-stef
+    image: abesesr/theses:main-schemas-tef-stef
+    restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
+    labels:
+      # pour envoyer les logs dans le puits de log de l'abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=nginx"
+      # pour que les mises à jour de cette image soient auto-déployées par watchtower 
+      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"
+
 
   #######################################
   # theses-watchtower
