@@ -161,6 +161,8 @@ services:
       CHASSEAUXLIVRES_KEY: ${THESES_CHASSEAUXLIVRES_KEY}
       LOGGING_LEVEL_FR_ABES: ${THESES_LOGGING_LEVEL_FR_ABES_DIFFUSION}
       JAVA_OPTS: "-Doracle.jdbc.timezoneAsRegion=false -Duser.timezone=CEST"
+      MAINTENANCE: ${THESES_MAINTENANCE}
+      MAINTENANCE_MESSAGE: ${THESES_MAINTENANCE_MESSAGE}
       URL_PORTAIL: ${THESES_RACINE}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -281,6 +283,8 @@ services:
       PATH_XSLS: ${THESES_PATH_XSL_LOCAL}
       RACINE: ${THESES_RACINE}
       LOGGING_LEVEL_FR_ABES: ${THESES_LOGGING_LEVEL_FR_ABES_EXPORT}
+      MAINTENANCE: ${THESES_MAINTENANCE}
+      MAINTENANCE_MESSAGE: ${THESES_MAINTENANCE_MESSAGE}
       JAVA_OPTS: "-Doracle.jdbc.timezoneAsRegion=false -Duser.timezone=CEST"
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
