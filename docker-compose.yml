@@ -328,7 +328,7 @@ services:
   #
   theses-batch-indexation-theses:
     container_name: theses-batch-indexation-theses
-    image: abesesr/theses:${THESES_BATCH_INDEXATION_VERSION}
+    image: abesesr/theses:${THESES_BATCH_INDEXATION_THESES_VERSION}
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
     cpus: ${CPU_LIMIT}
@@ -387,7 +387,7 @@ services:
   #
   theses-batch-indexation-personnes:
     container_name: theses-batch-indexation-personnes
-    image: abesesr/theses:${THESES_BATCH_INDEXATION_VERSION}
+    image: abesesr/theses:${THESES_BATCH_INDEXATION_PERSONNES_VERSION}
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
     cpus: ${CPU_LIMIT}
