@@ -204,11 +204,11 @@ Les chemins volumineux à d'exclure des sauvegardes sont les suivants :
 
 Pour restaurer l'application, il faut selon la gravité de la situation :
 - Simple restauration d'index depuis un snapshot :
-  Dans le menu Kibana de gestion des index il faut cloturer l'index  a restaurer.
+  Dans le menu Kibana de gestion des index il faut cloturer l'index  à restaurer.
   Puis aller sur Management -> snapshot and restore et choisir (cocher à gauche) le snapshot à la bonne date.
   Lancer la restauration (icone en fin de ligne) : une suite de pages permets ensuite de choisir quels paramètres seront restaurés.
   Pour un index seul décocher tout et garder seulement l'index voulu.
-- Restauration complète depuis un snapshot : même principe mais choisir tous les index et bien vérifier les paramètres globaux a restaurer - ou pas.
+- Restauration complète depuis un snapshot : même principe mais choisir tous les index et bien vérifier les paramètres globaux à restaurer - ou pas.
 - Restaureration de la base de données : procédure de restauration propre à Oracle DB (rman)
 - Réinstallation de l'application : Cf. plus haut la section 'Installation' en réutilisant le ``.env`` précédement sauvegardé.
 
