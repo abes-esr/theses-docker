@@ -202,9 +202,15 @@ On passe par le menu Management -> snapshot and restore et on choisit les donné
 Les chemins volumineux à d'exclure des sauvegardes sont les suivants :
 - ``/opt/pod/theses-docker/volumes/theses-elasticsearch/*`` : car il contient les données binaires d'elasticsearch
 
-Pour restaurer l'application, il faut :
-- restaurer la base de données
-- réinstaller l'application (cf plus haut la section installation) en réutilisant le ``.env`` précédement sauvegardé.
+Pour restaurer l'application, il faut selon la gravité de la situation :
+- Simple restauration d'index depuis un snapshot :
+  Dans le menu Kibana de gestion des index il faut cloturer l'index  a restaurer.
+  Puis aller sur Management -> snapshot and restore et choisir (cocher à gauche) le snapshot à la bonne date.
+  Lancer la restauration (icone en fin de ligne) : une suite de pages permets ensuite de choisir quels paramètres seront restaurés.
+  Pour un index seul décocher tout et garder seulement l'index voulu.
+- Restauration complète depuis un snapshot : même principe mais choisir tous les index et bien vérifier les paramètres globaux a restaurer - ou pas.
+- Restaureration de la base de données : procédure de restauration propre à Oracle DB (rman)
+- Réinstallation de l'application : Cf. plus haut la section 'Installation' en réutilisant le ``.env`` précédement sauvegardé.
 
 ## Développements
 
