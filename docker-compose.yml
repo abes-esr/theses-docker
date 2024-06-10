@@ -215,6 +215,7 @@ services:
       MAINTENANCE: ${THESES_RECHERCHE_MAINTENANCE}
       MAINTENANCE_MESSAGE: ${THESES_RECHERCHE_MAINTENANCE_MESSAGE}
       JAVA_OPTS: "-Doracle.jdbc.timezoneAsRegion=false -Duser.timezone=CEST"
+      LOGGING_LEVEL_FR_ABES: ${THESES_LOGGING_LEVEL_FR_ABES_RECHERCHE}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
