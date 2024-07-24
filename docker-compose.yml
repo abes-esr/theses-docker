@@ -815,7 +815,7 @@ services:
 
 # Cette configuration peut être décommentée pour pouvoir monter un cluster local elasticsearch
 # elle permet de lancer plusieurs noeuds indépendants au niveau docker mais reliés par ce réseau commun
-# pour lancer deux noeuds sur la même machine, il suffit alors de :
+# pour lancer deux noeuds sur la m�me machine, il suffit alors de :
 # 1) créer ce réseau via "docker network create theses-docker-es-cluster-network"
 # 2) pour le noeud 2 utiliser la config suivante : https://github.com/abes-esr/theses-es-cluster-docker/
 # 3) paramétrer le .env de chaque noeud avec THESES_ELASTICSEARCH_CLUSTER_NODE_ID qui vaut "01" ou "02" (fonction du noeud) :
