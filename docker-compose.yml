@@ -397,8 +397,6 @@ services:
       INDEX_PATHRECHERCHEPERSONNES: ${THESES_BATCH_INDEX_PATHRECHERCHEPERSONNES}
       OAISETS_PATH: ${THESES_BATCH_OAISETS_PATH}
       THESES_BATCH_INDEXATION_PERSONNES_CRON: ${THESES_BATCH_INDEXATION_PERSONNES_CRON}
-      TABLE_AJOUT_PERSONNE_NAME: ${THESES_BATCH_TABLE_AJOUT_PERSONNE_NAME}
-      TABLE_SUPPRESSION_PERSONNE_NAME: ${THESES_BATCH_TABLE_SUPPRESSION_PERSONNE_NAME}
       INDEXES_SUFFIXE_PERSONNES: ${THESES_BATCH_INDEXES_SUFFIXE_PERSONNES}
       NOMBRE_MINIMAL_PERSONNES: ${THESES_BATCH_NOMBRE_MINIMAL_PERSONNES}
       INITIALISEINDEXPERSONNES: ${THESES_BATCH_INITIALISEINDEXPERSONNES}
@@ -459,8 +457,6 @@ services:
       INDEX_PATHRECHERCHEPERSONNES: ${THESES_BATCH_INDEX_PATHRECHERCHEPERSONNES}
       OAISETS_PATH: ${THESES_BATCH_OAISETS_PATH}
       THESES_BATCH_INDEXATION_RECHERCHE_PERSONNES_CRON: ${THESES_BATCH_INDEXATION_RECHERCHE_PERSONNES_CRON}
-      TABLE_AJOUT_PERSONNE_NAME: ${THESES_BATCH_TABLE_AJOUT_PERSONNE_NAME}
-      TABLE_SUPPRESSION_PERSONNE_NAME: ${THESES_BATCH_TABLE_SUPPRESSION_PERSONNE_NAME}
       THESES_BATCH_INDEXATION_THESES_CHOIX_JOB: 'recherche_personnes'
       LOGGING_LEVEL_FR_ABES: ${THESES_LOGGING_LEVEL_FR_ABES_BATCH}
       INDEX_NAME_THESES: ${THESES_INDEX_NAME_THESES_BATCH}
@@ -815,7 +811,7 @@ services:
 
 # Cette configuration peut être décommentée pour pouvoir monter un cluster local elasticsearch
 # elle permet de lancer plusieurs noeuds indépendants au niveau docker mais reliés par ce réseau commun
-# pour lancer deux noeuds sur la m�me machine, il suffit alors de :
+# pour lancer deux noeuds sur la m�me machine, il suffit alors de :
 # 1) créer ce réseau via "docker network create theses-docker-es-cluster-network"
 # 2) pour le noeud 2 utiliser la config suivante : https://github.com/abes-esr/theses-es-cluster-docker/
 # 3) paramétrer le .env de chaque noeud avec THESES_ELASTICSEARCH_CLUSTER_NODE_ID qui vaut "01" ou "02" (fonction du noeud) :
