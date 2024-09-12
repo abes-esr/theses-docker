@@ -203,13 +203,20 @@ Les chemins volumineux à d'exclure des sauvegardes sont les suivants :
 - ``/opt/pod/theses-docker/volumes/theses-elasticsearch/*`` : car il contient les données binaires d'elasticsearch
 
 Pour restaurer l'application, il faut selon la gravité de la situation :
-- Simple restauration d'index depuis un snapshot :
-  Dans le [menu Kibana de gestion des index](https://theses.fr/kibana/app/management/data/index_management/indices) il faut cloturer l'index  à restaurer.
-  Puis aller sur [Management -> snapshot and restore](https://theses.fr/kibana/app/management/data/snapshot_restore/snapshots) et choisir (cocher à gauche) le snapshot à la bonne date.
-  Lancer la restauration (icone en fin de ligne) : une suite de pages permets ensuite de choisir quels paramètres seront restaurés.
-  Pour un index seul décocher tout et garder seulement l'index voulu.
-- Restauration complète depuis un snapshot : même principe mais choisir tous les index et bien vérifier les paramètres globaux à restaurer - ou pas.
-- Restaureration de la base de données : procédure de restauration propre à Oracle DB (rman)
+- Restauration d'index Elastic Search depuis un snapshot :
+  1) Dans le [menu Kibana de gestion des index](https://theses.fr/kibana/app/management/data/index_management/indices) :
+    - cocher l'index à fermer
+    - dans "Manage index", choisir "close index"
+  2) Aller sur [Management -> snapshot and restore](https://theses.fr/kibana/app/management/data/snapshot_restore/snapshots)
+    - cocher le daily-snapshot voulu en fonction de la date.
+    - dans la colonne "actions", cliquer sur l'icone "restore"
+    - sur la page "logistics", restore details, décocher "all data streams and indices"
+    - cliquer sur "deselect all"
+    - choisir l'index à restaurer (en s'aidant éventuellement du filtre pour le faire apparaitre)
+    - passer à la page suivante avec "next"
+    - passer à la page suivante avec "next" pour lancer la restauration
+      
+- Restauration de la base de données : procédure de restauration propre à Oracle DB (rman)
 - Réinstallation de l'application : Cf. plus haut la section 'Installation' en réutilisant le ``.env`` précédement sauvegardé.
 
 ## Développements
