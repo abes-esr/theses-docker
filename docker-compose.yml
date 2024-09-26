@@ -82,6 +82,8 @@ services:
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_16: "http://theses-api-diffusion:8992/api/v1/abes/$1"
       RENATER_SP_HTTPD_PUBLIC_PATH_17: "/schemas/"
       RENATER_SP_HTTPD_PUBLIC_PROXY_TO_17: "http://theses-schemas-tef-stef:80/schemas/"
+      RENATER_SP_HTTPD_PUBLIC_PATH_18: "/api/v1/outils/"
+      RENATER_SP_HTTPD_PUBLIC_PROXY_TO_18: "http://theses-api-export:8993/api/v1/outils/"
       
       
      
