@@ -811,6 +811,8 @@ services:
       WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER: ${THESES_WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER}
       WATCHTOWER_NOTIFICATION_SLACK_CHANNEL: "#notif-theses"
       WATCHTOWER_SCOPE: "theses-watchtower-scope"
+      REPO_USER: ${THESES_WATCHTOWER_DOCKERHUB_USER}
+      REPO_PASS: ${THESES_WATCHTOWER_DOCKERHUB_PASS}
     labels:
       - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"   
 
