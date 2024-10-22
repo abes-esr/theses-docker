@@ -89,6 +89,7 @@ services:
      
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
+      - ./volumes/theses-rp/log/access-rotated.log:/var/log/apache2/access-rotated.log:rw
     # Ces commentaires sont conservés pour expliquer pourquoi theses-rp ne dépend pas des autres conteneurs
     # la raison est que theses-rp est relativement long à démarrer (plusieurs minutes) et qu'il ne sera que
     # très rarrement mis à jour, donc autant ne pas le redémarrer si jamais une de ses dépendance redémarre.
