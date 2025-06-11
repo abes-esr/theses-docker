@@ -189,21 +189,27 @@ Ensuite il faut ajouter un VirtualHost au niveau du reverse proxy (à adapter en
 </VirtualHost>
 ```
 
-## Sauvegardes et restauration
+## Sauvegardes
 
 Pour sauvegarder l'application, il faut :
-- Sauvegarder la base de données (base Oracle sur les serveurs orpin) : TODO préciser de quel schéma et de quelles tables on parle
-- Sauvegarder le fichier ``/opt/pod/theses-docker/.env`` qui est un fichier non versionné et qui permet de configurer tous les conteneurs docker de l'appli
+- Sauvegarder la base de données (base Oracle sur les serveurs "orpins"). En plus des sauvegardes de type RMan , des exports sont réalisés avec expdp.
+- Sauvegarder le fichier ``/opt/pod/theses-docker/.env`` qui est un fichier non versionné et qui permet de configurer tous les conteneurs docker de l'application
 - Sauvegarder les certificats auto-signés présents dans le répertoire ``/opt/pod/theses-docker/volumes/theses-rp/shibboleth/ssl/`` (ces certificats permettent à theses.fr d'être reconnu par la fédération d'identités Education-Recherche)
+
+Ces trois opérations sont prises en charge par le SIAT.
+
 - Sauvegarder le dump elasticsearch et/ou le paramétrage kibana : Il faut, via Kibana, programmer des sauvegardes (appellées 'snapshots') sur un volume externe NFS par ex. préalablement configuré et monté dans un volume local à l'application.
 On passe par le menu Management -> snapshot and restore et on choisit les données et la fréquence des sauvegardes.
-- Sauvegarder les certificats elasticsearch : todo vraiement nécessaire ? et todo expliquer comment faire ?
 
+Note ElasticSearch : 
+- Sauvegarder les certificats elasticsearch : à voir avec le SIAT si l'opération est nécessaire et comment la réaliser
 Les chemins volumineux à d'exclure des sauvegardes sont les suivants :
 - ``/opt/pod/theses-docker/volumes/theses-elasticsearch/*`` : car il contient les données binaires d'elasticsearch
 
-Pour restaurer l'application, il faut selon la gravité de la situation :
-- Restauration d'index Elastic Search depuis un snapshot :
+## Restauration
+
+### Restauration d'un index ES depuis un snapshot
+
   1) Dans le [menu Kibana de gestion des index](https://theses.fr/kibana/app/management/data/index_management/indices) :
     - cocher l'index à fermer
     - dans "Manage index", choisir "close index"
@@ -216,11 +222,50 @@ Pour restaurer l'application, il faut selon la gravité de la situation :
     - passer à la page suivante avec "next"
     - passer à la page suivante avec "next" pour lancer la restauration
       
-- Restauration de la base de données : procédure de restauration propre à Oracle DB (rman)
-- Réinstallation de l'application : Cf. plus haut la section 'Installation' en réutilisant le ``.env`` précédement sauvegardé.
+### Restauration de la base de données Oracle
 
-## Développements
+- se connecter avec le compte oracle sur ononis (machine Oracle) :
+ 
+- Récupérer la sauvegarde depuis sotora : 
+```bash
+rsync --progress -av devel@socorro.v104.abes.fr:/backup_pool/ononis-prod-dumps/daily.0/racine/backup-sql/THESES/PORTAIL/dump.dmp /backup-sql/THESES/PORTAIL/dump.dmp
+```
+*Pour sélectionner une sauvegarde autre que la plus récente, il suffit de remplacer daily.0 dans la commande par le jour souhaité (daily.1 pour la veille, daily.2 pour l'avant-veille, etc.)*
 
+- Puis lancer les commandes suivantes pour importer le dump dans la base de données :
+
+```bash
+export NLS_LANG=AMERICAN_AMERICA.UTF8
+export ORACLE_SID='THESES'
+setsid impdp \'/ as sysdba\' SCHEMAS=PORTAIL TABLE_EXISTS_ACTION=REPLACE dumpfile='dump.dmp' logfile=importTheses.log directory=DPDUMP_THESES_PORTAIL
+```
+(ces commandes peuvent être lancées depuis le script /homre/oracle/u01/_SCRIPTS/export_import/importTHESES_PORTAIL.sh)
+
+### Réindexation des données dans Elastic Search
+
+Suivre la procédure ici : https://github.com/abes-esr/theses-batch-indexation/blob/develop/README.md#indexation-totale
+
+### Réinstallation de l'application
+
+- Se connecter avec son compte développeur sur la machine de déploiement diplotaxis1-prod (via Putty etc.)
+
+- Se positionner dans le répertoire des applications :
+```bash
+cd /opt/pod
+```
+- Récupérer le projet theses-docker et se positionner dans le répertoire :
+```bash
+git clone https://github.com/abes-esr/theses-docker.git
+cd theses-docker
+```
+- Récupérer le .env depuis sotora (authentification nécessaire) :
+```bash
+rsync -av devel@sotora.v104.abes.fr:/backup_pool/diplotaxis1-prod/daily.0/racine/opt/pod/theses-docker/.env /opt/pod/theses-docker/.env
+```
+- Lancer les containers : 
+```
+sudoc docker compose up -d
+```
 
 ### Pour charger un échantillon de données
 
