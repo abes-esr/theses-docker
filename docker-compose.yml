@@ -13,7 +13,7 @@ services:
   # le reverse proxy applicatif de theses.fr
   # toutes les requêtes HTTP passent par lui, il est chargé
   # d'authentifier les utilisateurs avec la fédération d'identités
-  # RENATER lorsque ce derniers accèdent à /74979_GERARDIN_2018_archivage.pdf
+  # RENATER lorsque ces derniers accèdent à /74979_GERARDIN_2018_archivage.pdf
   # (à adapter)
   theses-rp:
     container_name: theses-rp
@@ -792,7 +792,7 @@ services:
   # plus d'info : https://containrrr.dev/watchtower
   # cf README.md pour explications : https://github.com/abes-esr/theses-docker#d%C3%A9ploiement-continu
   theses-watchtower:
-    image: containrrr/watchtower:1.4.0
+    image: nickfedor/watchtower:1.13.1
     container_name: theses-watchtower
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
