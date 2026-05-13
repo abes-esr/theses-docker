@@ -133,8 +133,9 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=nginx"
-      # pour que les mises à jour de cette image soient auto-déployées par watchtower 
-      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"
+      # surveillance de l'image par WhatsUpDocker
+      - "wud.watch.digest=true"
+      - "wud.watch=true"
 
 
   #######################################
@@ -173,8 +174,9 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
-      # pour que les mises à jour de cette image soient auto-déployées par watchtower
-      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"       
+      # surveillance de l'image par WhatsUpDocker
+      - "wud.watch.digest=true"
+      - "wud.watch=true"       
 
   #######################################
   # theses-api-recherche
@@ -225,8 +227,9 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
-      # pour que les mises à jour de cette image soient auto-déployées par watchtower
-      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
+      # surveillance de l'image par WhatsUpDocker
+      - "wud.watch.digest=true"
+      - "wud.watch=true" 
 
 
 
@@ -260,8 +263,9 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
-      # pour que les mises à jour de cette image soient auto-déployées par watchtower
-      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
+      # surveillance de l'image par WhatsUpDocker
+      - "wud.watch.digest=true"
+      - "wud.watch=true" 
 
   #######################################
   # theses-api-export
@@ -300,8 +304,9 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
-      # pour que les mises à jour de cette image soient auto-déployées par watchtower
-      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"       
+      # surveillance de l'image par WhatsUpDocker
+      - "wud.watch.digest=true"
+      - "wud.watch=true"       
 
 
   #######################################
@@ -360,8 +365,9 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
-      # pour que les mises à jour de cette image soient auto-déployées par watchtower
-      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
+      # surveillance de l'image par WhatsUpDocker
+      - "wud.watch.digest=true"
+      - "wud.watch=true" 
 
 
   #######################################
@@ -421,8 +427,9 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
-      # pour que les mises à jour de cette image soient auto-déployées par watchtower
-      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
+      # surveillance de l'image par WhatsUpDocker
+      - "wud.watch.digest=true"
+      - "wud.watch=true" 
 
 #######################################
   # theses-batch-indexation-recherche-personnes
@@ -478,8 +485,9 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
-      # pour que les mises à jour de cette image soient auto-déployées par watchtower
-      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope" 
+      # surveillance de l'image par WhatsUpDocker
+      - "wud.watch.digest=true"
+      - "wud.watch=true" 
 
 
 
@@ -778,44 +786,9 @@ services:
       - "co.elastic.logs/processors.add_fields.target="
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=nginx"
-      # pour que les mises à jour de cette image soient auto-déployées par watchtower 
-      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"
-
-
-  #######################################
-  # theses-watchtower
-  # Conteneur chargé de mettre à jour automatiquement toutes les X secondes 
-  # les images docker des conteneurs en développement come par exemple theses-front
-  # (cf WATCHTOWER_SCOPE et les labels en rapport dans la configuration docker-compose de theses-front)
-  # cela permet de faire du déploiement continue en attendant les déploiement Ansible 
-  # ce conteneur devra donc être supprimé une fois que le déploiement Ansible sera en place
-  # plus d'info : https://containrrr.dev/watchtower
-  # cf README.md pour explications : https://github.com/abes-esr/theses-docker#d%C3%A9ploiement-continu
-  theses-watchtower:
-    image: nickfedor/watchtower:1.13.1
-    container_name: theses-watchtower
-    mem_limit: ${MEM_LIMIT}
-    memswap_limit: ${MEM_LIMIT}
-    cpus: ${CPU_LIMIT}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      WATCHTOWER_CLEANUP: "true"
-      WATCHTOWER_POLL_INTERVAL: 60
-      WATCHTOWER_DEBUG: "false"
-      WATCHTOWER_NO_STARTUP_MESSAGE: "true"
-      WATCHTOWER_WARN_ON_HEAD_FAILURE: "never"
-      WATCHTOWER_RUN_ONCE: ${THESES_WATCHTOWER_RUN_ONCE}
-      WATCHTOWER_NOTIFICATIONS: "slack"
-      WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL: ${THESES_WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL}
-      WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER: ${THESES_WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER}
-      WATCHTOWER_NOTIFICATION_SLACK_CHANNEL: "#notif-theses"
-      WATCHTOWER_SCOPE: "theses-watchtower-scope"
-      REPO_USER: ${THESES_WATCHTOWER_DOCKERHUB_USER}
-      REPO_PASS: ${THESES_WATCHTOWER_DOCKERHUB_PASS}
-    labels:
-      - "com.centurylinklabs.watchtower.scope=theses-watchtower-scope"   
-
+      # surveillance de l'image par WhatsUpDocker
+      - "wud.watch.digest=true"
+      - "wud.watch=true"
 
 
 # Cette configuration peut être décommentée pour pouvoir monter un cluster local elasticsearch
