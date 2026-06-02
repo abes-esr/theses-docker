@@ -168,6 +168,23 @@ services:
       MAINTENANCE: ${THESES_DIFFUSION_MAINTENANCE}
       MAINTENANCE_MESSAGE: ${THESES_DIFFUSION_MAINTENANCE_MESSAGE}
       URL_PORTAIL: ${THESES_RACINE}
+      #####################
+      ### OpenTelemetry ###
+      #####################
+      # Nom du Container (équivalent à container name)
+      OTEL_SERVICE_NAME: "theses-api-diffusion"
+      # Environnement (dev, test, prod)
+      OTEL_ENVIRONMENT: "${OTEL_ENVIRONMENT}"
+      # Namespace (équivalent au nom de l'application, commun aux différents conteneurs de l'application)
+      OTEL_NAMESPACE: "${OTEL_NAMESPACE}"
+      # Version (équivalent à image tag)
+      OTEL_VERSION: "${THESES_API_DIFFUSION_VERSION}"
+      # Attributs OpenTelemetry
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=${OTEL_SERVICE_NAME},deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${OTEL_VERSION}"
+      OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
+      OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
+      OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -221,6 +238,23 @@ services:
       MAINTENANCE_MESSAGE: ${THESES_RECHERCHE_MAINTENANCE_MESSAGE}
       JAVA_OPTS: "-Doracle.jdbc.timezoneAsRegion=false -Duser.timezone=CEST"
       LOGGING_LEVEL_FR_ABES: ${THESES_LOGGING_LEVEL_FR_ABES_RECHERCHE}
+      #####################
+      ### OpenTelemetry ###
+      #####################
+      # Nom du Container (équivalent à container name)
+      OTEL_SERVICE_NAME: "theses-api-recherche"
+      # Environnement (dev, test, prod)
+      OTEL_ENVIRONMENT: "${OTEL_ENVIRONMENT}"
+      # Namespace (équivalent au nom de l'application, commun aux différents conteneurs de l'application)
+      OTEL_NAMESPACE: "${OTEL_NAMESPACE}"
+      # Version (équivalent à image tag)
+      OTEL_VERSION: "${THESES_API_RECHERCHE_VERSION}"
+      # Attributs OpenTelemetry
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=${OTEL_SERVICE_NAME},deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${OTEL_VERSION}"
+      OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
+      OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
+      OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -298,6 +332,23 @@ services:
       MAINTENANCE: ${THESES_EXPORT_MAINTENANCE}
       MAINTENANCE_MESSAGE: ${THESES_EXPORT_MAINTENANCE_MESSAGE}
       JAVA_OPTS: "-Doracle.jdbc.timezoneAsRegion=false -Duser.timezone=CEST"
+      #####################
+      ### OpenTelemetry ###
+      #####################
+      # Nom du Container (équivalent à container name)
+      OTEL_SERVICE_NAME: "theses-api-export"
+      # Environnement (dev, test, prod)
+      OTEL_ENVIRONMENT: "${OTEL_ENVIRONMENT}"
+      # Namespace (équivalent au nom de l'application, commun aux différents conteneurs de l'application)
+      OTEL_NAMESPACE: "${OTEL_NAMESPACE}"
+      # Version (équivalent à image tag)
+      OTEL_VERSION: "${THESES_API_EXPORT_VERSION}"
+      # Attributs OpenTelemetry
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=${OTEL_SERVICE_NAME},deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${OTEL_VERSION}"
+      OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
+      OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
+      OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -358,6 +409,23 @@ services:
       INDEX_NAME_PERSONNES: ${THESES_INDEX_NAME_PERSONNES_BATCH}
       INDEX_NAME_THEMATIQUES: ${THESES_INDEX_NAME_THEMATIQUES_BATCH}
       INDEX_NAME_RECHERCHE_PERSONNES: ${THESES_INDEX_NAME_RECHERCHE_PERSONNES_BATCH}
+      #####################
+      ### OpenTelemetry ###
+      #####################
+      # Nom du Container (équivalent à container name)
+      OTEL_SERVICE_NAME: "theses-batch-indexation-theses"
+      # Environnement (dev, test, prod)
+      OTEL_ENVIRONMENT: "${OTEL_ENVIRONMENT}"
+      # Namespace (équivalent au nom de l'application, commun aux différents conteneurs de l'application)
+      OTEL_NAMESPACE: "${OTEL_NAMESPACE}"
+      # Version (équivalent à image tag)
+      OTEL_VERSION: "${THESES_BATCH_INDEXATION_THESES_VERSION}"
+      # Attributs OpenTelemetry
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=${OTEL_SERVICE_NAME},deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${OTEL_VERSION}"
+      OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
+      OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
+      OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -420,6 +488,23 @@ services:
       INDEX_NAME_THEMATIQUES: ${THESES_INDEX_NAME_THEMATIQUES_BATCH}
       INDEX_NAME_RECHERCHE_PERSONNES: ${THESES_INDEX_NAME_RECHERCHE_PERSONNES_BATCH}
       THESES_BATCH_INDEXATION_AT_STARTUP: ${THESES_BATCH_INDEXATION_AT_STARTUP}
+      #####################
+      ### OpenTelemetry ###
+      #####################
+      # Nom du Container (équivalent à container name)
+      OTEL_SERVICE_NAME: "theses-batch-indexation-personnes"
+      # Environnement (dev, test, prod)
+      OTEL_ENVIRONMENT: "${OTEL_ENVIRONMENT}"
+      # Namespace (équivalent au nom de l'application, commun aux différents conteneurs de l'application)
+      OTEL_NAMESPACE: "${OTEL_NAMESPACE}"
+      # Version (équivalent à image tag)
+      OTEL_VERSION: "${THESES_BATCH_INDEXATION_PERSONNES_VERSION}"
+      # Attributs OpenTelemetry
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=${OTEL_SERVICE_NAME},deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${OTEL_VERSION}"
+      OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
+      OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
+      OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -478,6 +563,23 @@ services:
       INDEX_NAME_THEMATIQUES: ${THESES_INDEX_NAME_THEMATIQUES_BATCH}
       INDEX_NAME_RECHERCHE_PERSONNES: ${THESES_INDEX_NAME_RECHERCHE_PERSONNES_BATCH}
       THESES_BATCH_INDEXATION_AT_STARTUP: ${THESES_BATCH_INDEXATION_AT_STARTUP}
+      #####################
+      ### OpenTelemetry ###
+      #####################
+      # Nom du Container (équivalent à container name)
+      OTEL_SERVICE_NAME: "theses-batch-indexation-recherche-personnes"
+      # Environnement (dev, test, prod)
+      OTEL_ENVIRONMENT: "${OTEL_ENVIRONMENT}"
+      # Namespace (équivalent au nom de l'application, commun aux différents conteneurs de l'application)
+      OTEL_NAMESPACE: "${OTEL_NAMESPACE}"
+      # Version (équivalent à image tag)
+      OTEL_VERSION: "${THESES_BATCH_INDEXATION_RECHERCHE_PERSONNES_VERSION}"
+      # Attributs OpenTelemetry
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=${OTEL_SERVICE_NAME},deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${OTEL_VERSION}"
+      OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
+      OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
+      OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
