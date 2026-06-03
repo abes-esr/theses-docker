@@ -17,7 +17,7 @@ services:
   # (à adapter)
   theses-rp:
     container_name: theses-rp
-    image: abesesr/docker-shibboleth-renater-sp:2.0.5
+    image: abesesr/docker-shibboleth-renater-sp:${THESES_RP_VERSION}
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
@@ -94,8 +94,13 @@ services:
       OTEL_ENVIRONMENT: "${OTEL_ENVIRONMENT}"
       # Namespace (équivalent au nom de l'application)
       OTEL_NAMESPACE: "${OTEL_NAMESPACE}"
-      OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
-      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
+      # Version (équivalent à image tag)
+      OTEL_VERSION: "${THESES_API_DIFFUSION_VERSION}"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-rp,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_RP_VERSION}"
+      OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL_GRPC}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
+      OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
+      OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
       - ./volumes/theses-rp/log/access-rotated.log:/var/log/apache2/access-rotated.log:rw
