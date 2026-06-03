@@ -101,6 +101,7 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
+      OTEL_SERVICE_INSTANCE_ID: ${OTEL_ENVIRONMENT}
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
       - ./volumes/theses-rp/log/access-rotated.log:/var/log/apache2/access-rotated.log:rw
