@@ -138,25 +138,6 @@ services:
       NUXT_PUBLIC_APIREF: ${THESES_FRONT_VITE_APP_APIREF}
       NUXT_PUBLIC_IS_MAINTENANCE: ${THESES_FRONT_VITE_APP_IS_MAINTENANCE}
       NUXT_PUBLIC_MAINTENANCE_MESSAGE: ${THESES_FRONT_VITE_APP_MAINTENANCE_MESSAGE}
-      
-      #####################
-      ### OpenTelemetry ###
-      #####################
-      # Nom du Container (équivalent à container name)
-      OTEL_SERVICE_NAME: "theses-front"
-      # Environnement (dev, test, prod)
-      OTEL_ENVIRONMENT: "${OTEL_ENVIRONMENT}"
-      # Namespace (équivalent au nom de l'application)
-      OTEL_NAMESPACE: "${OTEL_NAMESPACE}"
-      # Version (équivalent à image tag)
-      OTEL_VERSION: "${THESES_FRONT_VERSION}"
-      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-front,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_FRONT_VERSION}"
-      OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
-      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
-      OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
-      OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
-      OTEL_SERVICE_INSTANCE_ID: ${OTEL_ENVIRONMENT}
-
     depends_on:
       - theses-api-diffusion
       - theses-api-recherche
