@@ -634,7 +634,7 @@ services:
       # Version (équivalent à image tag)
       - OTEL_VERSION=${THESES_ELASTICSEARCH_VERSION}
       # Attributs OpenTelemetry
-      - OTEL_RESOURCE_ATTRIBUTES="service.name=theses-elasticsearch-setupcerts,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_ELASTICSEARCH_VERSION}"
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=theses-elasticsearch-setupcerts,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_ELASTICSEARCH_VERSION}
       - OTEL_EXPORTER_OTLP_PROTOCOL=${OTEL_EXPORTER_OTLP_PROTOCOL_GRPC}
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
       - OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER}
@@ -740,7 +740,7 @@ services:
       # Version (équivalent à image tag)
       - OTEL_VERSION=${THESES_ELASTICSEARCH_VERSION}
       # Attributs OpenTelemetry
-      - OTEL_RESOURCE_ATTRIBUTES="service.name=theses-elasticsearch-setupusers,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_ELASTICSEARCH_VERSION}"
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=theses-elasticsearch-setupusers,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_ELASTICSEARCH_VERSION}
       - OTEL_EXPORTER_OTLP_PROTOCOL=${OTEL_EXPORTER_OTLP_PROTOCOL_GRPC}
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
       - OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER}
@@ -867,7 +867,7 @@ services:
       # Version (équivalent à image tag)
       - OTEL_VERSION=${THESES_ELASTICSEARCH_VERSION}
       # Attributs OpenTelemetry
-      - OTEL_RESOURCE_ATTRIBUTES="service.name=theses-elasticsearch-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID},deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_ELASTICSEARCH_VERSION}"
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=theses-elasticsearch-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID},deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_ELASTICSEARCH_VERSION}
       - OTEL_EXPORTER_OTLP_PROTOCOL=${OTEL_EXPORTER_OTLP_PROTOCOL_GRPC}
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
       - OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER}
