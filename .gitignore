@@ -1,2 +1,4 @@
 .env*
-volumes
+volumes/*
+!volumes/otel-collector
+!volumes/otel-collector/config.yaml

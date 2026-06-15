@@ -968,6 +968,31 @@ services:
       - "wud.watch.digest=true"
       - "wud.watch=true"
 
+  #######################################
+  # theses-otel-collector
+  # Agent OpenTelemetry Collector pour instrumenter la machine hôte
+  theses-otel-collector:
+    container_name: theses-otel-collector
+    image: otel/opentelemetry-collector-contrib:0.95.0
+    restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
+    volumes:
+      - ./volumes/otel-collector/config.yaml:/etc/otelcol-contrib/config.yaml:ro
+      - /:/hostfs:ro
+    environment:
+      - OTELCOL_HOST_FILESYSTEM=/hostfs
+      - OTEL_EXPORTER_OTLP_ENDPOINT_GRPC=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
+      - OTEL_ENVIRONMENT=${OTEL_ENVIRONMENT}
+      - OTEL_NAMESPACE=${OTEL_NAMESPACE}
+      - OTEL_VERSION=${THESES_ELASTICSEARCH_VERSION}
+      - OTEL_SERVICE_NAME=theses-elasticsearch-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}
+    labels:
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=otel"
 
 # Cette configuration peut être décommentée pour pouvoir monter un cluster local elasticsearch
 # elle permet de lancer plusieurs noeuds indépendants au niveau docker mais reliés par ce réseau commun
