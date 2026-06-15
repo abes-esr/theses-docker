@@ -101,6 +101,7 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
+      OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
       OTEL_SERVICE_INSTANCE_ID: ${OTEL_ENVIRONMENT}
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
@@ -199,6 +200,7 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
+      OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -269,6 +271,7 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
+      OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -363,6 +366,7 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
+      OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -440,6 +444,7 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
+      OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
       
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -519,6 +524,7 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
+      OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
       
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -594,6 +600,7 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
+      OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
       
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -639,6 +646,7 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
       - OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER}
       - OTEL_LOGS_EXPORTER=${OTEL_LOGS_EXPORTER}
+      - OTEL_TRACES_EXPORTER=${OTEL_TRACES_EXPORTER}
     command: >
       bash -c '
         if [ ! -f config/certs/ca.zip ]; then
@@ -745,6 +753,7 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
       - OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER}
       - OTEL_LOGS_EXPORTER=${OTEL_LOGS_EXPORTER}
+      - OTEL_TRACES_EXPORTER=${OTEL_TRACES_EXPORTER}
     command: >
       bash -c '
         if [ x${THESES_ELASTICSEARCH_PASSWORD} == x ]; then
@@ -872,6 +881,7 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
       - OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER}
       - OTEL_LOGS_EXPORTER=${OTEL_LOGS_EXPORTER}
+      - OTEL_TRACES_EXPORTER=${OTEL_TRACES_EXPORTER}
     ulimits:
       memlock:
         soft: -1
