@@ -646,12 +646,11 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
       - OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER}
       - OTEL_LOGS_EXPORTER=${OTEL_LOGS_EXPORTER}
-      # Activation du traçage des requêtes internes
-      - xpack.apm.enabled=true
-      - xpack.apm.central_config.enabled=true
-      # Configuration de l'export des données vers votre collecteur (ex: OTel Collector)
-      - xpack.apm.otel.endpoint=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
-      - xpack.apm.otel.protocol=${OTEL_EXPORTER_OTLP_PROTOCOL_GRPC}
+      # Activation du traçage APM interne (Nouvelle syntaxe 8.x)
+      - tracing.apm.enabled=true
+      # Configuration de l'export OTel gRPC standard d'Elasticsearch
+      - tracing.apm.exporter.otlp.endpoint=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
+      - tracing.apm.exporter.otlp.protocol=${OTEL_EXPORTER_OTLP_PROTOCOL_GRPC}
     command: >
       bash -c '
         if [ ! -f config/certs/ca.zip ]; then
@@ -758,12 +757,11 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
       - OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER}
       - OTEL_LOGS_EXPORTER=${OTEL_LOGS_EXPORTER}
-      # Activation du traçage des requêtes internes
-      - xpack.apm.enabled=true
-      - xpack.apm.central_config.enabled=true
-      # Configuration de l'export des données vers votre collecteur (ex: OTel Collector)
-      - xpack.apm.otel.endpoint=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
-      - xpack.apm.otel.protocol=${OTEL_EXPORTER_OTLP_PROTOCOL_GRPC}
+      # Activation du traçage APM interne (Nouvelle syntaxe 8.x)
+      - tracing.apm.enabled=true
+      # Configuration de l'export OTel gRPC standard d'Elasticsearch
+      - tracing.apm.exporter.otlp.endpoint=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
+      - tracing.apm.exporter.otlp.protocol=${OTEL_EXPORTER_OTLP_PROTOCOL_GRPC}
     command: >
       bash -c '
         if [ x${THESES_ELASTICSEARCH_PASSWORD} == x ]; then
@@ -891,12 +889,11 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
       - OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER}
       - OTEL_LOGS_EXPORTER=${OTEL_LOGS_EXPORTER}
-      # Activation du traçage des requêtes internes
-      - xpack.apm.enabled=true
-      - xpack.apm.central_config.enabled=true
-      # Configuration de l'export des données vers votre collecteur (ex: OTel Collector)
-      - xpack.apm.otel.endpoint=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
-      - xpack.apm.otel.protocol=${OTEL_EXPORTER_OTLP_PROTOCOL_GRPC}
+      # Activation du traçage APM interne (Nouvelle syntaxe 8.x)
+      - tracing.apm.enabled=true
+      # Configuration de l'export OTel gRPC standard d'Elasticsearch
+      - tracing.apm.exporter.otlp.endpoint=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
+      - tracing.apm.exporter.otlp.protocol=${OTEL_EXPORTER_OTLP_PROTOCOL_GRPC}
     ulimits:
       memlock:
         soft: -1
