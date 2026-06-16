@@ -6,6 +6,8 @@ receivers:
     env_vars_to_metric_labels:
       OTEL_NAMESPACE: service.namespace
       OTEL_ENVIRONMENT: deployment.environment
+      OTEL_SERVICE_NAME: service.name
+      OTEL_VERSION: service.version
 
 # Configuration des processeurs pour transformer les données collectées
 processors:
@@ -14,7 +16,7 @@ processors:
     attributes:
       - key: service.name
         from_attribute: container.name
-        action: upsert
+        action: insert
   resource_detection/docker:
     detectors: [env, docker]
     timeout: 2s
