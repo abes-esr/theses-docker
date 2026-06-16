@@ -1,3 +1,4 @@
+# Configuration des récepteurs de métriques pour la machine hôte
 receivers:
   host_metrics:
     collection_interval: 30s
@@ -7,8 +8,10 @@ receivers:
       disk:
       network:
 
+# Configuration des processeurs pour transformer les données collectées
 processors:
-  resource_mapping:
+  # Utilisation du processeur standard resource pour définir les attributs de la machine hôte
+  resource:
     attributes:
       - key: service.name
         value: ${HOSTNAME}
@@ -19,7 +22,7 @@ processors:
       - key: service.namespace
         value: ${HOSTNAME}
         action: upsert
-      - key: host.nale
+      - key: host.name
         value: ${HOSTNAME}
         action: upsert
 
@@ -29,9 +32,10 @@ exporters:
     tls:
       insecure: true
 
+# Définition des pipelines de collecte de télémétrie
 service:
   pipelines:
     metrics:
       receivers: [host_metrics]
-      processors: [resource_mapping]
+      processors: [resource]
       exporters: [otlp]
