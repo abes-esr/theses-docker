@@ -973,7 +973,7 @@ services:
   # Agent OpenTelemetry Collector pour instrumenter la machine hôte
   theses-otel-collector:
     container_name: theses-otel-collector
-    image: otel/opentelemetry-collector-contrib:0.95.0
+    image: otel/opentelemetry-collector-contrib:latest
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
