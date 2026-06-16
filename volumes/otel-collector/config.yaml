@@ -1,20 +1,15 @@
 receivers:
   docker_stats:
     api_version: "1.54"
-    excluded_images:
-      - theses-elasticsearch-01
+    env_vars_to_metric_labels:
+      OTEL_NAMESPACE: service.namespace
+      OTEL_ENVIRONMENT: deployment.environment
 
 processors:
   resource:
     attributes:
       - key: service.name
-        value: theses-elasticsearch-01
-        action: upsert
-      - key: deployment.environment
-        value: ${OTEL_ENVIRONMENT}
-        action: upsert
-      - key: service.namespace
-        value: ${OTEL_NAMESPACE}
+        from_attribute: container.name
         action: upsert
 
 exporters:
