@@ -1,16 +1,20 @@
 receivers:
-  docker_stats:
+  containers_metrics:
     api_version: "1.54"
     env_vars_to_metric_labels:
       OTEL_NAMESPACE: service.namespace
       OTEL_ENVIRONMENT: deployment.environment
 
 processors:
-  resource:
+  resource_mapping:
     attributes:
       - key: service.name
         from_attribute: container.name
         action: upsert
+  resource_detection/docker:
+    detectors: [env, docker]
+    timeout: 2s
+    override: false
 
 exporters:
   otlp:
@@ -21,6 +25,6 @@ exporters:
 service:
   pipelines:
     metrics:
-      receivers: [docker_stats]
-      processors: [resource]
+      receivers: [containers_metrics]
+      processors: [resource_mapping, resource_detection/docker]
       exporters: [otlp]
