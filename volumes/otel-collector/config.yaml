@@ -11,6 +11,13 @@ receivers:
     excluded_images:
       - ^(?!.*theses).*$
 
+processors:
+  resource/set_service_name:
+    attributes:
+      - key: service.name
+        from_attribute: container.name
+        action: insert
+
 exporters:
   otlp:
     endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
@@ -21,4 +28,5 @@ service:
   pipelines:
     metrics:
       receivers: [docker_stats]
+      processors: [resource/set_service_name]
       exporters: [otlp]
