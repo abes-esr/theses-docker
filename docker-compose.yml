@@ -96,7 +96,7 @@ services:
       OTEL_NAMESPACE: "${OTEL_NAMESPACE}"
       # Version (équivalent à image tag)
       OTEL_VERSION: "${THESES_API_DIFFUSION_VERSION}"
-      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-rp,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_RP_VERSION}"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-rp,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},host.name=${HOSTNAME},service.version=${THESES_RP_VERSION}"
       OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL_GRPC}
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
@@ -195,7 +195,7 @@ services:
       # Version (équivalent à image tag)
       OTEL_VERSION: "${THESES_API_DIFFUSION_VERSION}"
       # Attributs OpenTelemetry
-      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-api-diffusion,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_API_DIFFUSION_VERSION}"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-api-diffusion,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},host.name=${HOSTNAME},service.version=${THESES_API_DIFFUSION_VERSION}"
       OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
@@ -266,7 +266,7 @@ services:
       # Version (équivalent à image tag)
       OTEL_VERSION: "${THESES_API_RECHERCHE_VERSION}"
       # Attributs OpenTelemetry
-      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-api-recherche,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_API_RECHERCHE_VERSION}"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-api-recherche,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},host.name=${HOSTNAME},service.version=${THESES_API_RECHERCHE_VERSION}"
       OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
@@ -361,7 +361,7 @@ services:
       # Version (équivalent à image tag)
       OTEL_VERSION: "${THESES_API_EXPORT_VERSION}"
       # Attributs OpenTelemetry
-      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-api-export,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_API_EXPORT_VERSION}"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-api-export,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},host.name=${HOSTNAME},service.version=${THESES_API_EXPORT_VERSION}"
       OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
@@ -439,7 +439,7 @@ services:
       # Version (équivalent à image tag)
       OTEL_VERSION: "${THESES_BATCH_INDEXATION_THESES_VERSION}"
       # Attributs OpenTelemetry
-      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-batch-indexation-theses,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_BATCH_INDEXATION_THESES_VERSION}"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-batch-indexation-theses,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},host.name=${HOSTNAME},service.version=${THESES_BATCH_INDEXATION_THESES_VERSION}"
       OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
@@ -519,7 +519,7 @@ services:
       # Version (équivalent à image tag)
       OTEL_VERSION: "${THESES_BATCH_INDEXATION_PERSONNES_VERSION}"
       # Attributs OpenTelemetry
-      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-batch-indexation-personnes,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_BATCH_INDEXATION_PERSONNES_VERSION}"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-batch-indexation-personnes,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},host.name=${HOSTNAME},service.version=${THESES_BATCH_INDEXATION_PERSONNES_VERSION}"
       OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
@@ -595,7 +595,7 @@ services:
       # Version (équivalent à image tag)
       OTEL_VERSION: "${THESES_BATCH_INDEXATION_RECHERCHE_PERSONNES_VERSION}"
       # Attributs OpenTelemetry
-      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-batch-indexation-recherche-personnes,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_BATCH_INDEXATION_RECHERCHE_PERSONNES_VERSION}"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-batch-indexation-recherche-personnes,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},host.name=${HOSTNAME},service.version=${THESES_BATCH_INDEXATION_RECHERCHE_PERSONNES_VERSION}"
       OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
@@ -628,25 +628,6 @@ services:
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/usr/share/elasticsearch/config/certs/
     user: "0"
-    environment:
-      #####################
-      ### OpenTelemetry ###
-      #####################
-      # Nom du Container (équivalent à container name)
-      - OTEL_SERVICE_NAME=theses-elasticsearch-setupcerts
-      # Environnement (dev, test, prod)
-      - OTEL_ENVIRONMENT=${OTEL_ENVIRONMENT}
-      # Namespace (équivalent au nom de l'application, commun aux différents conteneurs de l'application)
-      - OTEL_NAMESPACE=${OTEL_NAMESPACE}
-      # Version (équivalent à image tag)
-      - OTEL_VERSION=${THESES_ELASTICSEARCH_VERSION}
-      # Attributs OpenTelemetry
-      - OTEL_RESOURCE_ATTRIBUTES=service.name=theses-elasticsearch-setupcerts,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_ELASTICSEARCH_VERSION}
-      - OTEL_EXPORTER_OTLP_PROTOCOL=${OTEL_EXPORTER_OTLP_PROTOCOL}
-      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
-      - OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER}
-      - OTEL_LOGS_EXPORTER=${OTEL_LOGS_EXPORTER}
-      - OTEL_TRACES_EXPORTER=${OTEL_TRACES_EXPORTER}
     command: >
       bash -c '
         if [ ! -f config/certs/ca.zip ]; then
@@ -736,24 +717,6 @@ services:
       - THESES_ELASTICSEARCH_HTTP_PORT=${THESES_ELASTICSEARCH_HTTP_PORT}
       - THESES_API_RECHERCHE_ELASTIC_USERNAME=${THESES_API_RECHERCHE_ELASTIC_USERNAME} 
       - THESES_API_RECHERCHE_ELASTIC_PASSWORD=${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
-      #####################
-      ### OpenTelemetry ###
-      #####################
-      # Nom du Container (équivalent à container name)
-      - OTEL_SERVICE_NAME=theses-elasticsearch-setupusers
-      # Environnement (dev, test, prod)
-      - OTEL_ENVIRONMENT=${OTEL_ENVIRONMENT}
-      # Namespace (équivalent au nom de l'application, commun aux différents conteneurs de l'application)
-      - OTEL_NAMESPACE=${OTEL_NAMESPACE}
-      # Version (équivalent à image tag)
-      - OTEL_VERSION=${THESES_ELASTICSEARCH_VERSION}
-      # Attributs OpenTelemetry
-      - OTEL_RESOURCE_ATTRIBUTES=service.name=theses-elasticsearch-setupusers,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_ELASTICSEARCH_VERSION}
-      - OTEL_EXPORTER_OTLP_PROTOCOL=${OTEL_EXPORTER_OTLP_PROTOCOL}
-      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
-      - OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER}
-      - OTEL_LOGS_EXPORTER=${OTEL_LOGS_EXPORTER}
-      - OTEL_TRACES_EXPORTER=${OTEL_TRACES_EXPORTER}
     command: >
       bash -c '
         if [ x${THESES_ELASTICSEARCH_PASSWORD} == x ]; then
@@ -864,24 +827,6 @@ services:
       # DEBUG ou INFO (en prod mettre INFO)
       - logger.org.elasticsearch.discovery=INFO
       # réglage ulimits pour désactiver le swap: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
-      #####################
-      ### OpenTelemetry ###
-      #####################
-      # Nom du Container (équivalent à container name)
-      - OTEL_SERVICE_NAME=theses-elasticsearch-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}
-      # Environnement (dev, test, prod)
-      - OTEL_ENVIRONMENT=${OTEL_ENVIRONMENT}
-      # Namespace (équivalent au nom de l'application, commun aux différents conteneurs de l'application)
-      - OTEL_NAMESPACE=${OTEL_NAMESPACE}
-      # Version (équivalent à image tag)
-      - OTEL_VERSION=${THESES_ELASTICSEARCH_VERSION}
-      # Attributs OpenTelemetry
-      - OTEL_RESOURCE_ATTRIBUTES=service.name=theses-elasticsearch-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID},deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},service.version=${THESES_ELASTICSEARCH_VERSION}
-      - OTEL_EXPORTER_OTLP_PROTOCOL=${OTEL_EXPORTER_OTLP_PROTOCOL}
-      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
-      - OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER}
-      - OTEL_LOGS_EXPORTER=${OTEL_LOGS_EXPORTER}
-      - OTEL_TRACES_EXPORTER=${OTEL_TRACES_EXPORTER}
     ulimits:
       memlock:
         soft: -1
