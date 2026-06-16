@@ -1,0 +1,37 @@
+receivers:
+  host_metrics:
+    collection_interval: 30s
+    scrapers:
+      cpu:
+      memory:
+      disk:
+      network:
+
+processors:
+  resource_mapping:
+    attributes:
+      - key: service.name
+        value: ${HOSTNAME}
+        action: upsert
+      - key: deployment.environment
+        value: ${OTEL_ENVIRONMENT}
+        action: upsert
+      - key: service.namespace
+        value: ${HOSTNAME}
+        action: upsert
+      - key: host.nale
+        value: ${HOSTNAME}
+        action: upsert
+
+exporters:
+  otlp:
+    endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    metrics:
+      receivers: [host_metrics]
+      processors: [resource_mapping]
+      exporters: [otlp]

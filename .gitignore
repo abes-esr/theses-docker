@@ -1,4 +1,6 @@
 .env*
 volumes/*
-!volumes/otel-collector
-!volumes/otel-collector/config.yaml
+!volumes/otel-collector-host
+!volumes/otel-collector-containers
+!volumes/otel-collector-host/config.yaml
+!volumes/otel-collector-containers/config.yaml
