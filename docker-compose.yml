@@ -979,7 +979,7 @@ services:
     memswap_limit: ${MEM_LIMIT}
     cpus: ${CPU_LIMIT}
     group_add:
-      - 1001
+      - ${OTEL_DOCKER_GROUP_ID}
     volumes:
       - ./volumes/otel-collector/config.yaml:/etc/otelcol-contrib/config.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock
