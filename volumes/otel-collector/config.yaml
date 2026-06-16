@@ -1,22 +1,21 @@
 receivers:
   docker_stats:
     api_version: "1.54"
-    container_labels_to_metric_labels:
-      my.container.label: my-metric-label
-      my.other.container.label: my-other-metric-label
-    env_vars_to_metric_labels:
-      OTEL_NAMESPACE: ${OTEL_NAMESPACE}
-      MY_ENVIRONMENT_VARIABLE: my-metric-label
-      MY_OTHER_ENVIRONMENT_VARIABLE: my-other-metric-label
     excluded_images:
-      - ^(?!.*theses).*$
+      - theses-elasticsearch-01
 
 processors:
-  resource/set_service_name:
+  resource:
     attributes:
       - key: service.name
-        from_attribute: container.name
-        action: insert
+        value: theses-elasticsearch-01
+        action: upsert
+      - key: deployment.environment
+        value: ${OTEL_ENVIRONMENT}
+        action: upsert
+      - key: service.namespace
+        value: ${OTEL_NAMESPACE}
+        action: upsert
 
 exporters:
   otlp:
@@ -28,5 +27,5 @@ service:
   pipelines:
     metrics:
       receivers: [docker_stats]
-      processors: [resource/set_service_name]
+      processors: [resource]
       exporters: [otlp]
