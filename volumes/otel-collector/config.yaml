@@ -1,5 +1,6 @@
 receivers:
   docker_stats:
+    api_version: "1.54"
     container_labels_to_metric_labels:
       my.container.label: my-metric-label
       my.other.container.label: my-other-metric-label
