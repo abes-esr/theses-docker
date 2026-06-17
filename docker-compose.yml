@@ -95,14 +95,14 @@ services:
       # Namespace (équivalent au nom de l'application)
       OTEL_NAMESPACE: "${OTEL_NAMESPACE}"
       # Version (équivalent à image tag)
-      OTEL_VERSION: "${THESES_API_DIFFUSION_VERSION}"
+      OTEL_VERSION: "${THESES_RP_VERSION}"
       OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-rp,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},host.name=${HOSTNAME},service.version=${THESES_RP_VERSION}"
       OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL_GRPC}
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
-      OTEL_SERVICE_INSTANCE_ID: ${OTEL_ENVIRONMENT}
+      OTEL_SERVICE_INSTANCE_ID: ${HOSTNAME}
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
       - ./volumes/theses-rp/log/access-rotated.log:/var/log/apache2/access-rotated.log:rw
@@ -929,6 +929,8 @@ services:
       - ./volumes/otel-collector-containers/config.yaml:/etc/otelcol-contrib/config.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
+      - HOSTNAME=${HOSTNAME}
+      - OTEL_ENVIRONMENT=${OTEL_ENVIRONMENT}
       - OTEL_EXPORTER_OTLP_ENDPOINT_GRPC=${OTEL_EXPORTER_OTLP_ENDPOINT_GRPC}
 
   #######################################
