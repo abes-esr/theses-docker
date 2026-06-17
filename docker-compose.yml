@@ -102,6 +102,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
       OTEL_SERVICE_INSTANCE_ID: ${HOSTNAME}
     volumes:
       - ./volumes/theses-rp/shibboleth/ssl/:/etc/shibboleth/ssl/
@@ -156,6 +157,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
     depends_on:
       - theses-api-diffusion
       - theses-api-recherche
@@ -218,6 +220,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -289,6 +292,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -342,6 +346,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -401,6 +406,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -479,6 +485,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
       
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -559,6 +566,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
       
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -635,6 +643,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
       
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
@@ -737,6 +746,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -786,6 +796,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
     command: >
       bash -c '
         if [ x${THESES_ELASTICSEARCH_PASSWORD} == x ]; then
@@ -913,6 +924,7 @@ services:
       - OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER}
       - OTEL_LOGS_EXPORTER=${OTEL_LOGS_EXPORTER}
       - OTEL_TRACES_EXPORTER=${OTEL_TRACES_EXPORTER}
+      - HOSTNAME=${HOSTNAME}
     ulimits:
       memlock:
         soft: -1
@@ -979,6 +991,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
     healthcheck:
       test:
         [
@@ -1024,6 +1037,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
     labels:
       # pour envoyer les logs dans le puits de log de l'abes
       - "co.elastic.logs/enabled=true"
@@ -1068,6 +1082,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
 
   #######################################
   # otel-collector-host
@@ -1102,6 +1117,7 @@ services:
       OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
       OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
       OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
 
 
 # Cette configuration peut être décommentée pour pouvoir monter un cluster local elasticsearch
