@@ -10,6 +10,8 @@ receivers:
       OTEL_SERVICE_NAME: service.name
       # Extrait le profil Spring actif si présent (utile pour les API et batchs)
       SPRING_PROFILES_ACTIVE: spring.profiles.active
+      # Extrait le namespace de l'application à partir des variables d'environnement du Docker Compose
+      OTEL_NAMESPACE: service.namespace
     container_labels_to_metric_labels:
       # Extrait le nom du service Docker Compose
       com.docker.compose.service: compose.service
@@ -29,17 +31,9 @@ processors:
       - key: deployment.environment
         value: ${OTEL_ENVIRONMENT}
         action: upsert
-      # Ajout du namespace de l'application à partir des variables d'environnement du Docker Compose
-      - key: service.namespace
-        value: ${OTEL_NAMESPACE}
-        action: upsert
       # Ajout du nom de l'hôte physique à partir des variables d'environnement du Docker Compose
       - key: host.name
         value: ${HOSTNAME}
-        action: upsert
-      # Ajout de la version du collecteur lui-même
-      - key: service.version
-        value: ${OTEL_VERSION}
         action: upsert
 
   # Processeur de batching standard pour regrouper les métriques et optimiser les exports
