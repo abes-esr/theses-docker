@@ -76,6 +76,23 @@ A partir de cet instant l'application écoutera sur l'IP du serveur et sera acce
 Voir aussi :
 - la [doc pour configurer la fédération d'identités de theses.fr sur votre environement local](./README.faq.md#comment-configurer-la-f%C3%A9d%C3%A9ration-didentit%C3%A9s-de-thesesfr-en-local-)
 
+## Initialisation du registre de référencement
+
+Les jobs sont ponctuels et ne démarrent pas avec la plateforme :
+
+```bash
+docker compose --profile referencement-jobs run --rm \
+  theses-referencement-init
+
+docker compose --profile referencement-jobs run --rm \
+  theses-referencement-import
+```
+
+Le second job ne doit être lancé que si le premier se termine avec le code
+`0`. En DEV, l'import lit `https://theses.fr/robots.txt` via la variable
+`THESES_ROBOTS_URL`. Ces commandes ne suppriment aucune directive du fichier
+et ne démarrent aucune API HTTP.
+
 ## Installation pour la production
 
 Pour la prod il est nécessaire de dérouler une [installation classique (cf section au dessus)](./README.md#installation) puis de réaliser quelques opérations listées ci-dessous :
