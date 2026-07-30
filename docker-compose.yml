@@ -304,6 +304,60 @@ services:
       - "wud.watch=true" 
 
 
+  #######################################
+  # theses-referencement-init
+  # Job ponctuel de création ou vérification de l'index referencement
+  theses-referencement-init:
+    image: abesesr/theses:${THESES_API_INDEXATION_VERSION}
+    profiles:
+      - referencement-jobs
+    depends_on:
+      theses-elasticsearch:
+        condition: service_healthy
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
+    volumes:
+      - ./volumes/theses-elasticsearch-setupcerts/:/app/certs/:ro
+    environment:
+      SPRING_PROFILES_ACTIVE: init-index
+      ES_HOSTNAME: theses-elasticsearch-01
+      ES_PORT: ${THESES_ELASTICSEARCH_HTTP_PORT}
+      ES_PROTOCOL: https
+      ES_USERNAME: elastic
+      ES_PASSWORD: ${THESES_ELASTICSEARCH_PASSWORD}
+      ES_CA_CERTIFICATE: /app/certs/ca/ca.crt
+      REFERENCEMENT_INDEX_NAME: ${THESES_REFERENCEMENT_INDEX}
+
+  #######################################
+  # theses-referencement-import
+  # Job ponctuel d'import du robots.txt dans l'index referencement
+  theses-referencement-import:
+    image: abesesr/theses:${THESES_API_INDEXATION_VERSION}
+    profiles:
+      - referencement-jobs
+    depends_on:
+      theses-elasticsearch:
+        condition: service_healthy
+      theses-elasticsearch-setupusers:
+        condition: service_healthy
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
+    volumes:
+      - ./volumes/theses-elasticsearch-setupcerts/:/app/certs/:ro
+    environment:
+      SPRING_PROFILES_ACTIVE: import-robots
+      ES_HOSTNAME: theses-elasticsearch-01
+      ES_PORT: ${THESES_ELASTICSEARCH_HTTP_PORT}
+      ES_PROTOCOL: https
+      ES_USERNAME: ${THESES_API_INDEXATION_ELASTIC_USERNAME}
+      ES_PASSWORD: ${THESES_API_INDEXATION_ELASTIC_PASSWORD}
+      ES_CA_CERTIFICATE: /app/certs/ca/ca.crt
+      REFERENCEMENT_INDEX_NAME: ${THESES_REFERENCEMENT_INDEX}
+      ROBOTS_URL: ${THESES_ROBOTS_URL}
+
+
 
   #######################################
   # theses-seo
@@ -779,6 +833,9 @@ services:
       THESES_ELASTICSEARCH_HTTP_PORT: ${THESES_ELASTICSEARCH_HTTP_PORT}
       THESES_API_RECHERCHE_ELASTIC_USERNAME: ${THESES_API_RECHERCHE_ELASTIC_USERNAME}
       THESES_API_RECHERCHE_ELASTIC_PASSWORD: ${THESES_API_RECHERCHE_ELASTIC_PASSWORD}
+      THESES_API_INDEXATION_ELASTIC_USERNAME: ${THESES_API_INDEXATION_ELASTIC_USERNAME}
+      THESES_API_INDEXATION_ELASTIC_PASSWORD: ${THESES_API_INDEXATION_ELASTIC_PASSWORD}
+      THESES_REFERENCEMENT_INDEX: ${THESES_REFERENCEMENT_INDEX}
       #####################
       ### OpenTelemetry ###
       #####################
@@ -810,6 +867,10 @@ services:
         until curl -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/kibana_system/_password -d "{\"password\":\"${THESES_KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
         echo "Setting ${THESES_API_RECHERCHE_ELASTIC_USERNAME} password";
         until curl -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/${THESES_API_RECHERCHE_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_RECHERCHE_ELASTIC_PASSWORD}\", \"enabled\": true, \"roles\":[\"viewer\"], \"full_name\":\"\", \"email\":\"\"}" | grep -q "^{\"created\":"; do sleep 10; done;        
+        echo "Setting theses-noindex-writer role";
+        until curl -fsS -X PUT --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/role/theses-noindex-writer -d "{\"cluster\":[],\"indices\":[{\"names\":[\"${THESES_REFERENCEMENT_INDEX}\"],\"privileges\":[\"read\",\"write\",\"view_index_metadata\"]}]}" > /dev/null; do sleep 10; done;
+        echo "Setting ${THESES_API_INDEXATION_ELASTIC_USERNAME} password";
+        until curl -fsS -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/${THESES_API_INDEXATION_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_INDEXATION_ELASTIC_PASSWORD}\",\"enabled\":true,\"roles\":[\"theses-noindex-writer\"],\"full_name\":\"\",\"email\":\"\"}" > /dev/null; do sleep 10; done;
         echo "All done!";
         sleep infinity; # never stop the container because kibana depends on it
       '
@@ -817,7 +878,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -s --cacert config/certs/ca/ca.crt -u ${THESES_API_RECHERCHE_ELASTIC_USERNAME}:${THESES_API_RECHERCHE_ELASTIC_PASSWORD} 'https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_search?timeout=5s' | grep -q '\"hits\"'",
+          "curl -fsS --cacert config/certs/ca/ca.crt -u ${THESES_API_RECHERCHE_ELASTIC_USERNAME}:${THESES_API_RECHERCHE_ELASTIC_PASSWORD} 'https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_search?timeout=5s' | grep -q '\"hits\"' && curl -fsS --cacert config/certs/ca/ca.crt -u ${THESES_API_INDEXATION_ELASTIC_USERNAME}:${THESES_API_INDEXATION_ELASTIC_PASSWORD} 'https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/_authenticate' | grep -q '\"username\":\"${THESES_API_INDEXATION_ELASTIC_USERNAME}\"'",
         ]
       interval: 10s
       timeout: 5s
