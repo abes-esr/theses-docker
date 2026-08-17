@@ -45,6 +45,8 @@ services:
       RENATER_SP_HTTPD_PROTECTED_PROXY_TO_0: "http://theses-kibana:5601/"
       RENATER_SP_HTTPD_PROTECTED_PATH_1: "/api/v1/document/protected/"
       RENATER_SP_HTTPD_PROTECTED_PROXY_TO_1: "http://theses-api-diffusion:8992/api/v1/document/protected/"
+      RENATER_SP_HTTPD_PROTECTED_PATH_2: "/api/v1/indexation/"
+      RENATER_SP_HTTPD_PROTECTED_PROXY_TO_2: "http://theses-api-indexation:8994/api/v1/referencements/"
       #RENATER_SP_HTTPD_PROTECTED_REQUIRE_1_0: "Require shib-attr Shib-Identity-Provider https://ciboulette.abes.fr/idp/shibboleth"
       #RENATER_SP_HTTPD_PROTECTED_REQUIRE_1_0: "Require shib-attr Shib-Identity-Provider https://test-idp.federation.renater.fr/idp/shibboleth"
       # pour -local -dev -test mais pour -prod THESES_RP_KIBANA_PUBLIC_PATH est vide et c'est THESES_RP_KIBANA_PROTECTED_PATH qui est renseigné
@@ -302,6 +304,66 @@ services:
       # surveillance de l'image par WhatsUpDocker
       - "wud.watch.digest=true"
       - "wud.watch=true" 
+
+
+  #######################################
+  # theses-api-indexation
+  # API protégée de gestion du référencement de theses.fr
+  theses-api-indexation:
+    container_name: theses-api-indexation
+    image: abesesr/theses:${THESES_API_INDEXATION_VERSION}
+    depends_on:
+      theses-elasticsearch:
+        condition: service_healthy
+      theses-elasticsearch-setupusers:
+        condition: service_healthy
+    restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
+    expose:
+      - "8994"
+    volumes:
+      - ./volumes/theses-elasticsearch-setupcerts/:/app/certs/:ro
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILE_ACTIVE}
+      SERVER_PORT: 8994
+      ES_HOSTNAME: theses-elasticsearch-01
+      ES_PORT: ${THESES_ELASTICSEARCH_HTTP_PORT}
+      ES_PROTOCOL: https
+      ES_USERNAME: ${THESES_API_INDEXATION_ELASTIC_USERNAME}
+      ES_PASSWORD: ${THESES_API_INDEXATION_ELASTIC_PASSWORD}
+      ES_CA_CERTIFICATE: file:/app/certs/ca/ca.crt
+      REFERENCEMENT_INDEX_NAME: ${THESES_REFERENCEMENT_INDEX}
+      THESES_NOINDEX_ALLOWED_EPPNS: ${THESES_NOINDEX_ALLOWED_EPPNS}
+      OTEL_SERVICE_NAME: "theses-api-indexation"
+      OTEL_ENVIRONMENT: "${OTEL_ENVIRONMENT}"
+      OTEL_NAMESPACE: "${OTEL_NAMESPACE}"
+      OTEL_VERSION: "${THESES_API_INDEXATION_VERSION}"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=theses-api-indexation,deployment.environment=${OTEL_ENVIRONMENT},service.namespace=${OTEL_NAMESPACE},host.name=${HOSTNAME},service.version=${THESES_API_INDEXATION_VERSION}"
+      OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
+      OTEL_METRICS_EXPORTER: ${OTEL_METRICS_EXPORTER}
+      OTEL_LOGS_EXPORTER: ${OTEL_LOGS_EXPORTER}
+      OTEL_TRACES_EXPORTER: ${OTEL_TRACES_EXPORTER}
+      HOSTNAME: ${HOSTNAME}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fsS http://127.0.0.1:8994/actuator/health > /dev/null",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    labels:
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=theses"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=spring"
+      - "wud.watch.digest=true"
+      - "wud.watch=true"
 
 
   #######################################
@@ -865,8 +927,10 @@ services:
         fi;
         echo "Setting kibana_system password";
         until curl -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/kibana_system/_password -d "{\"password\":\"${THESES_KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        echo "Setting theses-noindex-reader role";
+        until curl -fsS -X PUT --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/role/theses-noindex-reader -d "{\"cluster\":[],\"indices\":[{\"names\":[\"${THESES_REFERENCEMENT_INDEX}\"],\"privileges\":[\"read\",\"view_index_metadata\"]}]}" > /dev/null; do sleep 10; done;
         echo "Setting ${THESES_API_RECHERCHE_ELASTIC_USERNAME} password";
-        until curl -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/${THESES_API_RECHERCHE_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_RECHERCHE_ELASTIC_PASSWORD}\", \"enabled\": true, \"roles\":[\"viewer\"], \"full_name\":\"\", \"email\":\"\"}" | grep -q "^{\"created\":"; do sleep 10; done;        
+        until curl -X POST --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/user/${THESES_API_RECHERCHE_ELASTIC_USERNAME} -d "{\"password\":\"${THESES_API_RECHERCHE_ELASTIC_PASSWORD}\", \"enabled\": true, \"roles\":[\"viewer\",\"theses-noindex-reader\"], \"full_name\":\"\", \"email\":\"\"}" | grep -q "^{\"created\":"; do sleep 10; done;
         echo "Setting theses-noindex-writer role";
         until curl -fsS -X PUT --cacert config/certs/ca/ca.crt -u elastic:${THESES_ELASTICSEARCH_PASSWORD} -H "Content-Type: application/json" https://theses-elasticsearch-01:${THESES_ELASTICSEARCH_HTTP_PORT}/_security/role/theses-noindex-writer -d "{\"cluster\":[],\"indices\":[{\"names\":[\"${THESES_REFERENCEMENT_INDEX}\"],\"privileges\":[\"read\",\"write\",\"view_index_metadata\"]}]}" > /dev/null; do sleep 10; done;
         echo "Setting ${THESES_API_INDEXATION_ELASTIC_USERNAME} password";
