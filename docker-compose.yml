@@ -326,7 +326,7 @@ services:
       ES_PROTOCOL: https
       ES_USERNAME: elastic
       ES_PASSWORD: ${THESES_ELASTICSEARCH_PASSWORD}
-      ES_CA_CERTIFICATE: /app/certs/ca/ca.crt
+      ES_CA_CERTIFICATE: file:/app/certs/ca/ca.crt
       REFERENCEMENT_INDEX_NAME: ${THESES_REFERENCEMENT_INDEX}
 
   #######################################
@@ -353,7 +353,7 @@ services:
       ES_PROTOCOL: https
       ES_USERNAME: ${THESES_API_INDEXATION_ELASTIC_USERNAME}
       ES_PASSWORD: ${THESES_API_INDEXATION_ELASTIC_PASSWORD}
-      ES_CA_CERTIFICATE: /app/certs/ca/ca.crt
+      ES_CA_CERTIFICATE: file:/app/certs/ca/ca.crt
       REFERENCEMENT_INDEX_NAME: ${THESES_REFERENCEMENT_INDEX}
       ROBOTS_URL: ${THESES_ROBOTS_URL}
 
