@@ -93,6 +93,26 @@ Le second job ne doit être lancé que si le premier se termine avec le code
 `THESES_ROBOTS_URL`. Ces commandes ne suppriment aucune directive du fichier
 et ne démarrent aucune API HTTP.
 
+## Administration du référencement
+
+Le service permanent `theses-api-indexation` écoute uniquement sur des réseaux
+Docker internes au port `8994` : aucun port n’est publié sur l’hôte. Un premier
+réseau est partagé seulement avec `theses-rp`, et un second seulement avec
+Elasticsearch. Les autres conteneurs de la pile ne peuvent donc pas appeler
+directement l’API ni usurper l’en-tête `eppn`. L’accès externe passe par
+`/api/v1/indexation/{identifiant}`, chemin protégé par Shibboleth dans
+`theses-rp`.
+
+Les agents autorisés sont déclarés dans `THESES_NOINDEX_ALLOWED_EPPNS` sous
+forme de liste séparée par des virgules. Une liste vide refuse toutes les
+écritures. Cette variable et les mots de passe doivent être renseignés dans le
+fichier `.env` de l’environnement et ne doivent pas être commités.
+
+Le compte `theses-api-indexation` conserve uniquement les droits de lecture et
+d’écriture sur l’index `referencement`. Le compte partagé par
+`theses-api-recherche` et `theses-seo` reçoit en complément un rôle de lecture
+seule sur cet index.
+
 ## Installation pour la production
 
 Pour la prod il est nécessaire de dérouler une [installation classique (cf section au dessus)](./README.md#installation) puis de réaliser quelques opérations listées ci-dessous :
