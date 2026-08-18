@@ -25,6 +25,9 @@ services:
     ports:
       - ${THESES_RP_HTTPS_PORT}:443
       - ${THESES_RP_HTTP_PORT}:80
+    networks:
+      - default
+      - theses-indexation-proxy
     environment:
       RENATER_SP_TEST_OR_PROD: ${THESES_RP_RENATER_SP_TEST_OR_PROD}
       RENATER_SP_ENTITY_ID: ${THESES_RP_RENATER_SP_ENTITY_ID}
@@ -323,6 +326,9 @@ services:
     cpus: ${CPU_LIMIT}
     expose:
       - "8994"
+    networks:
+      - theses-indexation-proxy
+      - theses-indexation-elasticsearch
     volumes:
       - ./volumes/theses-elasticsearch-setupcerts/:/app/certs/:ro
     environment:
@@ -964,6 +970,9 @@ services:
   # cf https://github.com/abes-esr/theses-es-cluster-docker#readme pour le mode cluster
   theses-elasticsearch:
     container_name: theses-elasticsearch-${THESES_ELASTICSEARCH_CLUSTER_NODE_ID}
+    networks:
+      - default
+      - theses-indexation-elasticsearch
     depends_on:
       theses-elasticsearch-setupcerts:
         condition: service_healthy
@@ -1172,6 +1181,13 @@ services:
       # surveillance de l'image par WhatsUpDocker
       - "wud.watch.digest=true"
       - "wud.watch=true"
+
+
+networks:
+  theses-indexation-proxy:
+    internal: true
+  theses-indexation-elasticsearch:
+    internal: true
 
 
 # Cette configuration peut être décommentée pour pouvoir monter un cluster local elasticsearch

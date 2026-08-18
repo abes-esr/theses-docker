@@ -95,10 +95,13 @@ et ne démarrent aucune API HTTP.
 
 ## Administration du référencement
 
-Le service permanent `theses-api-indexation` écoute uniquement sur le réseau
-Docker au port `8994` : aucun port n’est publié sur l’hôte. L’accès externe
-passe par `/api/v1/indexation/{identifiant}`, chemin protégé par Shibboleth
-dans `theses-rp`.
+Le service permanent `theses-api-indexation` écoute uniquement sur des réseaux
+Docker internes au port `8994` : aucun port n’est publié sur l’hôte. Un premier
+réseau est partagé seulement avec `theses-rp`, et un second seulement avec
+Elasticsearch. Les autres conteneurs de la pile ne peuvent donc pas appeler
+directement l’API ni usurper l’en-tête `eppn`. L’accès externe passe par
+`/api/v1/indexation/{identifiant}`, chemin protégé par Shibboleth dans
+`theses-rp`.
 
 Les agents autorisés sont déclarés dans `THESES_NOINDEX_ALLOWED_EPPNS` sous
 forme de liste séparée par des virgules. Une liste vide refuse toutes les
